@@ -1,0 +1,77 @@
+name: updraft_flutter
+description: "Updraft game"
+publish_to: 'none' 
+
+#Flutter version: 3.24.4
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management
+  flutter_bloc: 8.1.4
+  equatable: 2.0.3
+
+  # Tools
+  intl: 0.18.0
+  get_it: 8.0.2
+
+  # Database
+  shared_preferences: 2.0.15
+  uuid: 4.5.1
+
+  # Widgets
+  flutter_svg: 2.0.16
+  flutter_bounce: 1.1.0
+  flutter_spinkit: 5.2.1
+  stroke_text: 0.0.3
+
+  # Animation
+  rive: 0.13.14
+
+  # Settings
+  in_app_review: 2.0.6
+  share_plus: 7.0.2
+  app_settings: 5.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/icons/
+    - assets/images/
+    - assets/animations/
+
+  fonts:
+    - family: Kanit
+      fonts:
+        - asset: fonts/Kanit-Black.ttf
+        - asset: fonts/Kanit-BlackItalic.ttf
+        - asset: fonts/Kanit-Bold.ttf
+        - asset: fonts/Kanit-BoldItalic.ttf
+        - asset: fonts/Kanit-ExtraBold.ttf
+        - asset: fonts/Kanit-ExtraBoldItalic.ttf
+        - asset: fonts/Kanit-ExtraLight.ttf
+        - asset: fonts/Kanit-ExtraLightItalic.ttf
+        - asset: fonts/Kanit-Italic.ttf
+        - asset: fonts/Kanit-Light.ttf
+        - asset: fonts/Kanit-LightItalic.ttf
+        - asset: fonts/Kanit-Medium.ttf
+        - asset: fonts/Kanit-MediumItalic.ttf
+        - asset: fonts/Kanit-Regular.ttf
+        - asset: fonts/Kanit-SemiBold.ttf
+        - asset: fonts/Kanit-SemiBoldItalic.ttf
+        - asset: fonts/Kanit-Thin.ttf
+        - asset: fonts/Kanit-ThinItalic.ttf
+        

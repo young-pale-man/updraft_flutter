@@ -1,0 +1,18 @@
+class Assets {
+  const Assets._();
+
+  //Global
+  static const String iconButtonBodyDefault = 'assets/icons/icon_button_body_default.svg';
+  static const String iconButtonBodyPressed = 'assets/icons/icon_button_body_pressed.svg';
+  static const String iconButtonBase = 'assets/icons/icon_button_base.svg';
+
+  static const String mainButtonBodyDefault = 'assets/icons/main_button_body_default.svg';
+  static const String mainButtonBodyPressed = 'assets/icons/main_button_body_pressed.svg';
+  static const String mainButtonBase = 'assets/icons/main_button_base.svg';
+
+  static const String menu = 'assets/icons/menu.svg';
+  static const String home = 'assets/icons/home.svg';
+  static const String statistics = 'assets/icons/statistics.svg';
+  static const String settings = 'assets/icons/settings.svg';
+  static const String close = 'assets/icons/close.svg';
+}
