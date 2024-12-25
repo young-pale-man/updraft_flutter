@@ -21,7 +21,7 @@ class NavigationMenuTile extends StatelessWidget {
     return Row(
       children: [
         MainIconButton(
-          size: scaledSize(50),
+          height: scaledSize(50),
           icon: item.icon,
           disabled: !isSelected,
           onPressed: () => _selectPage(context),

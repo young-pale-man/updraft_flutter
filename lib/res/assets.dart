@@ -15,4 +15,12 @@ class Assets {
   static const String statistics = 'assets/icons/statistics.svg';
   static const String settings = 'assets/icons/settings.svg';
   static const String close = 'assets/icons/close.svg';
+
+  //Home
+  static const String coins = 'assets/icons/coins.svg';
+  static const String plus = 'assets/icons/plus.svg';
+  static const String minus = 'assets/icons/minus.svg';
+  static const String reset = 'assets/icons/reset.svg';
+
+  static const String plane = 'assets/animations/plane.riv';
 }

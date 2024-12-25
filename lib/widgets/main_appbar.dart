@@ -2,6 +2,8 @@ import 'package:updraft_flutter/data/enums/navigation_menu_items.dart';
 import 'package:updraft_flutter/res/assets.dart';
 import 'package:updraft_flutter/res/colors.dart';
 import 'package:updraft_flutter/res/styles.dart';
+import 'package:updraft_flutter/utils/device_info.dart';
+import 'package:updraft_flutter/utils/scaled_size.dart';
 import 'package:updraft_flutter/widgets/main_icon_button.dart';
 import 'package:updraft_flutter/widgets/navigation_menu/navigation_menu.dart';
 import 'package:flutter/material.dart';
@@ -28,20 +30,20 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
           Row(
             children: [
               MainIconButton(
-                size: menuButtonSize,
+                height: scaledSize(menuButtonSize),
                 onPressed: () => _showNavigationMenu(context),
                 icon: Assets.menu,
               ),
               if (content != null) ...[
-                const SizedBox(height: 8),
-                content!,
+                const SizedBox(width: 8),
+                Expanded(child: content!),
               ],
             ],
           ),
           if (content == null)
             Center(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: menuButtonSize + 8),
+                padding: EdgeInsets.symmetric(horizontal: scaledSize(menuButtonSize) + 8),
                 child: FittedBox(
                   fit: BoxFit.fitWidth,
                   child: Text(
@@ -70,5 +72,5 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(74);
+  Size get preferredSize => Size.fromHeight(isTablet ? 100 : 74);
 }

@@ -12,7 +12,7 @@ class InitializeBalanceEV extends BalanceEvent {}
 class UpdateBalanceEV extends BalanceEvent {
   const UpdateBalanceEV({required this.difference});
 
-  final double difference;
+  final int difference;
 
   @override
   List<Object> get props => [difference];

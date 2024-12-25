@@ -1,13 +1,21 @@
 part of 'balance_bloc.dart';
 
 final class BalanceState extends Equatable {
-  const BalanceState({this.balance = 0});
+  const BalanceState({
+    this.balance = 0,
+    this.addedDifference = 0,
+  });
 
   final int balance;
+  final int addedDifference;
 
-  BalanceState copyWith({int? balance}) {
+  BalanceState copyWith({
+    int? balance,
+    int? addedDifference,
+  }) {
     return BalanceState(
       balance: balance ?? this.balance,
+      addedDifference: addedDifference ?? this.addedDifference,
     );
   }
 
@@ -16,5 +24,5 @@ final class BalanceState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [balance];
+  List<Object?> get props => [balance, addedDifference];
 }

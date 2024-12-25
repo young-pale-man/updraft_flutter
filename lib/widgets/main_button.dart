@@ -24,9 +24,11 @@ class MainButton extends StatefulWidget {
 }
 
 class _MainButtonState extends State<MainButton> with SingleTickerProviderStateMixin {
-  final double _buttonTobSideWidthCoef = 0.985;
-  final double _buttonMovementCoef = 0.007;
-  final double _topPaddingCoef = 0.004;
+  static const double _buttonHeightToWidthCoef = 0.19;
+  static const double _buttonTopSideWidthToWidthCoef = 0.985;
+  static const double _buttonTopSideHeightToWidthCoef = 0.152;
+  static const double _buttonMovementToWidthCoef = 0.007;
+  static const double _topPaddingToWidthCoef = 0.004;
 
   final _disabledFilter = ColorFilter.mode(
     AppColors.shadow.buttonDisabled,
@@ -63,16 +65,17 @@ class _MainButtonState extends State<MainButton> with SingleTickerProviderStateM
           children: [
             SizedBox(
               width: maxWidth,
+              height: maxWidth * _buttonHeightToWidthCoef,
               child: SvgPicture.asset(
                 Assets.mainButtonBase,
-                fit: BoxFit.fitWidth,
+                fit: BoxFit.cover,
                 colorFilter: disabled ? _disabledFilter : null,
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: maxWidth * _topPaddingCoef),
+              padding: EdgeInsets.only(top: maxWidth * _topPaddingToWidthCoef),
               child: Transform.translate(
-                offset: Offset(0, _animate.value * (maxWidth * _buttonMovementCoef)),
+                offset: Offset(0, _animate.value * (maxWidth * _buttonMovementToWidthCoef)),
                 child: GestureDetector(
                   onTap: disabled ? () {} : _onTap,
                   onTapDown: disabled ? (_) {} : _onTapDown,
@@ -82,12 +85,13 @@ class _MainButtonState extends State<MainButton> with SingleTickerProviderStateM
                     alignment: Alignment.center,
                     children: [
                       SizedBox(
-                        width: maxWidth * _buttonTobSideWidthCoef,
+                        width: maxWidth * _buttonTopSideWidthToWidthCoef,
+                        height: maxWidth * _buttonTopSideHeightToWidthCoef,
                         child: SvgPicture.asset(
                           _animate.value >= (_animate.upperBound * 0.5)
                               ? Assets.mainButtonBodyPressed
                               : Assets.mainButtonBodyDefault,
-                          fit: BoxFit.fitWidth,
+                          fit: BoxFit.cover,
                           colorFilter: disabled ? _disabledFilter : null,
                         ),
                       ),
@@ -113,9 +117,7 @@ class _MainButtonState extends State<MainButton> with SingleTickerProviderStateM
 
   void _onTap() async {
     _animate.forward();
-
     onTap?.call();
-
     Future.delayed(AppConst.bounceDuration, () {
       _animate.reverse();
     });
