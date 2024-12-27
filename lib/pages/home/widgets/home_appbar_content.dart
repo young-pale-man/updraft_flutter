@@ -30,7 +30,7 @@ class _HomeAppbarContentState extends State<HomeAppbarContent> {
                       BalanceBar(
                         balance: state.balance,
                       ),
-                      if (state.addedDifference != 0)
+                      if (state.addedDifference > 0)
                         Positioned(
                           bottom: scaledSize(35),
                           right: 16,

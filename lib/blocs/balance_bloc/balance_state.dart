@@ -6,12 +6,12 @@ final class BalanceState extends Equatable {
     this.addedDifference = 0,
   });
 
-  final int balance;
-  final int addedDifference;
+  final double balance;
+  final double addedDifference;
 
   BalanceState copyWith({
-    int? balance,
-    int? addedDifference,
+    double? balance,
+    double? addedDifference,
   }) {
     return BalanceState(
       balance: balance ?? this.balance,

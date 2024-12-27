@@ -14,11 +14,13 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
     required this.currentPage,
     this.content,
     this.menuButtonSize = 50,
+    this.beforeMenuOpens,
   });
 
   final NavigationMenuItems currentPage;
   final Widget? content;
   final double menuButtonSize;
+  final VoidCallback? beforeMenuOpens;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,10 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
             children: [
               MainIconButton(
                 height: scaledSize(menuButtonSize),
-                onPressed: () => _showNavigationMenu(context),
+                onPressed: () {
+                  _showNavigationMenu(context);
+                  beforeMenuOpens?.call();
+                },
                 icon: Assets.menu,
               ),
               if (content != null) ...[

@@ -10,6 +10,7 @@ class HomePickersLayout extends StatelessWidget {
     required this.autoMode,
     required this.autoModeCoef,
     required this.switchAutoMode,
+    required this.disabled,
   });
 
   final bool isPortrait;
@@ -17,6 +18,7 @@ class HomePickersLayout extends StatelessWidget {
   final bool autoMode;
   final ValueNotifier<double> autoModeCoef;
   final ValueChanged<bool> switchAutoMode;
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +28,14 @@ class HomePickersLayout extends StatelessWidget {
             children: [
               BetAmountPicker(
                 betAmount: betAmount,
-                disabled: false,
+                disabled: disabled,
               ),
               const SizedBox(height: 12),
               AutoModeDisplay(
                 autoMode: autoMode,
                 autoModeCoef: autoModeCoef,
                 switchAutoMode: switchAutoMode,
+                disabled: disabled,
               ),
             ],
           )
@@ -42,7 +45,7 @@ class HomePickersLayout extends StatelessWidget {
               Expanded(
                 child: BetAmountPicker(
                   betAmount: betAmount,
-                  disabled: false,
+                  disabled: disabled,
                 ),
               ),
               const SizedBox(width: 12),
@@ -51,6 +54,7 @@ class HomePickersLayout extends StatelessWidget {
                   autoMode: autoMode,
                   autoModeCoef: autoModeCoef,
                   switchAutoMode: switchAutoMode,
+                  disabled: !autoMode || disabled,
                 ),
               ),
             ],

@@ -1,4 +1,5 @@
 import 'package:updraft_flutter/blocs/balance_bloc/balance_bloc.dart';
+import 'package:updraft_flutter/blocs/game_bloc/game_bloc.dart';
 import 'package:updraft_flutter/pages/preloader/preloader_page.dart';
 import 'package:updraft_flutter/res/theme.dart';
 import 'package:updraft_flutter/utils/dependency_initializer.dart';
@@ -24,6 +25,10 @@ class Application extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => injector<BalanceBloc>(),
+        ),
+        BlocProvider(
+          lazy: true,
+          create: (context) => GameBloc(),
         ),
       ],
       child: MediaQuery(

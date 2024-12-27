@@ -2,13 +2,13 @@ import 'package:updraft_flutter/utils/constants.dart';
 import 'package:updraft_flutter/utils/dependency_initializer.dart';
 
 class BalanceStorage {
-  int getBalance() {
-    final balance = sharedPreferences.getInt(AppConst.balanceStorageKey);
+  double getBalance() {
+    final balance = sharedPreferences.getDouble(AppConst.balanceStorageKey);
 
     if (balance != null) {
       return balance;
     } else {
-      sharedPreferences.setInt(
+      sharedPreferences.setDouble(
         AppConst.balanceStorageKey,
         AppConst.defaultBalance,
       );
@@ -16,7 +16,7 @@ class BalanceStorage {
     }
   }
 
-  void updateBalance(int newBalance) {
-    sharedPreferences.setInt(AppConst.balanceStorageKey, newBalance);
+  void updateBalance(double newBalance) {
+    sharedPreferences.setDouble(AppConst.balanceStorageKey, newBalance);
   }
 }

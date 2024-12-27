@@ -12,7 +12,7 @@ class BalanceBar extends StatelessWidget {
     required this.balance,
   });
 
-  final int balance;
+  final double balance;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class BalanceBar extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  '$balance.00',
+                  balance.toStringAsFixed(2),
                   style: AppStyles.header.headerS.copyWith(color: AppColors.text.primary),
                 ),
               ),

@@ -14,11 +14,13 @@ class AutoModeDisplay extends StatelessWidget {
     required this.autoMode,
     required this.autoModeCoef,
     required this.switchAutoMode,
+    required this.disabled,
   });
 
   final bool autoMode;
   final ValueNotifier<double> autoModeCoef;
   final ValueChanged<bool> switchAutoMode;
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class AutoModeDisplay extends StatelessWidget {
                 fit: BoxFit.fitHeight,
                 child: CupertinoSwitch(
                   value: autoMode,
-                  onChanged: switchAutoMode,
+                  onChanged: disabled ? null : switchAutoMode,
                   trackColor: AppColors.main.layer4,
                   activeColor: AppColors.system.positive,
                   thumbColor: AppColors.main.background,
@@ -58,7 +60,7 @@ class AutoModeDisplay extends StatelessWidget {
                 valueListenable: autoModeCoef,
                 minValue: AppConst.minCoef,
                 maxValue: AppConst.maxCoef,
-                disabled: !autoMode,
+                disabled: disabled || !autoMode,
                 valueSuffix: 'x',
               ),
             ),
@@ -67,7 +69,7 @@ class AutoModeDisplay extends StatelessWidget {
               height: scaledSize(50),
               icon: Assets.reset,
               onPressed: _resetAutoModeCoef,
-              disabled: !autoMode,
+              disabled: disabled || !autoMode,
             ),
           ],
         ),

@@ -9,7 +9,7 @@ class BalanceIncreasedSnackbar extends StatelessWidget {
     required this.difference,
   });
 
-  final int difference;
+  final double difference;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class BalanceIncreasedSnackbar extends StatelessWidget {
         boxShadow: AppShadows.shadowOne,
       ),
       child: Text(
-        '$difference.00',
+        difference.toStringAsFixed(2),
         style: AppStyles.body.body1.copyWith(color: AppColors.text.primary),
       ),
     );

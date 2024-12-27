@@ -21,7 +21,7 @@ class PlaneDisplay extends StatelessWidget {
   final ValueNotifier currentCoef;
   final double coefDeadline;
   final bool timerDisplay;
-  final int timerValue;
+  final ValueNotifier<int> timerValue;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +43,7 @@ class PlaneDisplay extends StatelessWidget {
                 Assets.plane,
                 fit: BoxFit.cover,
                 onInit: onInit,
+                alignment: Alignment.centerLeft,
               ),
             ),
           ),
@@ -63,7 +64,10 @@ class PlaneDisplay extends StatelessWidget {
           ),
         if (timerDisplay)
           Center(
-            child: TimerDisplay(timerValue: timerValue),
+            child: ValueListenableBuilder(
+              valueListenable: timerValue,
+              builder: (_, __, ___) => TimerDisplay(timerValue: timerValue.value),
+            ),
           ),
       ],
     );

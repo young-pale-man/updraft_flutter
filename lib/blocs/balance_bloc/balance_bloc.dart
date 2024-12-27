@@ -26,8 +26,8 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
     UpdateBalanceEV event,
     Emitter<BalanceState> emit,
   ) async {
-    int userBalance = state.balance;
-    userBalance += event.difference.round();
+    double userBalance = state.balance;
+    userBalance += event.difference;
     _balanceStorage.updateBalance(userBalance);
     emit(state.copyWith(
       balance: userBalance,
