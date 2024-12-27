@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 class AppDialogs {
   AppDialogs._();
 
-  static Future<void> showMainDialog(
+  static Future<bool?> showMainDialog(
     BuildContext context, {
     required String title,
     required String content,
-    required String actionButtonTitle,
+    String? cancelIconTitle,
+    String? actionButtonTitle,
+    bool isActionDestructive = false,
   }) =>
       showDialog(
         context: context,
@@ -24,13 +26,23 @@ class AppDialogs {
             style: AppStyles.regular.regular13.copyWith(color: AppColors.regular.text),
           ),
           actions: [
-            CupertinoDialogAction(
-              child: Text(
-                actionButtonTitle,
-                style: AppStyles.regular.semiBold17.copyWith(color: AppColors.regular.action),
+            if (cancelIconTitle != null)
+              CupertinoDialogAction(
+                child: Text(
+                  cancelIconTitle,
+                  style: AppStyles.regular.regular17.copyWith(color: AppColors.regular.action),
+                ),
+                onPressed: () => Navigator.of(context).pop(false),
               ),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
+            if (actionButtonTitle != null)
+              CupertinoDialogAction(
+                child: Text(
+                  actionButtonTitle,
+                  style: AppStyles.regular.semiBold17.copyWith(
+                      color: isActionDestructive ? AppColors.regular.destructiveAction : AppColors.regular.action),
+                ),
+                onPressed: () => Navigator.of(context).pop(true),
+              ),
           ],
         ),
       );

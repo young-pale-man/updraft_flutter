@@ -35,7 +35,7 @@ dependencies:
   rive: 0.13.14
 
   # Settings
-  in_app_review: 2.0.6
+  
   share_plus: 7.0.2
   app_settings: 5.1.1
 

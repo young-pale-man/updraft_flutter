@@ -1,4 +1,4 @@
-import 'package:updraft_flutter/pages/home_page/home_page.dart';
+import 'package:updraft_flutter/pages/home/home_page.dart';
 import 'package:updraft_flutter/pages/preloader/preloader_page.dart';
 import 'package:updraft_flutter/pages/settings/settings_page.dart';
 import 'package:updraft_flutter/pages/statistics/statistics_page.dart';

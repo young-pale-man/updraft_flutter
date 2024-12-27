@@ -41,7 +41,7 @@ class NavigationMenu extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 MainIconButton(
-                  size: scaledSize(50),
+                  height: scaledSize(50),
                   onPressed: () => Navigator.of(context).pop(),
                   icon: Assets.close,
                 ),

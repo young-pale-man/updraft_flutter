@@ -7,15 +7,19 @@ import 'package:flutter_svg/svg.dart';
 class MainIconButton extends StatefulWidget {
   const MainIconButton({
     super.key,
-    required this.size,
+    required this.height,
     this.icon,
     this.onPressed,
+    this.onTapDown,
+    this.onRelease,
     this.disabled = false,
   });
 
-  final double size;
+  final double height;
   final String? icon;
   final VoidCallback? onPressed;
+  final VoidCallback? onTapDown;
+  final VoidCallback? onRelease;
   final bool disabled;
 
   @override
@@ -28,17 +32,19 @@ class _MainIconButtonState extends State<MainIconButton> with SingleTickerProvid
     BlendMode.srcATop,
   );
 
-  late final double _buttonHeight = widget.size;
-  late final double _buttonWidth = widget.size * 0.96;
-  late final double _buttonTopSideHeight = widget.size * 0.815;
-  late final double _buttonTopSideWidth = widget.size * 0.87;
-  late final double _buttonMoveHeight = widget.size * 0.05;
-  late final double _buttonTopPadding = widget.size * 0.015;
-  late final double _iconSize = widget.size * 0.64;
+  late final double _buttonHeight = widget.height;
+  late final double _buttonWidth = widget.height * 0.96;
+  late final double _buttonTopSideHeight = widget.height * 0.815;
+  late final double _buttonTopSideWidth = widget.height * 0.87;
+  late final double _buttonMoveHeight = widget.height * 0.05;
+  late final double _buttonTopPadding = widget.height * 0.015;
+  late final double _iconSize = widget.height * 0.64;
 
   late AnimationController _animate;
 
-  VoidCallback? get onTap => widget.onPressed;
+  VoidCallback? get onPressed => widget.onPressed;
+  VoidCallback? get onTapDown => widget.onTapDown;
+  VoidCallback? get onRelease => widget.onRelease;
   String? get icon => widget.icon;
   bool get disabled => widget.disabled;
 
@@ -110,7 +116,7 @@ class _MainIconButtonState extends State<MainIconButton> with SingleTickerProvid
   void _onTap() async {
     _animate.forward();
 
-    onTap?.call();
+    onPressed?.call();
 
     Future.delayed(AppConst.bounceDuration, () {
       _animate.reverse();
@@ -118,10 +124,12 @@ class _MainIconButtonState extends State<MainIconButton> with SingleTickerProvid
   }
 
   void _onTapDown(_) async {
+    onTapDown?.call();
     _animate.forward();
   }
 
   void _onTapCancel() async {
+    onRelease?.call();
     _animate.reverse();
   }
 
