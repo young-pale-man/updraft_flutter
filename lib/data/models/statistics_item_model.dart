@@ -38,10 +38,10 @@ class StatisticsItemModel {
   void fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
     date = DateTime.tryParse(json['date'] ?? '');
-    bet = double.tryParse(json['bet']);
-    coef = double.tryParse(json['coef']);
-    result = double.tryParse(json['result']);
-    isWin = bool.tryParse(json['isWin']);
+    bet = json['bet'] as double;
+    coef = json['coef'] as double;
+    result = json['result'] as double;
+    isWin = json['isWin'] as bool;
   }
 
   Map<String, dynamic> toJson() {
