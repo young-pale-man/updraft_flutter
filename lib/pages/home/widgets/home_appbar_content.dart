@@ -13,6 +13,8 @@ class HomeAppbarContent extends StatefulWidget {
 }
 
 class _HomeAppbarContentState extends State<HomeAppbarContent> {
+  bool _balanceIncreased = false;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -22,7 +24,12 @@ class _HomeAppbarContentState extends State<HomeAppbarContent> {
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 900),
-              child: BlocBuilder<BalanceBloc, BalanceState>(
+              child: BlocConsumer<BalanceBloc, BalanceState>(
+                listener: (context, state) {
+                  if (state.addedDifference > 0) {
+                    _showBalanceIncreasedSnackbar();
+                  }
+                },
                 builder: (context, state) {
                   return Stack(
                     clipBehavior: Clip.none,
@@ -30,7 +37,7 @@ class _HomeAppbarContentState extends State<HomeAppbarContent> {
                       BalanceBar(
                         balance: state.balance,
                       ),
-                      if (state.addedDifference > 0)
+                      if (_balanceIncreased)
                         Positioned(
                           bottom: scaledSize(35),
                           right: 16,
@@ -45,6 +52,12 @@ class _HomeAppbarContentState extends State<HomeAppbarContent> {
         ),
       ],
     );
+  }
+
+  void _showBalanceIncreasedSnackbar() async {
+    setState(() => _balanceIncreased = true);
+    await Future.delayed(const Duration(seconds: 3));
+    setState(() => _balanceIncreased = false);
   }
 
 }

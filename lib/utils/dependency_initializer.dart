@@ -1,4 +1,5 @@
 import 'package:updraft_flutter/blocs/balance_bloc/balance_bloc.dart';
+import 'package:updraft_flutter/blocs/statistics_bloc/statistics_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,5 +13,6 @@ class DependencyInitializer {
     sharedPreferences = await SharedPreferences.getInstance();
 
     injector.registerSingleton(BalanceBloc());
+    injector.registerSingleton(StatisticsBloc());
   }
 }

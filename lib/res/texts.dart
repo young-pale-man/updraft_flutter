@@ -24,4 +24,17 @@ class AppTexts {
   static const String flewAway = 'Flew away!';
   static const String newRoundStartsIn = 'New round starts in:';
   static const String cashOut = 'Cash out';
+
+  //Statistics
+  static const String allTime = 'All time';
+  static const String today = 'Today';
+  static const String lastWeek = 'Last week';
+  static const String lastMonth = 'Last month';
+
+  static const String wins = 'Wins';
+  static const String loses = 'Loses';
+  static const String bet = 'Bet';
+
+  static const String thereAreNoStatisticsAtThisMoment =
+      'There are no statistics at this moment. Start playing and check back later...';
 }

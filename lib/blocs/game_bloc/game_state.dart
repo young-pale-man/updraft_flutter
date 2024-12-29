@@ -17,10 +17,6 @@ final class InGameST extends GameState {
   final double deadline;
 }
 
-final class CashOutST extends GameState {
-  const CashOutST({required this.winAmount});
-
-  final double winAmount;
-}
+final class CashOutST extends GameState {}
 
 final class GameFinishedST extends GameState {}

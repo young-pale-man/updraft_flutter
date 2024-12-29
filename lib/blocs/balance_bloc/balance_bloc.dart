@@ -33,7 +33,5 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
       balance: userBalance,
       addedDifference: event.difference,
     ));
-    await Future.delayed(const Duration(seconds: 3));
-    emit(state.copyWith(addedDifference: 0));
   }
 }

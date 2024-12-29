@@ -9,8 +9,8 @@ class AppConst {
 
   //Game
   static const String animationStateMachine = 'State Machine 1';
-  static const String startAnimationTrigger = 'Trigger 1';
-  static const String loseAnimationTrigger = 'Trigger 2';
+  static const String startAnimationTrigger = 'Start';
+  static const String loseAnimationTrigger = 'Finish';
 
   static const double defaultBalance = 1000;
   static const double minBetAmount = 1.0;
@@ -18,9 +18,12 @@ class AppConst {
   static const double minCoef = 1.1;
   static const double maxCoef = 15.0;
   static const double valuePickerStep = 0.1;
+  static const double coefIncreasingStep = 0.1;
 
   static const int startTimerSeconds = 3;
 
-  static const increasingValueDelay = Duration(milliseconds: 300);
+  static const startGameDelay = Duration(seconds: 2);
+  static const finishGameDelay = Duration(milliseconds: 1500);
+  static const increasingValueDelay = Duration(milliseconds: 250);
   static const increasingValueFastDelay = Duration(milliseconds: 100);
 }

@@ -23,4 +23,11 @@ class Assets {
   static const String reset = 'assets/icons/reset.svg';
 
   static const String plane = 'assets/animations/plane.riv';
+
+  //Statistics
+  static const String arrowLeft = 'assets/icons/arrow_left.svg';
+  static const String arrowRight = 'assets/icons/arrow_right.svg';
+
+  static const String statisticsWin = 'assets/icons/statistics_win.svg';
+  static const String statisticsLose = 'assets/icons/statistics_lose.svg';
 }
