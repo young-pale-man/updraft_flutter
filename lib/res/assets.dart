@@ -30,4 +30,12 @@ class Assets {
 
   static const String statisticsWin = 'assets/icons/statistics_win.svg';
   static const String statisticsLose = 'assets/icons/statistics_lose.svg';
+
+  //Settings
+  static const String notifications = 'assets/icons/notifications.svg';
+  static const String privacyPolicy = 'assets/icons/privacy_policy.svg';
+  static const String termsOfUse = 'assets/icons/terms_of_use.svg';
+  static const String rateUs = 'assets/icons/rate_us.svg';
+  static const String shareThisApp = 'assets/icons/share_this_app.svg';
+  static const String clear = 'assets/icons/clear.svg';
 }

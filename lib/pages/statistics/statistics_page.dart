@@ -41,40 +41,45 @@ class _StatisticsPageState extends BasePageState<StatisticsPage> {
     final statBySelectedParameter = _filterStatisticsByParameter();
     final statGrouped = _groupItemsByDates(statBySelectedParameter).entries.toList();
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        children: [
-          StatisticsCard(
-            selectedParameter: _selectedParameter,
-            changeParameter: _changeParameter,
-            statistics: statBySelectedParameter,
-          ),
-          const SizedBox(height: 16),
-          statGrouped.isEmpty
-              ? Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 64),
-                    Text(
-                      AppTexts.thereAreNoStatisticsAtThisMoment,
-                      style: AppStyles.body.body2.copyWith(color: AppColors.text.secondary),
-                      textAlign: TextAlign.center,
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 900),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              StatisticsCard(
+                selectedParameter: _selectedParameter,
+                changeParameter: _changeParameter,
+                statistics: statBySelectedParameter,
+              ),
+              const SizedBox(height: 16),
+              statGrouped.isEmpty
+                  ? Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(height: 64),
+                        Text(
+                          AppTexts.thereAreNoStatisticsAtThisMoment,
+                          style: AppStyles.body.body2.copyWith(color: AppColors.text.secondary),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
                     )
-                  ],
-                )
-              : Expanded(
-                  child: ListView.separated(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    itemCount: statGrouped.length,
-                    itemBuilder: (context, index) => StatisticsDayGroup(
-                      date: statGrouped[index].key,
-                      dayGroup: statGrouped[index].value,
+                  : Expanded(
+                      child: ListView.separated(
+                        padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom + 16),
+                        itemCount: statGrouped.length,
+                        itemBuilder: (context, index) => StatisticsDayGroup(
+                          date: statGrouped[index].key,
+                          dayGroup: statGrouped[index].value,
+                        ),
+                        separatorBuilder: (_, __) => const SizedBox(height: 20),
+                      ),
                     ),
-                    separatorBuilder: (_, __) => const SizedBox(height: 20),
-                  ),
-                ),
-        ],
+            ],
+          ),
+        ),
       ),
     );
   }

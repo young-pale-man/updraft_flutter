@@ -36,9 +36,9 @@ dependencies:
   rive: 0.13.14
 
   # Settings
-  
   share_plus: 7.0.2
   app_settings: 5.1.1
+  in_app_review: 2.0.10
 
 dev_dependencies:
   flutter_test:
@@ -51,7 +51,6 @@ flutter:
 
   assets:
     - assets/icons/
-    - assets/images/
     - assets/animations/
 
   fonts:

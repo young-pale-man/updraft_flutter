@@ -17,3 +17,5 @@ class UpdateStatisticsEV extends StatisticsEvent {
   @override
   List<Object> get props => [statisticsItem];
 }
+
+class ClearStatisticsEV extends StatisticsEvent {}

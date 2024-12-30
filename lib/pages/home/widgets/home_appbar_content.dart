@@ -57,7 +57,9 @@ class _HomeAppbarContentState extends State<HomeAppbarContent> {
   void _showBalanceIncreasedSnackbar() async {
     setState(() => _balanceIncreased = true);
     await Future.delayed(const Duration(seconds: 3));
-    setState(() => _balanceIncreased = false);
+    if (mounted) {
+      setState(() => _balanceIncreased = false);
+    }
   }
 
 }
