@@ -34,9 +34,9 @@ class _PreloaderPageState extends BasePageState<PreloaderPage> {
         children: [
           Padding(
             padding: EdgeInsets.only(bottom: 160 - MediaQuery.paddingOf(context).bottom),
-            child: SpinKitCircle(
+            child: SpinKitRing(
               color: AppColors.accent.primary1,
-              size: scaledSize(59),
+              size: scaledSize(49),
             ),
           ),
         ],

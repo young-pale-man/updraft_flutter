@@ -23,7 +23,9 @@ class CoefDisplay extends StatelessWidget {
       children: [
         Text(
           '${currentCoef.toStringAsFixed(1)}x',
-          style: AppStyles.header.headerL.copyWith(color: isMax ? AppColors.system.negative : AppColors.text.primary),
+          style: AppStyles.header.headerL.copyWith(
+            color: isMax ? AppColors.system.negative : AppColors.text.primary,
+          ),
         ),
         Text(
           isMax ? AppTexts.flewAway : AppTexts.currentCoefficient,

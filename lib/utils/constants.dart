@@ -7,7 +7,7 @@ class AppConst {
   static const balanceStorageKey = 'balanceKey';
   static const statisticsStorageKey = 'statisticsKey';
 
-  //Game
+  //Home
   static const String animationStateMachine = 'State Machine 1';
   static const String startAnimationTrigger = 'Start';
   static const String loseAnimationTrigger = 'Finish';

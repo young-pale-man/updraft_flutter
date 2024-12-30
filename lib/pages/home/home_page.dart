@@ -222,10 +222,12 @@ class _HomePageState extends BasePageState<HomePage> {
   void _autoCashOut() {
     final gameBloc = context.read<GameBloc>();
     if (_autoMode && _autoModeCoef.value <= _currentCoef.value && gameBloc.state is! CashOutST && mounted) {
-      gameBloc.add(CashOutEV(
-        bet: _betAmount.value,
-        coef: _currentCoef.value,
-      ));
+      gameBloc.add(
+        CashOutEV(
+          bet: _betAmount.value,
+          coef: _currentCoef.value,
+        ),
+      );
     }
   }
 

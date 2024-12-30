@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:updraft_flutter/res/assets.dart';
 import 'package:updraft_flutter/res/colors.dart';
 import 'package:updraft_flutter/res/styles.dart';
@@ -63,8 +62,9 @@ class _ValuePickerState extends State<ValuePicker> {
                   fit: BoxFit.scaleDown,
                   child: Text(
                     '${widget.valueListenable.value.toStringAsFixed(1)}${widget.valueSuffix}',
-                    style: AppStyles.header.headerS
-                        .copyWith(color: widget.disabled ? AppColors.tertiary.tertiary1 : AppColors.text.primary),
+                    style: AppStyles.header.headerS.copyWith(
+                      color: widget.disabled ? AppColors.tertiary.tertiary1 : AppColors.text.primary,
+                    ),
                   ),
                 ),
               ),
@@ -95,9 +95,7 @@ class _ValuePickerState extends State<ValuePicker> {
       const Duration(milliseconds: 150),
       (timer) {
         elapsedTicks++;
-
         step = 0.1 + (elapsedTicks * 0.1).clamp(0.1, 0.7);
-
         _updateValue(direction, step);
       },
     );

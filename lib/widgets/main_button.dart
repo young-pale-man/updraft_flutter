@@ -25,7 +25,7 @@ class MainButton extends StatefulWidget {
 
 class _MainButtonState extends State<MainButton> with SingleTickerProviderStateMixin {
   static const double _buttonHeightToWidthCoef = 0.19;
-  static const double _buttonTopSideWidthToWidthCoef = 0.985;
+  static const double _buttonTopSideWidthToWidthCoef = 0.987;
   static const double _buttonTopSideHeightToWidthCoef = 0.152;
   static const double _buttonMovementToWidthCoef = 0.007;
   static const double _topPaddingToWidthCoef = 0.005;
@@ -70,6 +70,7 @@ class _MainButtonState extends State<MainButton> with SingleTickerProviderStateM
                 Assets.mainButtonBase,
                 fit: BoxFit.cover,
                 colorFilter: disabled ? _disabledFilter : null,
+                clipBehavior: Clip.none,
               ),
             ),
             Padding(

@@ -30,7 +30,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     StartGameEV event,
     Emitter<GameState> emit,
   ) async {
-    final double deadline = 1.0 + (Random().nextDouble() * (AppConst.maxCoef - 1));
+    final double deadline = AppConst.minCoef + (Random().nextDouble() * (AppConst.maxCoef - AppConst.minCoef));
 
     balance.add(UpdateBalanceEV(difference: -event.bet));
     emit(InGameST(deadline: deadline));

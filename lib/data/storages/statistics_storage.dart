@@ -13,8 +13,8 @@ class StatisticsStorage {
     if (statisticsJsonString != null) {
       final statisticsJson = jsonDecode(statisticsJsonString) as List? ?? [];
 
-      for (var entity in statisticsJson) {
-        final statisticsItem = StatisticsItemModel()..fromJson(entity);
+      for (var item in statisticsJson) {
+        final statisticsItem = StatisticsItemModel()..fromJson(item);
         statisticsItemsList.add(statisticsItem);
       }
     }
@@ -24,7 +24,7 @@ class StatisticsStorage {
   void saveStatistics(List<StatisticsItemModel> statisticsItemsList) {
     sharedPreferences.setString(
       AppConst.statisticsStorageKey,
-      jsonEncode(statisticsItemsList.map((e) => e.toJson()).toList()),
+      jsonEncode(statisticsItemsList.map((item) => item.toJson()).toList()),
     );
   }
 
