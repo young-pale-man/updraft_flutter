@@ -54,7 +54,7 @@ class HomePickersLayout extends StatelessWidget {
                   autoMode: autoMode,
                   autoModeCoef: autoModeCoef,
                   switchAutoMode: switchAutoMode,
-                  disabled: !autoMode || disabled,
+                  disabled: disabled,
                 ),
               ),
             ],

@@ -21,8 +21,14 @@ class StatisticsStorage {
     return statisticsItemsList;
   }
 
-  void saveStatistics(List<StatisticsItemModel> statisticsItemsList) => sharedPreferences.setString(
-        AppConst.statisticsStorageKey,
-        jsonEncode(statisticsItemsList.map((e) => e.toJson()).toList()),
-      );
+  void saveStatistics(List<StatisticsItemModel> statisticsItemsList) {
+    sharedPreferences.setString(
+      AppConst.statisticsStorageKey,
+      jsonEncode(statisticsItemsList.map((e) => e.toJson()).toList()),
+    );
+  }
+
+  void clearStatistics() {
+    sharedPreferences.remove(AppConst.statisticsStorageKey);
+  }
 }

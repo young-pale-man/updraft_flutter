@@ -7,4 +7,6 @@ class StatisticsProvider {
   List<StatisticsItemModel> getStatistics() => storage.getStatistics();
 
   void saveStatistics(List<StatisticsItemModel> statisticsItemsList) => storage.saveStatistics(statisticsItemsList);
+
+  void clearStatistics() => storage.clearStatistics();
 }

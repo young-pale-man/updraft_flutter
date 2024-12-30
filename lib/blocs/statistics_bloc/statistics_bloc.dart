@@ -10,6 +10,7 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
   StatisticsBloc() : super(StatisticsState.initial()) {
     on<InitializeStatisticsEV>(_initializeStatistics);
     on<UpdateStatisticsEV>(_updateStatistics);
+    on<ClearStatisticsEV>(_clearStatistics);
     _initialize();
   }
 
@@ -36,5 +37,13 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
 
     _statisticsStorage.saveStatistics(statisticsItemsList);
     emit(state.copyWith(statisticsItemsList: statisticsItemsList));
+  }
+
+  Future<void> _clearStatistics(
+    ClearStatisticsEV event,
+    Emitter<StatisticsState> emit,
+  ) async {
+    _statisticsStorage.clearStatistics();
+    emit(state.copyWith(statisticsItemsList: []));
   }
 }

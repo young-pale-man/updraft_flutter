@@ -206,7 +206,9 @@ class _HomePageState extends BasePageState<HomePage> {
           loseTrigger?.value = true;
           timer.cancel();
           _gameTimer = null;
-          setState(() => _buttonActive = false);
+          if (mounted) {
+            setState(() => _buttonActive = false);
+          }
 
           Future.delayed(AppConst.finishGameDelay, () {
             if (mounted) {
