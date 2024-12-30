@@ -12,7 +12,7 @@ class AppConst {
   static const String startAnimationTrigger = 'Start';
   static const String loseAnimationTrigger = 'Finish';
 
-  static const double defaultBalance = 1000;
+  static const double defaultBalance = 500.0;
   static const double minBetAmount = 1.0;
   static const double maxBetAmount = 25.0;
   static const double minCoef = 1.1;

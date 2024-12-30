@@ -126,6 +126,7 @@ class _HomePageState extends BasePageState<HomePage> {
   @override
   void dispose() {
     _startTimer?.cancel();
+    _gameTimer?.cancel();
     super.dispose();
   }
 
@@ -134,7 +135,11 @@ class _HomePageState extends BasePageState<HomePage> {
   void _mainButtonAction() {
     final bloc = context.read<GameBloc>();
     if (bloc.state is BetST) {
-      bloc.add(StartCountDownEV());
+      if (injector<BalanceBloc>().state.balance < _betAmount.value) {
+        _outOfCoins();
+      } else {
+        bloc.add(StartCountDownEV());
+      }
     } else if (bloc.state is CountDownST) {
       bloc.add(BetEV());
     } else if (bloc.state is InGameST) {
@@ -161,67 +166,62 @@ class _HomePageState extends BasePageState<HomePage> {
   }
 
   void _startCountdown() async {
-    final balanceBloc = injector<BalanceBloc>();
-
-    if (balanceBloc.state.balance < _betAmount.value) {
-      _outOfCoins();
-    } else {
-      _startTimer?.cancel();
-      _timerValue.value = 3;
-      _startTimer = Timer.periodic(
-        const Duration(seconds: 1),
-        (timer) {
-          if (_timerValue.value > 1) {
-            _timerValue.value -= 1;
-          } else {
-            timer.cancel();
-            context.read<GameBloc>().add(StartGameEV(bet: _betAmount.value));
-          }
-        },
-      );
-    }
+    _startTimer?.cancel();
+    _timerValue.value = 3;
+    _startTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (timer) {
+        if (_timerValue.value > 1) {
+          _timerValue.value -= 1;
+        } else {
+          timer.cancel();
+          context.read<GameBloc>().add(StartGameEV(bet: _betAmount.value));
+        }
+      },
+    );
   }
 
   void _runGame(double deadline) async {
-    if (_gameTimer != null) return;
-
     final gameBloc = context.read<GameBloc>();
     _currentCoef.value = AppConst.minCoef;
 
     if (_controller != null && _controller?.artboard != null) {
       startTrigger?.value = true;
       await Future.delayed(AppConst.startGameDelay);
+
       _autoCashOut();
 
-      _gameTimer = Timer.periodic(AppConst.increasingValueDelay, (timer) {
-        if (_currentCoef.value < deadline) {
-          _currentCoef.value += AppConst.coefIncreasingStep;
-          _autoCashOut();
-        } else {
-          loseTrigger?.value = true;
-          timer.cancel();
-          _gameTimer = null;
-          if (mounted) {
-            setState(() => _buttonActive = false);
-          }
-
-          Future.delayed(AppConst.finishGameDelay, () {
+      if (gameBloc.state is InGameST) {
+        _gameTimer = Timer.periodic(AppConst.increasingValueDelay, (timer) {
+          if (_currentCoef.value < deadline) {
+            _currentCoef.value += AppConst.coefIncreasingStep;
+            _autoCashOut();
+          } else {
+            loseTrigger?.value = true;
+            timer.cancel();
+            _gameTimer = null;
             if (mounted) {
-              gameBloc.add(FinishGameEV(
-                bet: _betAmount.value,
-                coef: _currentCoef.value,
-              ));
-              onAnimationInit(_controller!.artboard!);
+              setState(() => _buttonActive = false);
             }
-          });
-        }
-      });
+
+            Future.delayed(AppConst.finishGameDelay, () {
+              if (mounted) {
+                gameBloc.add(FinishGameEV(
+                  bet: _betAmount.value,
+                  coef: _currentCoef.value,
+                ));
+                onAnimationInit(_controller!.artboard!);
+              }
+            });
+          }
+        });
+      }
     }
   }
 
   void _autoCashOut() {
     final gameBloc = context.read<GameBloc>();
-    if (_autoMode && _autoModeCoef.value <= _currentCoef.value && gameBloc.state is! CashOutST && mounted) {
+    if (_autoMode && _autoModeCoef.value <= _currentCoef.value && gameBloc.state is InGameST && mounted) {
       gameBloc.add(
         CashOutEV(
           bet: _betAmount.value,
