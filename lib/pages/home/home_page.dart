@@ -191,17 +191,12 @@ class _HomePageState extends BasePageState<HomePage> {
     if (_controller != null && _controller?.artboard != null) {
       startTrigger?.value = true;
       await Future.delayed(AppConst.startGameDelay);
+      _autoCashOut();
 
       _gameTimer = Timer.periodic(AppConst.increasingValueDelay, (timer) {
         if (_currentCoef.value < deadline) {
           _currentCoef.value += AppConst.coefIncreasingStep;
-
-          if (_autoMode && _autoModeCoef.value <= _currentCoef.value && gameBloc.state is! CashOutST && mounted) {
-            gameBloc.add(CashOutEV(
-              bet: _betAmount.value,
-              coef: _currentCoef.value,
-            ));
-          }
+          _autoCashOut();
         } else {
           loseTrigger?.value = true;
           timer.cancel();
@@ -221,6 +216,16 @@ class _HomePageState extends BasePageState<HomePage> {
           });
         }
       });
+    }
+  }
+
+  void _autoCashOut() {
+    final gameBloc = context.read<GameBloc>();
+    if (_autoMode && _autoModeCoef.value <= _currentCoef.value && gameBloc.state is! CashOutST && mounted) {
+      gameBloc.add(CashOutEV(
+        bet: _betAmount.value,
+        coef: _currentCoef.value,
+      ));
     }
   }
 
