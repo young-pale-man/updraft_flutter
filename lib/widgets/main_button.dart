@@ -28,7 +28,7 @@ class _MainButtonState extends State<MainButton> with SingleTickerProviderStateM
   static const double _buttonTopSideWidthToWidthCoef = 0.985;
   static const double _buttonTopSideHeightToWidthCoef = 0.152;
   static const double _buttonMovementToWidthCoef = 0.007;
-  static const double _topPaddingToWidthCoef = 0.004;
+  static const double _topPaddingToWidthCoef = 0.005;
 
   final _disabledFilter = ColorFilter.mode(
     AppColors.shadow.buttonDisabled,

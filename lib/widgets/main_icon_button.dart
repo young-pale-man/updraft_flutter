@@ -35,7 +35,7 @@ class _MainIconButtonState extends State<MainIconButton> with SingleTickerProvid
   late final double _buttonHeight = widget.height;
   late final double _buttonWidth = widget.height * 0.96;
   late final double _buttonTopSideHeight = widget.height * 0.815;
-  late final double _buttonTopSideWidth = widget.height * 0.87;
+  late final double _buttonTopSideWidth = widget.height * 0.876;
   late final double _buttonMoveHeight = widget.height * 0.05;
   late final double _buttonTopPadding = widget.height * 0.015;
   late final double _iconSize = widget.height * 0.64;
