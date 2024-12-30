@@ -63,6 +63,7 @@ class _HomePageState extends BasePageState<HomePage> {
   @override
   Widget pageBuilder(BuildContext context) {
     final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return BlocConsumer<GameBloc, GameState>(
       listener: _gameStateListener,
@@ -76,8 +77,8 @@ class _HomePageState extends BasePageState<HomePage> {
               Expanded(
                 child: Center(
                   child: ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      maxHeight: 580,
+                    constraints: BoxConstraints(
+                      maxHeight: screenWidth < 580 ? screenWidth : 580,
                       maxWidth: 900,
                     ),
                     child: PlaneDisplay(

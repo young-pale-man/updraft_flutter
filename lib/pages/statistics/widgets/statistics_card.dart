@@ -35,9 +35,12 @@ class StatisticsCard extends StatelessWidget {
             changeParameter: changeParameter,
           ),
           const SizedBox(height: 26),
-          StatisticsChart(
-            winPercentage: winPercentage,
-            losePercentage: statistics.isEmpty ? 0 : 100 - winPercentage,
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: StatisticsChart(
+              winPercentage: winPercentage,
+              losePercentage: statistics.isEmpty ? 0 : 100 - winPercentage,
+            ),
           ),
         ],
       ),
