@@ -12,7 +12,7 @@ class AppTexts {
   static const String cancel = 'Cancel';
   static const String outOfCoins = 'Out of coins?';
   static const String youDontHaveEnoughCoins =
-      'You don\'t have enough coins on your balance to place a bet. ';
+      'You don\'t have enough coins on your balance to play.';
 
   static const String roundEntry = 'Round entry';
   static const String autoMode = 'Auto mode';

@@ -9,16 +9,18 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
   BalanceBloc() : super(BalanceState.initial()) {
     on<InitializeBalanceEV>(_initializeBalance);
     on<UpdateBalanceEV>(_updateBalance);
+    _initialize();
   }
 
   final _balanceStorage = ProviderInjector.instance.balanceProvider;
+
+  _initialize() => add(InitializeBalanceEV());
 
   Future<void> _initializeBalance(
     InitializeBalanceEV event,
     Emitter<BalanceState> emit,
   ) async {
     final userBalance = _balanceStorage.getBalance();
-    await Future.delayed(const Duration(seconds: 2));
     emit(state.copyWith(balance: userBalance));
   }
 
