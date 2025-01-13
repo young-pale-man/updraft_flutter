@@ -14,7 +14,7 @@ class AppTexts {
   static const String youDontHaveEnoughCoins =
       'You don\'t have enough coins on your balance to place a bet. ';
 
-  static const String betAmount = 'Bet amount';
+  static const String roundEntry = 'Round entry';
   static const String autoMode = 'Auto mode';
   static const String play = 'Play';
 
@@ -23,7 +23,7 @@ class AppTexts {
   static const String currentCoefficient = 'Current coefficient';
   static const String flewAway = 'Flew away!';
   static const String newRoundStartsIn = 'New round starts in:';
-  static const String cashOut = 'Cash out';
+  static const String stop = 'Stop';
 
   //Statistics
   static const String allTime = 'All time';
@@ -33,7 +33,6 @@ class AppTexts {
 
   static const String wins = 'Wins';
   static const String loses = 'Loses';
-  static const String bet = 'Bet';
 
   static const String thereAreNoStatisticsAtThisMoment =
       'There are no statistics at this moment. Start playing and check back later...';

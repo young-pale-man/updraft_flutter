@@ -2,7 +2,6 @@ import 'package:updraft_flutter/data/models/statistics_item_model.dart';
 import 'package:updraft_flutter/res/assets.dart';
 import 'package:updraft_flutter/res/colors.dart';
 import 'package:updraft_flutter/res/styles.dart';
-import 'package:updraft_flutter/res/texts.dart';
 import 'package:updraft_flutter/utils/extensions/date_format_ext.dart';
 import 'package:updraft_flutter/utils/scaled_size.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,7 +42,7 @@ class StatisticsItemTile extends StatelessWidget {
           ),
           const SizedBox(width: 6),
           Text(
-            '${AppTexts.bet}: ${statisticsItem.bet?.toStringAsFixed(1) ?? ''}',
+            statisticsItem.bet?.toStringAsFixed(1) ?? '',
             style: AppStyles.body.body2.copyWith(color: AppColors.text.primary),
           ),
           const SizedBox(width: 6),

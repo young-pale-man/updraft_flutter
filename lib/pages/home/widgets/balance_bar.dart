@@ -1,10 +1,7 @@
-import 'package:updraft_flutter/res/assets.dart';
 import 'package:updraft_flutter/res/colors.dart';
 import 'package:updraft_flutter/res/styles.dart';
 import 'package:updraft_flutter/utils/device_info.dart';
-import 'package:updraft_flutter/utils/scaled_size.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
 
 class BalanceBar extends StatelessWidget {
   const BalanceBar({
@@ -28,12 +25,6 @@ class BalanceBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          SvgPicture.asset(
-            Assets.coins,
-            height: scaledSize(32),
-            width: scaledSize(32),
-          ),
-          const SizedBox(width: 8),
           Expanded(
             child: Align(
               alignment: Alignment.centerRight,

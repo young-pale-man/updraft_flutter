@@ -110,7 +110,7 @@ class _HomePageState extends BasePageState<HomePage> {
                         ? AppTexts.cancel
                         : state is BetST
                             ? AppTexts.play
-                            : AppTexts.cashOut,
+                            : AppTexts.stop,
                     onPressed: _mainButtonAction,
                     disabled: state is CashOutST || !_buttonActive,
                   ),

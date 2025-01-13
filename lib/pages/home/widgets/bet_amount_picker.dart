@@ -23,7 +23,7 @@ class BetAmountPicker extends StatelessWidget {
       children: [
         SizedBox(
           child: Text(
-            AppTexts.betAmount,
+            AppTexts.roundEntry,
             style: AppStyles.body.body1.copyWith(color: AppColors.text.primary),
           ),
         ),
