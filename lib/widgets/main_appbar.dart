@@ -7,18 +7,12 @@ import 'package:updraft_flutter/widgets/navigation_menu/navigation_menu.dart';
 import 'package:flutter/material.dart';
 
 class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
-  const MainAppbar({
-    super.key,
-    required this.currentPage,
-    this.content,
-    this.menuButtonSize = 50,
-    this.beforeMenuOpens,
-  });
+  const MainAppbar({super.key, required this.currentPage, this.content, this.menuButtonSize = 50, this.canOpenMenu});
 
   final NavigationMenuItems currentPage;
   final Widget? content;
   final double menuButtonSize;
-  final VoidCallback? beforeMenuOpens;
+  final Future<bool> Function()? canOpenMenu;
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +25,10 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
             children: [
               MainIconButton(
                 height: menuButtonSize,
-                onPressed: () {
-                  _showNavigationMenu(context);
-                  beforeMenuOpens?.call();
+                onPressed: () async {
+                  if (await canOpenMenu?.call() ?? true) {
+                    if (context.mounted) await _showNavigationMenu(context);
+                  }
                 },
                 icon: Assets.menu,
               ),
@@ -58,7 +53,7 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  void _showNavigationMenu(BuildContext context) async {
+  Future<void> _showNavigationMenu(BuildContext context) async {
     await Navigator.of(context).push(
       PageRouteBuilder(
         opaque: false,

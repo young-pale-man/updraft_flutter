@@ -1,5 +1,5 @@
 import 'package:updraft_flutter/blocs/balance_bloc/balance_bloc.dart';
-import 'package:updraft_flutter/blocs/game_bloc/game_bloc.dart';
+import 'package:updraft_flutter/blocs/round_bloc/round_bloc.dart';
 import 'package:updraft_flutter/blocs/statistics_bloc/statistics_bloc.dart';
 import 'package:updraft_flutter/pages/preloader/preloader_page.dart';
 import 'package:updraft_flutter/res/theme.dart';
@@ -34,10 +34,11 @@ class _ApplicationState extends State<Application> {
         BlocProvider(create: (context) => BalanceBloc(storage: dependencies.balanceStorage)),
         BlocProvider(create: (context) => StatisticsBloc(storage: dependencies.roundsStorage)),
         BlocProvider(
-          create: (context) => GameBloc(
+          create: (context) => RoundBloc(
             balanceBloc: context.read<BalanceBloc>(),
             statisticsBloc: context.read<StatisticsBloc>(),
             random: dependencies.random,
+            ticks: dependencies.ticks,
             clock: dependencies.clock,
           ),
         ),

@@ -20,7 +20,12 @@ class AppTexts {
   static const String currentCoefficient = 'Current coefficient';
   static const String flewAway = 'Flew away!';
   static const String newRoundStartsIn = 'New round starts in:';
-  static const String stop = 'Stop';
+  static const String jump = 'Jump';
+  static const String refill = 'Refill';
+  static const String leaveFlight = 'Leave the flight?';
+  static const String leaveFlightContent = 'The plane is in the air. Leaving now gives up this round\'s entry.';
+  static const String leave = 'Leave';
+  static const String stay = 'Stay';
 
   static const String allTime = 'All time';
   static const String today = 'Today';

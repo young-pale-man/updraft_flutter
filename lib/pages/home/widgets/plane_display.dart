@@ -1,5 +1,3 @@
-import 'package:updraft_flutter/pages/home/widgets/coef_display.dart';
-import 'package:updraft_flutter/pages/home/widgets/timer_display.dart';
 import 'package:updraft_flutter/res/assets.dart';
 import 'package:updraft_flutter/res/colors.dart';
 import 'package:updraft_flutter/utils/constants.dart';
@@ -7,22 +5,10 @@ import 'package:flutter/widgets.dart';
 import 'package:rive/rive.dart';
 
 class PlaneDisplay extends StatefulWidget {
-  const PlaneDisplay({
-    super.key,
-    required this.onInit,
-    required this.coefDisplay,
-    required this.currentCoef,
-    required this.coefDeadline,
-    required this.timerDisplay,
-    required this.timerValue,
-  });
+  const PlaneDisplay({super.key, required this.onInit, required this.overlay});
 
   final ValueChanged<StateMachine> onInit;
-  final bool coefDisplay;
-  final ValueNotifier currentCoef;
-  final double coefDeadline;
-  final bool timerDisplay;
-  final ValueNotifier<int> timerValue;
+  final Widget overlay;
 
   @override
   State<PlaneDisplay> createState() => _PlaneDisplayState();
@@ -66,25 +52,7 @@ class _PlaneDisplayState extends State<PlaneDisplay> {
             ),
           ),
         ),
-        if (widget.coefDisplay)
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: ValueListenableBuilder(
-                valueListenable: widget.currentCoef,
-                builder: (_, _, _) =>
-                    CoefDisplay(currentCoef: widget.currentCoef.value, coefDeadline: widget.coefDeadline),
-              ),
-            ),
-          ),
-        if (widget.timerDisplay)
-          Center(
-            child: ValueListenableBuilder(
-              valueListenable: widget.timerValue,
-              builder: (_, _, _) => TimerDisplay(timerValue: widget.timerValue.value),
-            ),
-          ),
+        Positioned.fill(child: widget.overlay),
       ],
     );
   }

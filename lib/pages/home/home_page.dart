@@ -1,17 +1,21 @@
-import 'dart:async';
 import 'package:updraft_flutter/base/base_page_state.dart';
 import 'package:updraft_flutter/blocs/balance_bloc/balance_bloc.dart';
-import 'package:updraft_flutter/blocs/game_bloc/game_bloc.dart';
+import 'package:updraft_flutter/blocs/round_bloc/round_bloc.dart';
 import 'package:updraft_flutter/data/enums/navigation_menu_items.dart';
+import 'package:updraft_flutter/pages/home/widgets/coef_display.dart';
 import 'package:updraft_flutter/pages/home/widgets/home_appbar_content.dart';
 import 'package:updraft_flutter/pages/home/widgets/home_pickers_layout.dart';
 import 'package:updraft_flutter/pages/home/widgets/plane_display.dart';
+import 'package:updraft_flutter/pages/home/widgets/timer_display.dart';
 import 'package:updraft_flutter/res/texts.dart';
+import 'package:updraft_flutter/utils/balance_rules.dart';
+import 'package:updraft_flutter/utils/coins.dart';
 import 'package:updraft_flutter/utils/constants.dart';
 import 'package:updraft_flutter/utils/dialogs.dart';
 import 'package:updraft_flutter/widgets/main_appbar.dart';
 import 'package:updraft_flutter/widgets/main_button.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rive/rive.dart';
 
@@ -23,206 +27,136 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends BasePageState<HomePage> {
-  final _betAmount = ValueNotifier<double>(AppConst.minBetAmount);
-  final _autoModeCoef = ValueNotifier<double>(AppConst.minCoef);
-  final _currentCoef = ValueNotifier<double>(AppConst.minCoef);
-  final _timerValue = ValueNotifier<int>(AppConst.startTimerSeconds);
-
-  bool _autoMode = false;
-  bool _buttonActive = true;
-  int _sceneGeneration = 0;
-  double _coefDeadline = AppConst.minCoef;
-
-  TriggerInput? _startTrigger;
   TriggerInput? _finishTrigger;
-  Timer? _startTimer;
-  Timer? _gameTimer;
 
-  int get _entry => (_betAmount.value * 100).round();
-
-  int get _multiplier => (_currentCoef.value * 100).round();
-
-  void onAnimationInit(StateMachine stateMachine) {
-    _startTrigger = stateMachine.trigger(AppConst.startAnimationTrigger);
-    _finishTrigger = stateMachine.trigger(AppConst.loseAnimationTrigger);
+  void _onSceneLoaded(StateMachine stateMachine) {
+    _finishTrigger = stateMachine.trigger(AppConst.finishAnimationTrigger);
+    if (context.read<RoundBloc>().state.isAirborne) {
+      stateMachine.trigger(AppConst.startAnimationTrigger)?.fire();
+    }
   }
 
   @override
-  PreferredSizeWidget? get appBar => MainAppbar(
-    currentPage: NavigationMenuItems.home,
-    content: const HomeAppbarContent(),
-    beforeMenuOpens: _cancelGame,
-  );
+  PreferredSizeWidget? get appBar =>
+      MainAppbar(currentPage: NavigationMenuItems.home, content: const HomeAppbarContent(), canOpenMenu: _leaveRound);
 
   @override
   Widget pageBuilder(BuildContext context) {
-    final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     final screenWidth = MediaQuery.of(context).size.width;
-
-    return BlocConsumer<GameBloc, GameState>(
-      listener: _gameStateListener,
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 16),
-              Expanded(
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: screenWidth < 580 ? screenWidth : 580, maxWidth: 900),
-                    child: PlaneDisplay(
-                      key: ValueKey(_sceneGeneration),
-                      onInit: onAnimationInit,
-                      coefDisplay: state is InGameST || state is CashOutST || state is GameFinishedST,
-                      currentCoef: _currentCoef,
-                      coefDeadline: _coefDeadline,
-                      timerDisplay: state is BetST || state is CountDownST,
-                      timerValue: _timerValue,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 11),
-              HomePickersLayout(
-                isPortrait: isPortrait,
-                betAmount: _betAmount,
-                autoMode: _autoMode,
-                autoModeCoef: _autoModeCoef,
-                switchAutoMode: _switchAutoMode,
-                disabled: state is! BetST,
-              ),
-              const SizedBox(height: 32),
-              Center(
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<RoundBloc, RoundState>(
+          listenWhen: (previous, current) => previous.takeOffRevision != current.takeOffRevision,
+          listener: (context, state) => HapticFeedback.lightImpact(),
+        ),
+        BlocListener<RoundBloc, RoundState>(
+          listenWhen: (previous, current) => previous.jumpRevision != current.jumpRevision,
+          listener: (context, state) => HapticFeedback.mediumImpact(),
+        ),
+        BlocListener<RoundBloc, RoundState>(
+          listenWhen: (previous, current) => previous.crashRevision != current.crashRevision,
+          listener: (context, state) {
+            _finishTrigger?.fire();
+            HapticFeedback.heavyImpact();
+          },
+        ),
+      ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 16),
+            Expanded(
+              child: Center(
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 580),
-                  child: MainButton(
-                    title: state is CountDownST
-                        ? AppTexts.cancel
-                        : state is BetST
-                        ? AppTexts.play
-                        : AppTexts.stop,
-                    onPressed: _mainButtonAction,
-                    disabled: state is CashOutST || !_buttonActive,
+                  constraints: BoxConstraints(maxHeight: screenWidth < 580 ? screenWidth : 580, maxWidth: 900),
+                  child: PlaneDisplay(
+                    key: ValueKey(context.select((RoundBloc bloc) => bloc.state.takeOffRevision)),
+                    onInit: _onSceneLoaded,
+                    overlay: const _FlightOverlay(),
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
-            ],
-          ),
-        );
-      },
+            ),
+            const SizedBox(height: 11),
+            const HomePickersLayout(),
+            const SizedBox(height: 32),
+            Center(
+              child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 580), child: const _RoundButton()),
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
     );
   }
 
+  Future<bool> _leaveRound() async {
+    final bloc = context.read<RoundBloc>();
+    if (bloc.state.phase == RoundPhase.flying) {
+      final confirmed = await AppDialogs.showMainDialog(
+        context,
+        title: AppTexts.leaveFlight,
+        content: AppTexts.leaveFlightContent,
+        cancelIconTitle: AppTexts.stay,
+        actionButtonTitle: AppTexts.leave,
+        isActionDestructive: true,
+      );
+      if (confirmed != true) return false;
+    }
+    bloc.add(const RoundLeft());
+    return true;
+  }
+}
+
+class _FlightOverlay extends StatelessWidget {
+  const _FlightOverlay();
+
   @override
-  void dispose() {
-    _startTimer?.cancel();
-    _gameTimer?.cancel();
-    super.dispose();
+  Widget build(BuildContext context) {
+    final state = context.watch<RoundBloc>().state;
+    return switch (state.phase) {
+      RoundPhase.ready => const SizedBox.shrink(),
+      RoundPhase.countdown => Center(child: TimerDisplay(timerValue: state.secondsLeft)),
+      _ => Align(
+        alignment: Alignment.topLeft,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: CoefDisplay(multiplier: state.multiplier, flewAway: state.phase == RoundPhase.crashed),
+        ),
+      ),
+    };
   }
+}
 
-  void _switchAutoMode(bool value) => setState(() => _autoMode = value);
+class _RoundButton extends StatelessWidget {
+  const _RoundButton();
 
-  void _mainButtonAction() {
-    final bloc = context.read<GameBloc>();
-    if (bloc.state is BetST) {
-      if (context.read<BalanceBloc>().state.balance < _entry) {
-        _outOfCoins();
-      } else {
-        bloc.add(StartCountDownEV());
-      }
-    } else if (bloc.state is CountDownST) {
-      bloc.add(BetEV());
-    } else if (bloc.state is InGameST) {
-      bloc.add(CashOutEV(entry: _entry, multiplier: _multiplier));
-    }
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<RoundBloc>().state;
+    final balance = context.select((BalanceBloc bloc) => bloc.state.balance);
+    final round = context.read<RoundBloc>();
+    return switch (state.phase) {
+      RoundPhase.ready when BalanceRules.needsRefill(balance) => MainButton(
+        title: AppTexts.refill,
+        onPressed: () => context.read<BalanceBloc>().add(const BalanceRefilled()),
+      ),
+      RoundPhase.ready => MainButton(
+        title: AppTexts.play,
+        onPressed: () => round.add(const PlayPressed()),
+        disabled: !BalanceRules.canEnter(balance: balance, entry: state.entry),
+      ),
+      RoundPhase.countdown => MainButton(
+        title: AppTexts.cancel,
+        onPressed: () => round.add(const CountdownCancelled()),
+      ),
+      RoundPhase.flying => MainButton(
+        title: '${AppTexts.jump} · ${Coins.format(state.livePayout)}',
+        onPressed: () => round.add(const JumpPressed()),
+      ),
+      _ => const MainButton(title: AppTexts.jump, disabled: true),
+    };
   }
-
-  void _gameStateListener(BuildContext context, GameState state) {
-    if (state is CountDownST) {
-      _startCountdown();
-    } else if (state is InGameST) {
-      _coefDeadline = state.deadline;
-      _runGame(state.deadline);
-    } else if (state is GameFinishedST) {
-      context.read<GameBloc>().add(BetEV());
-    } else if (state is BetST) {
-      _buttonActive = true;
-      _sceneGeneration++;
-      _startTimer?.cancel();
-      _timerValue.value = AppConst.startTimerSeconds;
-    }
-  }
-
-  void _startCountdown() async {
-    _startTimer?.cancel();
-    _timerValue.value = 3;
-    _startTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_timerValue.value > 1) {
-        _timerValue.value -= 1;
-      } else {
-        timer.cancel();
-        context.read<GameBloc>().add(StartGameEV(entry: _entry));
-      }
-    });
-  }
-
-  void _runGame(double deadline) async {
-    final gameBloc = context.read<GameBloc>();
-    _currentCoef.value = AppConst.minCoef;
-
-    if (_startTrigger != null) {
-      _startTrigger!.fire();
-      await Future.delayed(AppConst.startGameDelay);
-
-      _autoCashOut();
-
-      if (gameBloc.state is InGameST) {
-        _gameTimer = Timer.periodic(AppConst.increasingValueDelay, (timer) {
-          if (_currentCoef.value < deadline) {
-            _currentCoef.value += AppConst.coefIncreasingStep;
-            _autoCashOut();
-          } else {
-            _finishTrigger?.fire();
-            timer.cancel();
-            _gameTimer = null;
-            if (mounted) {
-              setState(() => _buttonActive = false);
-            }
-
-            Future.delayed(AppConst.finishGameDelay, () {
-              if (mounted) {
-                gameBloc.add(FinishGameEV(entry: _entry));
-              }
-            });
-          }
-        });
-      }
-    }
-  }
-
-  void _autoCashOut() {
-    final gameBloc = context.read<GameBloc>();
-    if (_autoMode && _autoModeCoef.value <= _currentCoef.value && gameBloc.state is InGameST && mounted) {
-      gameBloc.add(CashOutEV(entry: _entry, multiplier: _multiplier));
-    }
-  }
-
-  void _cancelGame() {
-    _gameTimer?.cancel();
-    _gameTimer = null;
-
-    _finishTrigger?.fire();
-
-    context.read<GameBloc>().add(CancelGameEV(entry: _entry));
-  }
-
-  void _outOfCoins() => AppDialogs.showMainDialog(
-    context,
-    title: AppTexts.outOfCoins,
-    content: AppTexts.youDontHaveEnoughCoins,
-    cancelIconTitle: AppTexts.gotIt,
-  );
 }

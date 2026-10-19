@@ -1,30 +1,25 @@
+import 'package:updraft_flutter/blocs/round_bloc/round_bloc.dart';
 import 'package:updraft_flutter/pages/home/widgets/value_picker.dart';
 import 'package:updraft_flutter/res/assets.dart';
 import 'package:updraft_flutter/res/colors.dart';
 import 'package:updraft_flutter/res/styles.dart';
 import 'package:updraft_flutter/res/texts.dart';
-import 'package:updraft_flutter/utils/constants.dart';
+import 'package:updraft_flutter/utils/coins.dart';
+import 'package:updraft_flutter/utils/round_rules.dart';
 import 'package:updraft_flutter/widgets/main_icon_button.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AutoModeDisplay extends StatelessWidget {
-  const AutoModeDisplay({
-    super.key,
-    required this.autoMode,
-    required this.autoModeCoef,
-    required this.switchAutoMode,
-    required this.disabled,
-  });
-
-  final bool autoMode;
-  final ValueNotifier<double> autoModeCoef;
-  final ValueChanged<bool> switchAutoMode;
-  final bool disabled;
+  const AutoModeDisplay({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<RoundBloc>();
+    final disabled = context.select((RoundBloc bloc) => !bloc.state.isReady);
+    final autoJump = context.select((RoundBloc bloc) => bloc.state.autoJump);
+    final target = context.select((RoundBloc bloc) => bloc.state.target);
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         Row(
@@ -41,8 +36,8 @@ class AutoModeDisplay extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.fitHeight,
                 child: CupertinoSwitch(
-                  value: autoMode,
-                  onChanged: disabled ? null : switchAutoMode,
+                  value: autoJump,
+                  onChanged: disabled ? null : (value) => bloc.add(AutoJumpChanged(value)),
                   inactiveTrackColor: AppColors.main.layer4,
                   activeTrackColor: AppColors.system.positive,
                   thumbColor: AppColors.main.background,
@@ -56,25 +51,25 @@ class AutoModeDisplay extends StatelessWidget {
           children: [
             Expanded(
               child: ValuePicker(
-                valueListenable: autoModeCoef,
-                minValue: AppConst.minCoef,
-                maxValue: AppConst.maxCoef,
-                disabled: disabled || !autoMode,
-                valueSuffix: 'x',
+                value: target,
+                minValue: RoundRules.minTarget,
+                maxValue: RoundRules.maxTarget,
+                step: RoundRules.targetStep,
+                format: Coins.formatMultiplier,
+                onChanged: (value) => bloc.add(TargetChanged(value)),
+                disabled: disabled || !autoJump,
               ),
             ),
             const SizedBox(width: 12),
             MainIconButton(
               height: 50,
               icon: Assets.reset,
-              onPressed: _resetAutoModeCoef,
-              disabled: disabled || !autoMode,
+              onPressed: () => bloc.add(const TargetChanged(RoundRules.defaultTarget)),
+              disabled: disabled || !autoJump,
             ),
           ],
         ),
       ],
     );
   }
-
-  void _resetAutoModeCoef() => autoModeCoef.value = AppConst.minCoef;
 }

@@ -3,40 +3,27 @@ import 'dart:math';
 import 'package:updraft_flutter/utils/crash_curve.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class FixedRandom implements Random {
-  FixedRandom(this.value);
-
-  final double value;
-
-  @override
-  double nextDouble() => value;
-
-  @override
-  bool nextBool() => throw UnimplementedError();
-
-  @override
-  int nextInt(int max) => throw UnimplementedError();
-}
+import '../support/fixed_random.dart';
 
 void main() {
   const curve = CrashCurve();
 
   group('crash point', () {
     test('turns a uniform draw into hundredths of the multiplier', () {
-      expect(curve.draw(FixedRandom(0.5)), 194);
-      expect(curve.draw(FixedRandom(0.75)), 388);
-      expect(curve.draw(FixedRandom(0.9)), 970);
-      expect(curve.draw(FixedRandom(0.96875)), 3104);
+      expect(curve.draw(FixedRandom([0.5])), 194);
+      expect(curve.draw(FixedRandom([0.75])), 388);
+      expect(curve.draw(FixedRandom([0.9])), 970);
+      expect(curve.draw(FixedRandom([0.96875])), 3104);
     });
 
     test('never falls below one', () {
-      expect(curve.draw(FixedRandom(0)), 100);
-      expect(curve.draw(FixedRandom(0.02)), 100);
+      expect(curve.draw(FixedRandom([0])), 100);
+      expect(curve.draw(FixedRandom([0.02])), 100);
     });
 
     test('is capped at the maximum', () {
-      expect(curve.draw(FixedRandom(0.9999)), CrashCurve.maxHundredths);
-      expect(curve.draw(FixedRandom(0.999999)), CrashCurve.maxHundredths);
+      expect(curve.draw(FixedRandom([0.9999])), CrashCurve.maxHundredths);
+      expect(curve.draw(FixedRandom([0.999999])), CrashCurve.maxHundredths);
     });
 
     test('stays within its bounds for every seed', () {
