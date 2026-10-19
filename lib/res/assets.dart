@@ -9,12 +9,6 @@ class Assets {
   static const String mainButtonBodyPressed = 'assets/icons/main_button_body_pressed.svg';
   static const String mainButtonBase = 'assets/icons/main_button_base.svg';
 
-  static const String menu = 'assets/icons/menu.svg';
-  static const String home = 'assets/icons/home.svg';
-  static const String statistics = 'assets/icons/statistics.svg';
-  static const String settings = 'assets/icons/settings.svg';
-  static const String close = 'assets/icons/close.svg';
-
   static const String coins = 'assets/icons/coins.svg';
   static const String plus = 'assets/icons/plus.svg';
   static const String minus = 'assets/icons/minus.svg';

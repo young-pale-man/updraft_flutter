@@ -2,12 +2,10 @@ import 'dart:io';
 
 import 'package:updraft_flutter/application.dart';
 import 'package:updraft_flutter/data/models/round_record.dart';
-import 'package:updraft_flutter/res/assets.dart';
+import 'package:updraft_flutter/res/texts.dart';
 import 'package:updraft_flutter/utils/dependency_initializer.dart';
 import 'package:updraft_flutter/widgets/main_button.dart';
-import 'package:updraft_flutter/widgets/main_icon_button.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'fake_ticks.dart';
@@ -79,14 +77,14 @@ extension AppGestures on WidgetTester {
     await pumpAndSettle();
   }
 
-  Future<void> openMenu() async {
-    await tap(find.byWidgetPredicate((widget) => widget is MainIconButton && widget.icon == Assets.menu));
+  Future<void> openFromMenu(String title) async {
+    await tap(find.bySemanticsLabel(title).hitTestable().first);
     await pump();
     await pumpAndSettle();
   }
 
-  Future<void> openMenuItem(String title) async {
-    await tap(find.descendant(of: find.widgetWithText(Row, title), matching: find.byType(MainIconButton)));
+  Future<void> goBack() async {
+    await tap(find.bySemanticsLabel(AppTexts.back));
     await pump();
     await pumpAndSettle();
   }

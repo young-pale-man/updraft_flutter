@@ -1,6 +1,5 @@
 import 'package:updraft_flutter/base/base_page_state.dart';
 import 'package:updraft_flutter/blocs/statistics_bloc/statistics_bloc.dart';
-import 'package:updraft_flutter/data/enums/navigation_menu_items.dart';
 import 'package:updraft_flutter/data/enums/statistics_parameter.dart';
 import 'package:updraft_flutter/data/models/round_record.dart';
 import 'package:updraft_flutter/pages/statistics/widgets/statistics_card.dart';
@@ -26,7 +25,7 @@ class _StatisticsPageState extends BasePageState<StatisticsPage> {
   bool get bottomSafeArea => false;
 
   @override
-  PreferredSizeWidget? get appBar => const MainAppbar(currentPage: NavigationMenuItems.statistics);
+  PreferredSizeWidget? get appBar => const MainAppbar(title: AppTexts.statistics);
 
   @override
   Widget pageBuilder(BuildContext context) {

@@ -1,7 +1,6 @@
 import 'package:updraft_flutter/base/base_page_state.dart';
 import 'package:updraft_flutter/blocs/balance_bloc/balance_bloc.dart';
 import 'package:updraft_flutter/blocs/round_bloc/round_bloc.dart';
-import 'package:updraft_flutter/data/enums/navigation_menu_items.dart';
 import 'package:updraft_flutter/pages/home/widgets/coef_display.dart';
 import 'package:updraft_flutter/pages/home/widgets/home_appbar_content.dart';
 import 'package:updraft_flutter/pages/home/widgets/home_pickers_layout.dart';
@@ -28,56 +27,63 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends BasePageState<HomePage> {
   @override
-  PreferredSizeWidget? get appBar =>
-      MainAppbar(currentPage: NavigationMenuItems.home, content: const HomeAppbarContent(), canOpenMenu: _leaveRound);
+  PreferredSizeWidget? get appBar => const MainAppbar(trailing: SizedBox(width: 220, child: HomeAppbarContent()));
 
   @override
   Widget pageBuilder(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<RoundBloc, RoundState>(
-          listenWhen: (previous, current) => previous.takeOffRevision != current.takeOffRevision,
-          listener: (context, state) => HapticFeedback.lightImpact(),
-        ),
-        BlocListener<RoundBloc, RoundState>(
-          listenWhen: (previous, current) => previous.jumpRevision != current.jumpRevision,
-          listener: (context, state) => HapticFeedback.mediumImpact(),
-        ),
-        BlocListener<RoundBloc, RoundState>(
-          listenWhen: (previous, current) => previous.crashRevision != current.crashRevision,
-          listener: (context, state) => HapticFeedback.heavyImpact(),
-        ),
-      ],
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 16),
-            Expanded(
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: screenWidth < 580 ? screenWidth : 580, maxWidth: 900),
-                  child: PlaneDisplay(
-                    scene: FlightScene(
-                      takeOffRevision: context.select((RoundBloc bloc) => bloc.state.takeOffRevision),
-                      crashRevision: context.select((RoundBloc bloc) => bloc.state.crashRevision),
-                      stage: context.read<AppDependencies>().flightStage,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) async {
+        if (didPop) return;
+        final navigator = Navigator.of(context);
+        if (await _leaveRound()) navigator.pop();
+      },
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<RoundBloc, RoundState>(
+            listenWhen: (previous, current) => previous.takeOffRevision != current.takeOffRevision,
+            listener: (context, state) => HapticFeedback.lightImpact(),
+          ),
+          BlocListener<RoundBloc, RoundState>(
+            listenWhen: (previous, current) => previous.jumpRevision != current.jumpRevision,
+            listener: (context, state) => HapticFeedback.mediumImpact(),
+          ),
+          BlocListener<RoundBloc, RoundState>(
+            listenWhen: (previous, current) => previous.crashRevision != current.crashRevision,
+            listener: (context, state) => HapticFeedback.heavyImpact(),
+          ),
+        ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16),
+              Expanded(
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: screenWidth < 580 ? screenWidth : 580, maxWidth: 900),
+                    child: PlaneDisplay(
+                      scene: FlightScene(
+                        takeOffRevision: context.select((RoundBloc bloc) => bloc.state.takeOffRevision),
+                        crashRevision: context.select((RoundBloc bloc) => bloc.state.crashRevision),
+                        stage: context.read<AppDependencies>().flightStage,
+                      ),
+                      overlay: const _FlightOverlay(),
                     ),
-                    overlay: const _FlightOverlay(),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 11),
-            const HomePickersLayout(),
-            const SizedBox(height: 32),
-            Center(
-              child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 580), child: const _RoundButton()),
-            ),
-            const SizedBox(height: 10),
-          ],
+              const SizedBox(height: 11),
+              const HomePickersLayout(),
+              const SizedBox(height: 32),
+              Center(
+                child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 580), child: const _RoundButton()),
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
         ),
       ),
     );

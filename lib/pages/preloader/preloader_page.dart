@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:updraft_flutter/base/base_page_state.dart';
-import 'package:updraft_flutter/pages/home/home_page.dart';
+import 'package:updraft_flutter/pages/menu/menu_page.dart';
 import 'package:updraft_flutter/pages/preloader/widgets/loading_bar.dart';
 import 'package:updraft_flutter/res/dimens.dart';
 import 'package:updraft_flutter/res/shadows.dart';
@@ -33,7 +33,7 @@ class _PreloaderPageState extends BasePageState<PreloaderPage> with SingleTicker
 
   void _onProgress(AnimationStatus status) {
     if (status == AnimationStatus.completed && mounted) {
-      unawaited(Navigator.of(context).pushReplacementNamed(route(HomePage)));
+      unawaited(Navigator.of(context).pushReplacementNamed(route(MenuPage)));
     }
   }
 

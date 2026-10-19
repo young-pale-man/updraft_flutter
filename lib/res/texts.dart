@@ -4,6 +4,13 @@ class AppTexts {
   static const String appName = 'Updraft';
   static const String tagline = 'Know when to jump';
 
+  static const String back = 'Back';
+  static const String balance = 'Balance';
+  static const String bestJump = 'Best jump';
+  static const String noJumpYet = '—';
+  static const String howToPlay = 'How to play';
+  static const String playMoney = 'Play coins only. Nothing to buy, nothing to win.';
+
   static const String home = 'Home';
   static const String statistics = 'Statistics';
   static const String settings = 'Settings';

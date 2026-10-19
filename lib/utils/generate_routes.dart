@@ -1,4 +1,5 @@
 import 'package:updraft_flutter/pages/home/home_page.dart';
+import 'package:updraft_flutter/pages/menu/menu_page.dart';
 import 'package:updraft_flutter/pages/preloader/preloader_page.dart';
 import 'package:updraft_flutter/pages/settings/settings_page.dart';
 import 'package:updraft_flutter/pages/settings/widgets/privacy_policy.dart';
@@ -10,6 +11,7 @@ import 'package:updraft_flutter/utils/route.dart';
 Map<String, WidgetBuilder> generateRoutes() {
   return {
     route(PreloaderPage): (_) => const PreloaderPage(),
+    route(MenuPage): (_) => const MenuPage(),
     route(HomePage): (_) => const HomePage(),
     route(StatisticsPage): (_) => const StatisticsPage(),
     route(SettingsPage): (_) => const SettingsPage(),

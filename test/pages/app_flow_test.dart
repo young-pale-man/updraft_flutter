@@ -8,17 +8,31 @@ import '../support/app_harness.dart';
 void main() {
   setUpAll(loadAppFonts);
 
-  testWidgets('opens on the game with five hundred coins', (tester) async {
+  testWidgets('opens on the menu with five hundred coins and no best jump yet', (tester) async {
     final app = AppHarness();
     await app.launch(tester);
 
-    expect(find.text('500.00'), findsOneWidget);
-    expect(tester.mainButtonTitle, AppTexts.play);
+    expect(find.text('500.00'), findsWidgets);
+    expect(find.text(AppTexts.noJumpYet), findsWidgets);
+    expect(find.bySemanticsLabel(AppTexts.play), findsOneWidget);
+  });
+
+  testWidgets('the menu shows the best jump so far', (tester) async {
+    final app = AppHarness(
+      rounds: [
+        RoundRecord(time: AppHarness.now, entry: 1000, multiplier: 210, outcome: RoundOutcome.jumped, crash: 388),
+        RoundRecord(time: AppHarness.now, entry: 1000, multiplier: 450, outcome: RoundOutcome.flewAway, crash: 450),
+      ],
+    );
+    await app.launch(tester);
+
+    expect(find.text('2.10×'), findsWidgets);
   });
 
   testWidgets('a round counts down, takes off, shows the payout and pays the jump', (tester) async {
     final app = AppHarness();
     await app.launch(tester);
+    await tester.openFromMenu(AppTexts.play);
 
     await tester.tapMainButton();
     expect(tester.mainButtonTitle, AppTexts.cancel);
@@ -49,6 +63,7 @@ void main() {
   testWidgets('a plane that flies away takes the entry', (tester) async {
     final app = AppHarness(draws: [0.5]);
     await app.launch(tester);
+    await tester.openFromMenu(AppTexts.play);
 
     await tester.tapMainButton();
     await tester.clockAt(app, 3);
@@ -63,26 +78,28 @@ void main() {
   testWidgets('leaving mid-flight asks first and then gives up the entry', (tester) async {
     final app = AppHarness();
     await app.launch(tester);
+    await tester.openFromMenu(AppTexts.play);
     await tester.tapMainButton();
     await tester.clockAt(app, 3);
     await tester.clockAt(app, 2);
 
-    await tester.openMenu();
+    await tester.goBack();
     expect(find.text(AppTexts.leaveFlight), findsOneWidget);
     await tester.tapText(AppTexts.stay);
     expect(tester.mainButtonTitle, '${AppTexts.jump} · 14.10');
 
-    await tester.openMenu();
+    await tester.goBack();
     await tester.tapText(AppTexts.leave);
 
     expect(app.balanceStorage.balance, 49000);
     expect(app.roundsStorage.rounds.single.outcome, RoundOutcome.left);
-    expect(find.text(AppTexts.statistics), findsOneWidget);
+    expect(find.bySemanticsLabel(AppTexts.play), findsOneWidget);
   });
 
   testWidgets('an empty balance offers a refill instead of a round', (tester) async {
     final app = AppHarness(balance: 40);
     await app.launch(tester);
+    await tester.openFromMenu(AppTexts.play);
 
     expect(tester.mainButtonTitle, AppTexts.refill);
     await tester.tapMainButton();
@@ -99,8 +116,7 @@ void main() {
     );
     await app.launch(tester);
 
-    await tester.openMenu();
-    await tester.openMenuItem(AppTexts.statistics);
+    await tester.openFromMenu(AppTexts.statistics);
 
     expect(find.text('3.42×'), findsOneWidget);
     expect(find.text('+48.40'), findsOneWidget);
@@ -109,7 +125,9 @@ void main() {
   testWidgets('fits a small phone without overflowing', (tester) async {
     final app = AppHarness();
     await app.launch(tester, size: const Size(320, 568));
+    expect(tester.takeException(), isNull);
 
+    await tester.openFromMenu(AppTexts.play);
     expect(tester.takeException(), isNull);
     await tester.tapMainButton();
     await tester.clockAt(app, 3);

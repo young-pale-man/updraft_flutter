@@ -1,6 +1,5 @@
 import 'package:updraft_flutter/base/base_page_state.dart';
 import 'package:updraft_flutter/blocs/statistics_bloc/statistics_bloc.dart';
-import 'package:updraft_flutter/data/enums/navigation_menu_items.dart';
 import 'package:updraft_flutter/pages/settings/widgets/parameter_tile.dart';
 import 'package:updraft_flutter/pages/settings/widgets/privacy_policy.dart';
 import 'package:updraft_flutter/pages/settings/widgets/terms_of_use.dart';
@@ -22,7 +21,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends BasePageState<SettingsPage> {
   @override
-  PreferredSizeWidget? get appBar => const MainAppbar(currentPage: NavigationMenuItems.settings);
+  PreferredSizeWidget? get appBar => const MainAppbar(title: AppTexts.settings);
 
   @override
   Widget pageBuilder(BuildContext context) {
