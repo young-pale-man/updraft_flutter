@@ -79,9 +79,9 @@ class _SettingsPageState extends BasePageState<SettingsPage> {
       context,
       title: AppTexts.clearStatistics,
       content: AppTexts.clearStatisticsWarning,
-      cancelIconTitle: AppTexts.cancel,
-      actionButtonTitle: AppTexts.clear,
-      isActionDestructive: true,
+      cancelTitle: AppTexts.cancel,
+      actionTitle: AppTexts.clear,
+      destructive: true,
     );
     if (confirmed != true || !mounted) return;
     context.read<StatisticsBloc>().add(const StatisticsCleared());

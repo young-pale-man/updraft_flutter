@@ -1,7 +1,6 @@
 import 'package:updraft_flutter/res/colors.dart';
-import 'package:updraft_flutter/res/styles.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:updraft_flutter/widgets/main_dialog.dart';
+import 'package:flutter/widgets.dart';
 
 class AppDialogs {
   AppDialogs._();
@@ -10,29 +9,27 @@ class AppDialogs {
     BuildContext context, {
     required String title,
     required String content,
-    String? cancelIconTitle,
-    String? actionButtonTitle,
-    bool isActionDestructive = false,
-  }) => showDialog(
-    context: context,
-    builder: (ctx) => CupertinoAlertDialog(
-      title: Text(title, style: AppStyles.titleS.copyWith(color: AppColors.ink)),
-      content: Text(content, style: AppStyles.bodyM.copyWith(color: AppColors.ink)),
-      actions: [
-        if (cancelIconTitle != null)
-          CupertinoDialogAction(
-            child: Text(cancelIconTitle, style: AppStyles.bodyL.copyWith(color: AppColors.ink)),
-            onPressed: () => Navigator.of(context).pop(false),
-          ),
-        if (actionButtonTitle != null)
-          CupertinoDialogAction(
-            child: Text(
-              actionButtonTitle,
-              style: AppStyles.titleS.copyWith(color: isActionDestructive ? AppColors.negative : AppColors.ink),
-            ),
-            onPressed: () => Navigator.of(context).pop(true),
-          ),
-      ],
-    ),
-  );
+    required String cancelTitle,
+    required String actionTitle,
+    bool destructive = false,
+  }) {
+    return showGeneralDialog<bool>(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: cancelTitle,
+      barrierColor: AppColors.scrim,
+      transitionDuration: const Duration(milliseconds: 180),
+      transitionBuilder: (context, animation, _, child) => ScaleTransition(
+        scale: Tween(begin: 0.9, end: 1.0).animate(CurvedAnimation(parent: animation, curve: Curves.easeOutBack)),
+        child: FadeTransition(opacity: animation, child: child),
+      ),
+      pageBuilder: (context, _, _) => MainDialog(
+        title: title,
+        content: content,
+        cancelTitle: cancelTitle,
+        actionTitle: actionTitle,
+        destructive: destructive,
+      ),
+    );
+  }
 }

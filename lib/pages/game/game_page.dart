@@ -74,9 +74,9 @@ class _GamePageState extends BasePageState<GamePage> {
         context,
         title: AppTexts.leaveFlight,
         content: AppTexts.leaveFlightContent,
-        cancelIconTitle: AppTexts.stay,
-        actionButtonTitle: AppTexts.leave,
-        isActionDestructive: true,
+        cancelTitle: AppTexts.stay,
+        actionTitle: AppTexts.leave,
+        destructive: true,
       );
       if (confirmed != true) return false;
     }
