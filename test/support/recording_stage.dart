@@ -12,7 +12,7 @@ class RecordingStage implements FlightStage {
   void takeOff() => cues.add('takeOff');
 
   @override
-  void crash() => cues.add('crash');
+  void exit() => cues.add('exit');
 
   @override
   void addListener(VoidCallback listener) {}

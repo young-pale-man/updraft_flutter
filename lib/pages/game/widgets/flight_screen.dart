@@ -28,7 +28,7 @@ class FlightScreen extends StatelessWidget {
               Positioned.fill(
                 child: FlightScene(
                   takeOffRevision: context.select((RoundBloc bloc) => bloc.state.takeOffRevision),
-                  crashRevision: context.select((RoundBloc bloc) => bloc.state.crashRevision),
+                  exitRevision: context.select((RoundBloc bloc) => bloc.state.exitRevision),
                   stage: context.read<AppDependencies>().flightStage,
                 ),
               ),

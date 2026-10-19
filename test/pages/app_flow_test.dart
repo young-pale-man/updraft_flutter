@@ -52,14 +52,17 @@ void main() {
 
     await tester.tapMainButton();
     expect(find.bySemanticsLabel('506.80'), findsOneWidget);
+    expect(find.text(AppTexts.jumped), findsOneWidget);
+    expect(find.text(AppTexts.flewAway), findsNothing);
     expect(find.text('${AppTexts.jumpedAt} 1.68×'), findsOneWidget);
     expect(find.bySemanticsLabel('+6.80'), findsOneWidget);
     expect(app.balanceStorage.balance, 50680);
-
-    await tester.clockAt(app, 8);
-    expect(find.text(AppTexts.flewAway), findsOneWidget);
-    expect(app.stage.cues, ['takeOff', 'crash']);
+    expect(app.stage.cues, ['takeOff', 'exit']);
     expect(app.roundsStorage.rounds.single.outcome, RoundOutcome.jumped);
+
+    await tester.clockAt(app, 1);
+    expect(find.bySemanticsLabel('1.68×'), findsWidgets);
+    expect(find.text(AppTexts.flewAway), findsNothing);
 
     await tester.clockAt(app, 2);
     expect(tester.mainButtonTitle, '${AppTexts.play} 10.00');

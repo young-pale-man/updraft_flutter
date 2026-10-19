@@ -67,13 +67,13 @@ class FlightHud extends StatelessWidget {
   }
 
   Widget _phaseTag(RoundPhase phase) => switch (phase) {
-    RoundPhase.cashedOut => const Tag(AppTexts.jumped, color: AppColors.positive),
+    RoundPhase.jumped => const Tag(AppTexts.jumped, color: AppColors.positive),
     RoundPhase.crashed => const Tag(AppTexts.flewAway, color: AppColors.negative),
     _ => const Tag(AppTexts.flying),
   };
 
   Color _multiplierColor(RoundPhase phase) => switch (phase) {
-    RoundPhase.cashedOut => AppColors.positive,
+    RoundPhase.jumped => AppColors.positive,
     RoundPhase.crashed => AppColors.negative,
     _ => AppColors.figure,
   };

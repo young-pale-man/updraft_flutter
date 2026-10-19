@@ -68,8 +68,8 @@ final class _FlightTicked extends RoundEvent {
   List<Object?> get props => [elapsed];
 }
 
-final class _PauseTicked extends RoundEvent {
-  const _PauseTicked(this.elapsed);
+final class _ResultTicked extends RoundEvent {
+  const _ResultTicked(this.elapsed);
 
   final Duration elapsed;
 

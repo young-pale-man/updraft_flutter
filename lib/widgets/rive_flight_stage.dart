@@ -56,7 +56,7 @@ class RiveFlightStage extends ChangeNotifier implements FlightStage {
   }
 
   @override
-  void crash() => _fire(AppConst.finishAnimationTrigger);
+  void exit() => _fire(AppConst.finishAnimationTrigger);
 
   @override
   Widget build(BuildContext context) {

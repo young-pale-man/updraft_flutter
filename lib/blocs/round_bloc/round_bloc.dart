@@ -42,7 +42,7 @@ class RoundBloc extends Bloc<RoundEvent, RoundState> {
     on<RoundLeft>(_leave);
     on<_CountdownTicked>(_countdownTicked);
     on<_FlightTicked>(_flightTicked);
-    on<_PauseTicked>(_pauseTicked);
+    on<_ResultTicked>(_resultTicked);
   }
 
   final BalanceBloc _balance;
@@ -113,13 +113,12 @@ class RoundBloc extends Bloc<RoundEvent, RoundState> {
   }
 
   void _flightTicked(_FlightTicked event, Emitter<RoundState> emit) {
-    if (!state.isAirborne) return;
+    if (state.phase != RoundPhase.flying) return;
     final multiplier = FlightCurve.multiplierAt(event.elapsed);
     final target = state.target;
-    if (state.phase == RoundPhase.flying && state.autoJump && multiplier >= target && target <= _crash) {
+    if (state.autoJump && multiplier >= target && target <= _crash) {
       _jump(emit, target);
-    }
-    if (multiplier >= _crash) {
+    } else if (multiplier >= _crash) {
       _crashed(emit);
     } else if (multiplier != state.multiplier) {
       emit(state.copyWith(multiplier: multiplier));
@@ -140,53 +139,49 @@ class RoundBloc extends Bloc<RoundEvent, RoundState> {
       crash: _crash,
     );
     _balance.add(PayoutReceived(record.payout));
-    emit(state.copyWith(phase: RoundPhase.cashedOut, result: () => record, jumpRevision: state.jumpRevision + 1));
+    _finish(
+      emit,
+      record,
+      state.copyWith(phase: RoundPhase.jumped, multiplier: multiplier, jumpRevision: state.jumpRevision + 1),
+    );
   }
 
   void _crashed(Emitter<RoundState> emit) {
-    _stopClock();
-    final record = state.phase == RoundPhase.cashedOut
-        ? state.result!
-        : RoundRecord(
-            time: _clock(),
-            entry: state.entry,
-            multiplier: _crash,
-            outcome: RoundOutcome.flewAway,
-            crash: _crash,
-          );
-    _statistics.add(RoundRecorded(record));
-    emit(
-      state.copyWith(
-        phase: RoundPhase.crashed,
-        multiplier: _crash,
-        result: () => record,
-        crashRevision: state.crashRevision + 1,
-      ),
+    final record = RoundRecord(
+      time: _clock(),
+      entry: state.entry,
+      multiplier: _crash,
+      outcome: RoundOutcome.flewAway,
+      crash: _crash,
     );
-    _listen((elapsed) => add(_PauseTicked(elapsed)));
+    _finish(
+      emit,
+      record,
+      state.copyWith(phase: RoundPhase.crashed, multiplier: _crash, crashRevision: state.crashRevision + 1),
+    );
   }
 
-  void _pauseTicked(_PauseTicked event, Emitter<RoundState> emit) {
-    if (state.phase != RoundPhase.crashed || event.elapsed < RoundRules.resultPause) return;
+  void _finish(Emitter<RoundState> emit, RoundRecord record, RoundState finished) {
+    _stopClock();
+    _statistics.add(RoundRecorded(record));
+    emit(finished.copyWith(result: () => record));
+    _listen((elapsed) => add(_ResultTicked(elapsed)));
+  }
+
+  void _resultTicked(_ResultTicked event, Emitter<RoundState> emit) {
+    if (!state.isFinished || event.elapsed < RoundRules.resultPause) return;
     _stopClock();
     emit(_ready());
   }
 
   void _leave(RoundLeft event, Emitter<RoundState> emit) {
-    switch (state.phase) {
-      case RoundPhase.ready:
-        return;
-      case RoundPhase.countdown:
-      case RoundPhase.crashed:
-        break;
-      case RoundPhase.flying:
-        _statistics.add(
-          RoundRecorded(
-            RoundRecord(time: _clock(), entry: state.entry, multiplier: state.multiplier, outcome: RoundOutcome.left),
-          ),
-        );
-      case RoundPhase.cashedOut:
-        _statistics.add(RoundRecorded(state.result!));
+    if (state.isReady) return;
+    if (state.phase == RoundPhase.flying) {
+      _statistics.add(
+        RoundRecorded(
+          RoundRecord(time: _clock(), entry: state.entry, multiplier: state.multiplier, outcome: RoundOutcome.left),
+        ),
+      );
     }
     _stopClock();
     emit(_ready());

@@ -1,6 +1,6 @@
 part of 'round_bloc.dart';
 
-enum RoundPhase { ready, countdown, flying, cashedOut, crashed }
+enum RoundPhase { ready, countdown, flying, jumped, crashed }
 
 final class RoundState extends Equatable {
   const RoundState({
@@ -29,7 +29,9 @@ final class RoundState extends Equatable {
 
   bool get isReady => phase == RoundPhase.ready;
 
-  bool get isAirborne => phase == RoundPhase.flying || phase == RoundPhase.cashedOut;
+  bool get isFinished => phase == RoundPhase.jumped || phase == RoundPhase.crashed;
+
+  int get exitRevision => jumpRevision + crashRevision;
 
   int get livePayout => Coins.payout(entry, multiplier);
 

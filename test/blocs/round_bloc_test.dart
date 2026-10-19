@@ -148,32 +148,43 @@ void main() {
 
       await round.send(const JumpPressed());
 
-      expect(round.state.phase, RoundPhase.cashedOut);
+      expect(round.state.phase, RoundPhase.jumped);
       expect(round.state.jumpRevision, 1);
       expect(round.state.result!.multiplier, 168);
       expect(round.state.result!.change, 1360);
       expect(round.balance, 48000 + 3360);
     });
 
-    test('lets the plane fly on to its crash point, then records the jump', () async {
+    test('ends the flight at the jump and records it with the crash point it never reached', () async {
+      round = Round();
+      await round.takeOff(entry: 2000);
+      await round.ticks.seconds(3);
+
+      await round.send(const JumpPressed());
+
+      expect(round.state.phase, RoundPhase.jumped);
+      expect(round.state.multiplier, 168);
+      expect(round.state.exitRevision, 1);
+      expect(round.state.crashRevision, 0);
+      expect(round.rounds, [
+        RoundRecord(time: now, entry: 2000, multiplier: 168, outcome: RoundOutcome.jumped, crash: 388),
+      ]);
+      expect(round.balance, 48000 + 3360);
+    });
+
+    test('freezes the counter at the jump while the result shows, then returns to ready', () async {
       round = Round();
       await round.takeOff(entry: 2000);
       await round.ticks.seconds(3);
       await round.send(const JumpPressed());
 
-      await round.ticks.seconds(7);
-      expect(round.state.phase, RoundPhase.cashedOut);
-      expect(round.state.multiplier, 336);
-      expect(round.rounds, isEmpty);
+      await round.ticks.seconds(1.4);
+      expect(round.state.phase, RoundPhase.jumped);
+      expect(round.state.multiplier, 168);
 
-      await round.ticks.seconds(8);
-      expect(round.state.phase, RoundPhase.crashed);
-      expect(round.state.multiplier, 388);
-      expect(round.state.crashRevision, 1);
-      expect(round.rounds, [
-        RoundRecord(time: now, entry: 2000, multiplier: 168, outcome: RoundOutcome.jumped, crash: 388),
-      ]);
-      expect(round.balance, 48000 + 3360);
+      await round.ticks.seconds(1.5);
+      expect(round.state.phase, RoundPhase.ready);
+      expect(round.rounds, hasLength(1));
     });
 
     test('pays only once', () async {
@@ -257,7 +268,7 @@ void main() {
       expect(round.state.phase, RoundPhase.flying);
       await round.ticks.seconds(2.5);
 
-      expect(round.state.phase, RoundPhase.cashedOut);
+      expect(round.state.phase, RoundPhase.jumped);
       expect(round.state.result!.multiplier, 150);
       expect(round.balance, 49000 + 1500);
     });
@@ -283,7 +294,7 @@ void main() {
 
       await round.ticks.seconds(4);
 
-      expect(round.state.phase, RoundPhase.crashed);
+      expect(round.state.phase, RoundPhase.jumped);
       expect(round.state.result!.outcome, RoundOutcome.jumped);
       expect(round.state.result!.multiplier, 194);
       expect(round.balance, 49000 + 1940);
@@ -368,20 +379,25 @@ void main() {
     });
   });
 
-  test('counts every take-off, jump and crash, even when rounds repeat', () async {
+  test('counts every take-off, jump, crash and exit, even when rounds repeat', () async {
     round = Round(draws: [0.5]);
-    for (var played = 1; played <= 3; played++) {
+    for (var played = 1; played <= 4; played++) {
       await round.takeOff();
       await round.ticks.seconds(1);
-      await round.send(const JumpPressed());
-      await round.ticks.seconds(4);
-      await round.ticks.seconds(6);
+      if (played.isOdd) {
+        await round.send(const JumpPressed());
+      } else {
+        await round.ticks.seconds(4);
+      }
+      await round.ticks.seconds(2);
 
+      expect(round.state.phase, RoundPhase.ready);
       expect(round.state.takeOffRevision, played);
-      expect(round.state.jumpRevision, played);
-      expect(round.state.crashRevision, played);
+      expect(round.state.jumpRevision, (played + 1) ~/ 2);
+      expect(round.state.crashRevision, played ~/ 2);
+      expect(round.state.exitRevision, played);
     }
-    expect(round.rounds, hasLength(3));
-    expect(round.rounds.toSet(), hasLength(1));
+    expect(round.rounds, hasLength(4));
+    expect(round.rounds.where((record) => record.jumped).toSet(), hasLength(1));
   });
 }
