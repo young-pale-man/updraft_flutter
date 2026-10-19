@@ -15,7 +15,7 @@ class StatisticsDayGroup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(date.formatStatisticsDate(), style: AppStyles.body.body2.copyWith(color: AppColors.text.secondary)),
+        Text(date.formatStatisticsDate(), style: AppStyles.bodyL.copyWith(color: AppColors.textMuted)),
         const SizedBox(height: 4),
         ListView.separated(
           itemCount: dayGroup.length,

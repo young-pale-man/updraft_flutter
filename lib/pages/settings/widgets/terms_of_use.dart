@@ -31,7 +31,7 @@ class _TermsOfUseState extends BasePageState<TermsOfUse> {
             const SizedBox(height: 16),
             Text(
               AppConst.mockText + AppConst.mockText + AppConst.mockText,
-              style: AppStyles.body.body2.copyWith(color: AppColors.text.primary),
+              style: AppStyles.bodyL.copyWith(color: AppColors.ink),
             ),
             const SizedBox(height: 16),
           ],

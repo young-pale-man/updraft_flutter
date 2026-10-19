@@ -13,7 +13,7 @@ class PlaneDisplay extends StatelessWidget {
       width: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(44),
-        border: Border.all(width: 2, color: AppColors.text.primary),
+        border: Border.all(width: 2, color: AppColors.ink),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(42),

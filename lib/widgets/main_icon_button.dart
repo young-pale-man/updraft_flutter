@@ -27,7 +27,7 @@ class MainIconButton extends StatefulWidget {
 }
 
 class _MainIconButtonState extends State<MainIconButton> with SingleTickerProviderStateMixin {
-  final _disabledFilter = ColorFilter.mode(AppColors.shadow.buttonDisabled, BlendMode.srcATop);
+  final _disabledFilter = ColorFilter.mode(AppColors.capDisabled, BlendMode.srcATop);
 
   late final double _buttonHeight = widget.height;
   late final double _buttonWidth = widget.height * 0.96;

@@ -28,7 +28,7 @@ class _PreloaderPageState extends BasePageState<PreloaderPage> {
       children: [
         Padding(
           padding: EdgeInsets.only(bottom: 160 - MediaQuery.paddingOf(context).bottom),
-          child: SpinKitRing(color: AppColors.accent.primary1, size: 49),
+          child: SpinKitRing(color: AppColors.accent, size: 49),
         ),
       ],
     );

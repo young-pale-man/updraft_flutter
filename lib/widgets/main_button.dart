@@ -25,7 +25,7 @@ class _MainButtonState extends State<MainButton> with SingleTickerProviderStateM
   static const double _buttonMovementToWidthCoef = 0.007;
   static const double _topPaddingToWidthCoef = 0.005;
 
-  final _disabledFilter = ColorFilter.mode(AppColors.shadow.buttonDisabled, BlendMode.srcATop);
+  final _disabledFilter = ColorFilter.mode(AppColors.capDisabled, BlendMode.srcATop);
 
   late AnimationController _animate;
 
@@ -87,11 +87,11 @@ class _MainButtonState extends State<MainButton> with SingleTickerProviderStateM
                       ),
                       StrokeText(
                         text: title,
-                        textStyle: AppStyles.header.headerM.copyWith(
-                          color: disabled ? AppColors.tertiary.tertiary1 : AppColors.main.background,
+                        textStyle: AppStyles.titleM.copyWith(
+                          color: disabled ? AppColors.textDisabled : AppColors.shell,
                         ),
                         strokeWidth: 1.8,
-                        strokeColor: AppColors.accent.primary2,
+                        strokeColor: AppColors.ink,
                         textAlign: TextAlign.center,
                       ),
                     ],

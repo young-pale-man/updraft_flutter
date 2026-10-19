@@ -41,10 +41,7 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
                 padding: EdgeInsets.symmetric(horizontal: menuButtonSize + 8),
                 child: FittedBox(
                   fit: BoxFit.fitWidth,
-                  child: Text(
-                    currentPage.title,
-                    style: AppStyles.header.headerM.copyWith(color: AppColors.text.primary),
-                  ),
+                  child: Text(currentPage.title, style: AppStyles.titleM.copyWith(color: AppColors.ink)),
                 ),
               ),
             ),

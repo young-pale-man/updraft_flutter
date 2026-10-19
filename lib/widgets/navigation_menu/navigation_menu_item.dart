@@ -24,9 +24,7 @@ class NavigationMenuTile extends StatelessWidget {
               fit: BoxFit.scaleDown,
               child: Text(
                 item.title,
-                style: AppStyles.header.headerM.copyWith(
-                  color: isSelected ? AppColors.text.primary : AppColors.tertiary.tertiary1,
-                ),
+                style: AppStyles.titleM.copyWith(color: isSelected ? AppColors.ink : AppColors.textDisabled),
               ),
             ),
           ),

@@ -24,7 +24,7 @@ class StatisticsParameterPicker extends StatelessWidget {
         Expanded(
           child: FittedBox(
             fit: BoxFit.scaleDown,
-            child: Text(parameter.title, style: AppStyles.header.headerXS.copyWith(color: AppColors.text.primary)),
+            child: Text(parameter.title, style: AppStyles.titleS.copyWith(color: AppColors.ink)),
           ),
         ),
         MainIconButton(

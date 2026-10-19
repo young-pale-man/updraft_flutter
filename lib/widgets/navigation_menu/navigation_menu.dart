@@ -23,8 +23,8 @@ class NavigationMenu extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.fromLTRB(16, MediaQuery.paddingOf(context).top + 12, 16, 16),
             decoration: BoxDecoration(
-              color: AppColors.main.background,
-              border: Border(bottom: BorderSide(width: 2, color: AppColors.main.layer3)),
+              color: AppColors.shell,
+              border: Border(bottom: BorderSide(width: 2, color: AppColors.ink)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -18,10 +18,7 @@ class ChartRow extends StatelessWidget {
           Container(
             height: 14,
             width: 14,
-            decoration: BoxDecoration(
-              color: isWin ? AppColors.system.positive : AppColors.system.negative,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: isWin ? AppColors.positive : AppColors.negative, shape: BoxShape.circle),
           ),
           const SizedBox(width: 4),
           Expanded(
@@ -29,12 +26,12 @@ class ChartRow extends StatelessWidget {
               fit: BoxFit.scaleDown,
               child: Text(
                 isWin ? AppTexts.wins : AppTexts.loses,
-                style: AppStyles.body.body2.copyWith(color: AppColors.text.primary),
+                style: AppStyles.bodyL.copyWith(color: AppColors.ink),
               ),
             ),
           ),
           const SizedBox(width: 4),
-          Text('${value.toString()}%', style: AppStyles.body.body1.copyWith(color: AppColors.text.primary)),
+          Text('${value.toString()}%', style: AppStyles.titleS.copyWith(color: AppColors.ink)),
         ],
       ),
     );

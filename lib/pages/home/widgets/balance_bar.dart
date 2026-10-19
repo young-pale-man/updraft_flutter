@@ -13,9 +13,9 @@ class BalanceBar extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 14),
       decoration: BoxDecoration(
-        color: AppColors.main.layer1,
+        color: AppColors.cap,
         borderRadius: BorderRadius.circular(25),
-        border: Border.all(width: 2, color: AppColors.text.primary),
+        border: Border.all(width: 2, color: AppColors.ink),
       ),
       child: Row(
         children: [
@@ -24,10 +24,7 @@ class BalanceBar extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: FittedBox(
                 fit: BoxFit.scaleDown,
-                child: Text(
-                  Coins.format(balance),
-                  style: AppStyles.header.headerS.copyWith(color: AppColors.text.primary),
-                ),
+                child: Text(Coins.format(balance), style: AppStyles.figureM.copyWith(color: AppColors.ink)),
               ),
             ),
           ),

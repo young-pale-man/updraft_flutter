@@ -11,7 +11,7 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.main.background,
+      color: AppColors.shell,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: appBar,

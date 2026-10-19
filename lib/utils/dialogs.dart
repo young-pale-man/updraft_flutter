@@ -16,21 +16,19 @@ class AppDialogs {
   }) => showDialog(
     context: context,
     builder: (ctx) => CupertinoAlertDialog(
-      title: Text(title, style: AppStyles.regular.semiBold17.copyWith(color: AppColors.regular.text)),
-      content: Text(content, style: AppStyles.regular.regular13.copyWith(color: AppColors.regular.text)),
+      title: Text(title, style: AppStyles.titleS.copyWith(color: AppColors.ink)),
+      content: Text(content, style: AppStyles.bodyM.copyWith(color: AppColors.ink)),
       actions: [
         if (cancelIconTitle != null)
           CupertinoDialogAction(
-            child: Text(cancelIconTitle, style: AppStyles.regular.regular17.copyWith(color: AppColors.regular.action)),
+            child: Text(cancelIconTitle, style: AppStyles.bodyL.copyWith(color: AppColors.ink)),
             onPressed: () => Navigator.of(context).pop(false),
           ),
         if (actionButtonTitle != null)
           CupertinoDialogAction(
             child: Text(
               actionButtonTitle,
-              style: AppStyles.regular.semiBold17.copyWith(
-                color: isActionDestructive ? AppColors.regular.destructiveAction : AppColors.regular.action,
-              ),
+              style: AppStyles.titleS.copyWith(color: isActionDestructive ? AppColors.negative : AppColors.ink),
             ),
             onPressed: () => Navigator.of(context).pop(true),
           ),

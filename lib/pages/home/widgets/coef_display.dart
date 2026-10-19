@@ -18,13 +18,11 @@ class CoefDisplay extends StatelessWidget {
       children: [
         Text(
           Coins.formatMultiplier(multiplier),
-          style: AppStyles.header.headerL.copyWith(
-            color: flewAway ? AppColors.system.negative : AppColors.text.primary,
-          ),
+          style: AppStyles.figureL.copyWith(color: flewAway ? AppColors.negative : AppColors.ink),
         ),
         Text(
           flewAway ? AppTexts.flewAway : AppTexts.currentCoefficient,
-          style: AppStyles.caption.caption1.copyWith(color: AppColors.text.primary),
+          style: AppStyles.caption.copyWith(color: AppColors.ink),
         ),
       ],
     );

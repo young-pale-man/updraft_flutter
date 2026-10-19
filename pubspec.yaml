@@ -41,23 +41,9 @@ flutter:
     - assets/animations/
 
   fonts:
-    - family: Kanit
+    - family: Bungee
       fonts:
-        - asset: fonts/Kanit-Black.ttf
-        - asset: fonts/Kanit-BlackItalic.ttf
-        - asset: fonts/Kanit-Bold.ttf
-        - asset: fonts/Kanit-BoldItalic.ttf
-        - asset: fonts/Kanit-ExtraBold.ttf
-        - asset: fonts/Kanit-ExtraBoldItalic.ttf
-        - asset: fonts/Kanit-ExtraLight.ttf
-        - asset: fonts/Kanit-ExtraLightItalic.ttf
-        - asset: fonts/Kanit-Italic.ttf
-        - asset: fonts/Kanit-Light.ttf
-        - asset: fonts/Kanit-LightItalic.ttf
-        - asset: fonts/Kanit-Medium.ttf
-        - asset: fonts/Kanit-MediumItalic.ttf
-        - asset: fonts/Kanit-Regular.ttf
-        - asset: fonts/Kanit-SemiBold.ttf
-        - asset: fonts/Kanit-SemiBoldItalic.ttf
-        - asset: fonts/Kanit-Thin.ttf
-        - asset: fonts/Kanit-ThinItalic.ttf
+        - asset: fonts/Bungee-Regular.ttf
+    - family: Rubik
+      fonts:
+        - asset: fonts/Rubik-Variable.ttf

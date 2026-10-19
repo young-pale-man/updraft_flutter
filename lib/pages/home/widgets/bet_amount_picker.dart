@@ -22,7 +22,7 @@ class BetAmountPicker extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(AppTexts.roundEntry, style: AppStyles.body.body1.copyWith(color: AppColors.text.primary)),
+        Text(AppTexts.roundEntry, style: AppStyles.titleS.copyWith(color: AppColors.ink)),
         const SizedBox(height: 17),
         ValuePicker(
           value: entry,

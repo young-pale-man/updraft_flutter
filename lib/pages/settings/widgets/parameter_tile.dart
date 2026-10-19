@@ -20,9 +20,9 @@ class ParameterTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(17),
         decoration: BoxDecoration(
-          color: AppColors.main.layer1,
+          color: AppColors.cap,
           borderRadius: BorderRadius.circular(39),
-          border: Border.all(width: 2, color: AppColors.main.layer2),
+          border: Border.all(width: 2, color: AppColors.ink),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -31,7 +31,7 @@ class ParameterTile extends StatelessWidget {
             const SizedBox(width: 6),
             FittedBox(
               fit: BoxFit.scaleDown,
-              child: Text(title, style: AppStyles.header.headerXS.copyWith(color: AppColors.text.primary)),
+              child: Text(title, style: AppStyles.titleS.copyWith(color: AppColors.ink)),
             ),
           ],
         ),

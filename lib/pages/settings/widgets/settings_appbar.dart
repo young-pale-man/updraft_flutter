@@ -20,7 +20,7 @@ class SettingsAppbar extends StatelessWidget implements PreferredSizeWidget {
           Expanded(
             child: FittedBox(
               fit: BoxFit.scaleDown,
-              child: Text(title, style: AppStyles.header.headerXS.copyWith(color: AppColors.text.primary)),
+              child: Text(title, style: AppStyles.titleS.copyWith(color: AppColors.ink)),
             ),
           ),
           SizedBox(width: 48),

@@ -16,12 +16,10 @@ import 'in_memory_storages.dart';
 import 'recording_stage.dart';
 
 Future<void> loadAppFonts() async {
-  final loader = FontLoader('Kanit');
-  for (final file in Directory('fonts').listSync().whereType<File>().where((file) => file.path.endsWith('.ttf'))) {
-    final bytes = await file.readAsBytes();
-    loader.addFont(Future.value(ByteData.sublistView(bytes)));
+  for (final (family, file) in [('Bungee', 'fonts/Bungee-Regular.ttf'), ('Rubik', 'fonts/Rubik-Variable.ttf')]) {
+    final bytes = await File(file).readAsBytes();
+    await (FontLoader(family)..addFont(Future.value(ByteData.sublistView(bytes)))).load();
   }
-  await loader.load();
 }
 
 class AppHarness {

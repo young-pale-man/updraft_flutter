@@ -17,24 +17,21 @@ class StatisticsItemTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
       decoration: BoxDecoration(
-        color: AppColors.main.layer1,
+        color: AppColors.cap,
         borderRadius: BorderRadius.circular(26),
-        border: Border.all(width: 2, color: AppColors.main.layer2),
+        border: Border.all(width: 2, color: AppColors.ink),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            statisticsItem.time.formatStatisticsTime(),
-            style: AppStyles.body.body2.copyWith(color: AppColors.text.secondary),
-          ),
+          Text(statisticsItem.time.formatStatisticsTime(), style: AppStyles.bodyL.copyWith(color: AppColors.textMuted)),
           const SizedBox(width: 6),
           Text(
             Coins.formatMultiplier(statisticsItem.multiplier),
-            style: AppStyles.body.body1.copyWith(color: AppColors.text.primary),
+            style: AppStyles.titleS.copyWith(color: AppColors.ink),
           ),
           const SizedBox(width: 6),
-          Text(Coins.format(statisticsItem.entry), style: AppStyles.body.body2.copyWith(color: AppColors.text.primary)),
+          Text(Coins.format(statisticsItem.entry), style: AppStyles.bodyL.copyWith(color: AppColors.ink)),
           const SizedBox(width: 6),
           Row(
             mainAxisSize: MainAxisSize.min,
@@ -42,8 +39,8 @@ class StatisticsItemTile extends StatelessWidget {
             children: [
               Text(
                 Coins.formatChange(statisticsItem.change),
-                style: AppStyles.body.body1.copyWith(
-                  color: statisticsItem.jumped ? AppColors.system.positive : AppColors.system.negative,
+                style: AppStyles.titleS.copyWith(
+                  color: statisticsItem.jumped ? AppColors.positive : AppColors.negative,
                 ),
               ),
               const SizedBox(width: 4),

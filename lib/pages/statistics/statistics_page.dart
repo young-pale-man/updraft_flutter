@@ -54,7 +54,7 @@ class _StatisticsPageState extends BasePageState<StatisticsPage> {
                         const SizedBox(height: 64),
                         Text(
                           AppTexts.thereAreNoStatisticsAtThisMoment,
-                          style: AppStyles.body.body2.copyWith(color: AppColors.text.secondary),
+                          style: AppStyles.bodyL.copyWith(color: AppColors.textMuted),
                           textAlign: TextAlign.center,
                         ),
                       ],

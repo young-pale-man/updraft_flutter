@@ -49,21 +49,16 @@ class _ValuePickerState extends State<ValuePicker> {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 14),
             decoration: BoxDecoration(
-              color: widget.disabled ? Colors.transparent : AppColors.main.layer1,
+              color: widget.disabled ? Colors.transparent : AppColors.cap,
               borderRadius: BorderRadius.circular(25),
-              border: Border.all(
-                width: 2,
-                color: widget.disabled ? AppColors.tertiary.tertiary1 : AppColors.text.primary,
-              ),
+              border: Border.all(width: 2, color: widget.disabled ? AppColors.textDisabled : AppColors.ink),
             ),
             child: Center(
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
                   widget.format(widget.value),
-                  style: AppStyles.header.headerS.copyWith(
-                    color: widget.disabled ? AppColors.tertiary.tertiary1 : AppColors.text.primary,
-                  ),
+                  style: AppStyles.figureM.copyWith(color: widget.disabled ? AppColors.textDisabled : AppColors.ink),
                 ),
               ),
             ),

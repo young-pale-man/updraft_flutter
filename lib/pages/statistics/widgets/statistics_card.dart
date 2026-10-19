@@ -23,9 +23,9 @@ class StatisticsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
       decoration: BoxDecoration(
-        color: AppColors.main.layer1,
+        color: AppColors.cap,
         borderRadius: BorderRadius.circular(34),
-        border: Border.all(width: 2, color: AppColors.main.layer2),
+        border: Border.all(width: 2, color: AppColors.ink),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

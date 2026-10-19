@@ -27,7 +27,7 @@ class AutoModeDisplay extends StatelessWidget {
             Expanded(
               child: Text(
                 AppTexts.autoMode,
-                style: AppStyles.body.body1.copyWith(color: AppColors.text.primary),
+                style: AppStyles.titleS.copyWith(color: AppColors.ink),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -38,9 +38,9 @@ class AutoModeDisplay extends StatelessWidget {
                 child: CupertinoSwitch(
                   value: autoJump,
                   onChanged: disabled ? null : (value) => bloc.add(AutoJumpChanged(value)),
-                  inactiveTrackColor: AppColors.main.layer4,
-                  activeTrackColor: AppColors.system.positive,
-                  thumbColor: AppColors.main.background,
+                  inactiveTrackColor: AppColors.textDisabled,
+                  activeTrackColor: AppColors.positive,
+                  thumbColor: AppColors.shell,
                 ),
               ),
             ),

@@ -1,134 +1,78 @@
 import 'package:flutter/material.dart';
 
 sealed class AppStyles {
-  static HeaderStyle get header => const PhoneHeaderStyle._();
-  static BodyStyle get body => const PhoneBodyStyle._();
-  static CaptionStyle get caption => const PhoneCaptionStyle._();
-  static RegularStyle get regular => const RegularStyle._();
-}
+  static const String _display = 'Bungee';
+  static const String _text = 'Rubik';
+  static const List<FontFeature> _tabular = [FontFeature.tabularFigures()];
 
-sealed class HeaderStyle {
-  final TextStyle headerSpecial = const TextStyle();
-  final TextStyle headerL = const TextStyle();
-  final TextStyle headerM = const TextStyle();
-  final TextStyle headerS = const TextStyle();
-  final TextStyle headerXS = const TextStyle();
-}
+  static const TextStyle logo = TextStyle(fontFamily: _display, fontSize: 46, height: 1.05, letterSpacing: 1);
 
-sealed class BodyStyle {
-  final TextStyle body1 = const TextStyle();
-  final TextStyle body2 = const TextStyle();
-}
+  static const TextStyle titleL = TextStyle(fontFamily: _display, fontSize: 28, height: 1.1, letterSpacing: 0.5);
 
-sealed class CaptionStyle {
-  final TextStyle caption1 = const TextStyle();
-  final TextStyle caption2 = const TextStyle();
-}
+  static const TextStyle titleM = TextStyle(fontFamily: _display, fontSize: 22, height: 1.15, letterSpacing: 0.5);
 
-class PhoneHeaderStyle implements HeaderStyle {
-  const PhoneHeaderStyle._();
+  static const TextStyle titleS = TextStyle(fontFamily: _display, fontSize: 16, height: 1.2, letterSpacing: 0.5);
 
-  @override
-  TextStyle get headerSpecial => const TextStyle(
-    fontSize: 72,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w800,
-    height: 1.5,
+  static const TextStyle tag = TextStyle(fontFamily: _display, fontSize: 13, height: 1.2, letterSpacing: 0.6);
+
+  static const TextStyle figureXL = TextStyle(
+    fontFamily: _text,
+    fontSize: 60,
+    fontWeight: FontWeight.w900,
+    fontVariations: [FontVariation.weight(900)],
+    height: 1.05,
+    fontFeatures: _tabular,
   );
 
-  @override
-  TextStyle get headerL => const TextStyle(
-    fontSize: 32,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w700,
-    height: 1.5,
+  static const TextStyle figureL = TextStyle(
+    fontFamily: _text,
+    fontSize: 40,
+    fontWeight: FontWeight.w900,
+    fontVariations: [FontVariation.weight(900)],
+    height: 1.1,
+    fontFeatures: _tabular,
   );
 
-  @override
-  TextStyle get headerM => const TextStyle(
+  static const TextStyle figureM = TextStyle(
+    fontFamily: _text,
     fontSize: 24,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w700,
-    height: 1.5,
+    fontWeight: FontWeight.w800,
+    fontVariations: [FontVariation.weight(800)],
+    height: 1.15,
+    fontFeatures: _tabular,
   );
 
-  @override
-  TextStyle get headerS => const TextStyle(
-    fontSize: 20,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w700,
-    height: 1.5,
-  );
-
-  @override
-  TextStyle get headerXS => const TextStyle(
+  static const TextStyle figureS = TextStyle(
+    fontFamily: _text,
     fontSize: 17,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w700,
-    height: 1.5,
+    fontWeight: FontWeight.w800,
+    fontVariations: [FontVariation.weight(800)],
+    height: 1.2,
+    fontFeatures: _tabular,
   );
-}
 
-class PhoneBodyStyle implements BodyStyle {
-  const PhoneBodyStyle._();
-
-  @override
-  TextStyle get body1 => const TextStyle(
+  static const TextStyle bodyL = TextStyle(
+    fontFamily: _text,
     fontSize: 16,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w700,
-    height: 1.38,
+    fontWeight: FontWeight.w600,
+    fontVariations: [FontVariation.weight(600)],
+    height: 1.4,
   );
 
-  @override
-  TextStyle get body2 => const TextStyle(
-    fontSize: 16,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w400,
-    height: 1.38,
-  );
-}
-
-class PhoneCaptionStyle implements CaptionStyle {
-  const PhoneCaptionStyle._();
-
-  @override
-  TextStyle get caption1 => const TextStyle(
+  static const TextStyle bodyM = TextStyle(
+    fontFamily: _text,
     fontSize: 14,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
-    height: 1.38,
+    fontVariations: [FontVariation.weight(500)],
+    height: 1.45,
   );
 
-  @override
-  TextStyle get caption2 => const TextStyle(
-    fontSize: 10,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w700,
-    height: 1.5,
+  static const TextStyle caption = TextStyle(
+    fontFamily: _text,
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+    fontVariations: [FontVariation.weight(600)],
+    height: 1.35,
+    fontFeatures: _tabular,
   );
-}
-
-class RegularStyle {
-  const RegularStyle._();
-  final regular13 = const TextStyle(fontFamily: 'SF Pro', fontWeight: FontWeight.w400, fontSize: 13);
-
-  final semiBold13 = const TextStyle(fontFamily: 'SF Pro', fontWeight: FontWeight.w600, fontSize: 13);
-
-  final regular17 = const TextStyle(fontFamily: 'SF Pro', fontSize: 17, fontWeight: FontWeight.w400, height: 1);
-
-  final semiBold17 = const TextStyle(fontFamily: 'SF Pro', fontSize: 17, fontWeight: FontWeight.w600, height: 1);
-
-  final regular22 = const TextStyle(fontFamily: 'SF Pro', fontSize: 22, fontWeight: FontWeight.w400, height: 1);
-
-  final semiBold22 = const TextStyle(fontFamily: 'SF Pro', fontSize: 22, fontWeight: FontWeight.w600, height: 1);
 }

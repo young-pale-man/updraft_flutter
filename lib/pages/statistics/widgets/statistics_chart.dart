@@ -15,11 +15,11 @@ class StatisticsChart extends StatelessWidget {
     return CustomChart(
       radius: 96,
       percentValue: winPercentage,
-      chartColor: AppColors.system.positive,
+      chartColor: AppColors.positive,
       child: CustomChart(
         radius: 80,
         percentValue: losePercentage,
-        chartColor: AppColors.system.negative,
+        chartColor: AppColors.negative,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
