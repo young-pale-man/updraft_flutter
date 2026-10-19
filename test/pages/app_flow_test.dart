@@ -3,6 +3,9 @@ import 'package:updraft_flutter/res/texts.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:updraft_flutter/pages/statistics/widgets/day_panel.dart';
+import 'package:updraft_flutter/pages/statistics/widgets/summary_panel.dart';
+
 import '../support/app_harness.dart';
 
 void main() {
@@ -112,18 +115,61 @@ void main() {
     expect(tester.mainButtonTitle, '${AppTexts.play} 1.00');
   });
 
-  testWidgets('statistics list the rounds that were played', (tester) async {
+  testWidgets('statistics sum up and list the rounds that were played', (tester) async {
     final app = AppHarness(
       rounds: [
         RoundRecord(time: AppHarness.now, entry: 2000, multiplier: 342, outcome: RoundOutcome.jumped, crash: 510),
+        RoundRecord(time: AppHarness.now, entry: 1000, multiplier: 187, outcome: RoundOutcome.flewAway, crash: 187),
       ],
     );
     await app.launch(tester);
 
     await tester.openFromMenu(AppTexts.statistics);
 
-    expect(find.text('3.42×'), findsOneWidget);
-    expect(find.text('+48.40'), findsOneWidget);
+    final summary = find.byType(SummaryPanel);
+    expect(find.descendant(of: summary, matching: find.text('2')), findsOneWidget);
+    expect(find.descendant(of: summary, matching: find.text('50%')), findsOneWidget);
+    expect(find.descendant(of: summary, matching: find.text('3.42×')), findsOneWidget);
+    expect(find.descendant(of: summary, matching: find.text('+38.40')), findsOneWidget);
+
+    final today = find.byType(DayPanel);
+    expect(find.descendant(of: today, matching: find.text(AppTexts.today)), findsOneWidget);
+    expect(find.descendant(of: today, matching: find.text('+48.40')), findsOneWidget);
+    expect(find.descendant(of: today, matching: find.text('−10.00')), findsOneWidget);
+  });
+
+  testWidgets('statistics narrow down to a period', (tester) async {
+    final app = AppHarness(
+      rounds: [
+        RoundRecord(
+          time: DateTime(2026, 2, 1, 12),
+          entry: 1000,
+          multiplier: 150,
+          outcome: RoundOutcome.flewAway,
+          crash: 150,
+        ),
+        RoundRecord(time: AppHarness.now, entry: 2000, multiplier: 342, outcome: RoundOutcome.jumped, crash: 510),
+      ],
+    );
+    await app.launch(tester);
+    await tester.openFromMenu(AppTexts.statistics);
+    expect(find.byType(DayPanel), findsNWidgets(2));
+
+    await tester.tap(find.bySemanticsLabel(AppTexts.periodWeek));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(DayPanel), findsOneWidget);
+    expect(find.descendant(of: find.byType(SummaryPanel), matching: find.text('1')), findsOneWidget);
+  });
+
+  testWidgets('statistics say so when there is nothing to show', (tester) async {
+    final app = AppHarness();
+    await app.launch(tester);
+
+    await tester.openFromMenu(AppTexts.statistics);
+
+    expect(find.text(AppTexts.noFlightsYet), findsOneWidget);
+    expect(find.byType(DayPanel), findsNothing);
   });
 
   testWidgets('fits a small phone without overflowing', (tester) async {

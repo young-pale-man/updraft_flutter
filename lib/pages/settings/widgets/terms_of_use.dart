@@ -1,5 +1,5 @@
 import 'package:updraft_flutter/base/base_page_state.dart';
-import 'package:updraft_flutter/pages/settings/widgets/settings_appbar.dart';
+import 'package:updraft_flutter/widgets/main_appbar.dart';
 import 'package:updraft_flutter/res/colors.dart';
 import 'package:updraft_flutter/res/styles.dart';
 import 'package:updraft_flutter/res/texts.dart';
@@ -18,7 +18,7 @@ class _TermsOfUseState extends BasePageState<TermsOfUse> {
   bool get bottomSafeArea => false;
 
   @override
-  PreferredSizeWidget? get appBar => const SettingsAppbar(title: AppTexts.termsOfUse);
+  PreferredSizeWidget? get appBar => const MainAppbar(title: AppTexts.termsOfUse);
 
   @override
   Widget pageBuilder(BuildContext context) {

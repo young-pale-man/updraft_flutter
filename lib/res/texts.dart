@@ -53,6 +53,29 @@ class AppTexts {
 
   static const String allTime = 'All time';
   static const String today = 'Today';
+  static const String yesterday = 'Yesterday';
+  static const List<String> months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+  static const String periodAll = 'All';
+  static const String periodToday = 'Today';
+  static const String periodWeek = 'Week';
+  static const String periodMonth = 'Month';
+  static const String rounds = 'Rounds';
+  static const String jumpRate = 'Jumped';
+  static const String net = 'Net';
+  static const String noFlightsYet = 'No flights here yet. Play a round and come back.';
   static const String lastWeek = 'Last week';
   static const String lastMonth = 'Last month';
 

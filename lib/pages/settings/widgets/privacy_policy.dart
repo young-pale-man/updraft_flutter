@@ -1,5 +1,5 @@
 import 'package:updraft_flutter/base/base_page_state.dart';
-import 'package:updraft_flutter/pages/settings/widgets/settings_appbar.dart';
+import 'package:updraft_flutter/widgets/main_appbar.dart';
 import 'package:updraft_flutter/res/colors.dart';
 import 'package:updraft_flutter/res/styles.dart';
 import 'package:updraft_flutter/res/texts.dart';
@@ -18,7 +18,7 @@ class _PrivacyPolicyState extends BasePageState<PrivacyPolicy> {
   bool get bottomSafeArea => false;
 
   @override
-  PreferredSizeWidget? get appBar => const SettingsAppbar(title: AppTexts.privacyPolicy);
+  PreferredSizeWidget? get appBar => const MainAppbar(title: AppTexts.privacyPolicy);
 
   @override
   Widget pageBuilder(BuildContext context) {

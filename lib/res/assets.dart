@@ -16,12 +16,6 @@ class Assets {
 
   static const String plane = 'assets/animations/plane.riv';
 
-  static const String arrowLeft = 'assets/icons/arrow_left.svg';
-  static const String arrowRight = 'assets/icons/arrow_right.svg';
-
-  static const String statisticsWin = 'assets/icons/statistics_win.svg';
-  static const String statisticsLose = 'assets/icons/statistics_lose.svg';
-
   static const String privacyPolicy = 'assets/icons/privacy_policy.svg';
   static const String termsOfUse = 'assets/icons/terms_of_use.svg';
   static const String clear = 'assets/icons/clear.svg';
