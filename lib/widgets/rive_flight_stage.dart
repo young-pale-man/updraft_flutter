@@ -13,6 +13,7 @@ class RiveFlightStage extends ChangeNotifier implements FlightStage {
   RiveWidgetController? _controller;
   final List<RiveWidgetController> _retired = [];
   bool _takeOffPending = false;
+  bool _held = false;
   bool _disposed = false;
 
   Future<void> _load() async {
@@ -33,6 +34,7 @@ class RiveFlightStage extends ChangeNotifier implements FlightStage {
       file,
       stateMachineSelector: StateMachineSelector.byName(AppConst.animationStateMachine),
     );
+    _controller!.active = !_held;
     notifyListeners();
     if (previous == null) return;
     _retired.add(previous);
@@ -57,6 +59,12 @@ class RiveFlightStage extends ChangeNotifier implements FlightStage {
 
   @override
   void exit() => _fire(AppConst.finishAnimationTrigger);
+
+  @override
+  void hold(bool held) {
+    _held = held;
+    _controller?.active = !held;
+  }
 
   @override
   Widget build(BuildContext context) {

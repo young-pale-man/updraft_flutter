@@ -7,14 +7,23 @@ abstract interface class FlightStage implements Listenable {
 
   void exit();
 
+  void hold(bool held);
+
   void dispose();
 }
 
 class FlightScene extends StatefulWidget {
-  const FlightScene({super.key, required this.takeOffRevision, required this.exitRevision, required this.stage});
+  const FlightScene({
+    super.key,
+    required this.takeOffRevision,
+    required this.exitRevision,
+    required this.stage,
+    this.paused = false,
+  });
 
   final int takeOffRevision;
   final int exitRevision;
+  final bool paused;
   final FlightStage Function() stage;
 
   @override
@@ -29,6 +38,7 @@ class _FlightSceneState extends State<FlightScene> {
     super.didUpdateWidget(oldWidget);
     if (widget.takeOffRevision != oldWidget.takeOffRevision) _stage.takeOff();
     if (widget.exitRevision != oldWidget.exitRevision) _stage.exit();
+    if (widget.paused != oldWidget.paused) _stage.hold(widget.paused);
   }
 
   @override

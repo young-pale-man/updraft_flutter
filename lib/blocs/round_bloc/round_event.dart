@@ -50,6 +50,14 @@ final class RoundLeft extends RoundEvent {
   const RoundLeft();
 }
 
+final class RoundPaused extends RoundEvent {
+  const RoundPaused();
+}
+
+final class RoundResumed extends RoundEvent {
+  const RoundResumed();
+}
+
 final class _CountdownTicked extends RoundEvent {
   const _CountdownTicked(this.elapsed);
 

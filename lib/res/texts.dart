@@ -46,6 +46,8 @@ class AppTexts {
   static const String ready = 'Ready';
   static const String takeOffIn = 'Take-off in';
   static const String flying = 'Flying';
+  static const String paused = 'Paused';
+  static const String resume = 'Resume';
   static const String jumped = 'Jumped';
   static const String jumpedAt = 'Jumped at';
   static const String flewAwayAt = 'Flew away at';

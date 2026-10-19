@@ -17,6 +17,15 @@ class FlightHud extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<RoundBloc>().state;
+    return Stack(
+      children: [
+        Positioned.fill(child: _phaseView(state)),
+        if (state.paused) const Center(child: _PausedBadge()),
+      ],
+    );
+  }
+
+  Widget _phaseView(RoundState state) {
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.md),
       child: switch (state.phase) {
@@ -77,4 +86,23 @@ class FlightHud extends StatelessWidget {
     RoundPhase.crashed => AppColors.negative,
     _ => AppColors.figure,
   };
+}
+
+class _PausedBadge extends StatelessWidget {
+  const _PausedBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: AppColors.ink,
+        borderRadius: BorderRadius.circular(AppRadii.slab),
+        boxShadow: AppShadows.hard,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.sm, AppSpacing.lg, AppSpacing.xs + 2),
+        child: Text(AppTexts.paused, style: AppStyles.titleL.copyWith(color: AppColors.accent)),
+      ),
+    );
+  }
 }

@@ -22,6 +22,27 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends BasePageState<GamePage> {
+  late final AppLifecycleListener _lifecycle = AppLifecycleListener(onHide: _pauseInFlight);
+
+  @override
+  void initState() {
+    super.initState();
+    _lifecycle;
+  }
+
+  @override
+  void dispose() {
+    _lifecycle.dispose();
+    super.dispose();
+  }
+
+  void _pauseInFlight() {
+    final bloc = context.read<RoundBloc>();
+    if (bloc.state.phase == RoundPhase.countdown || bloc.state.phase == RoundPhase.flying) {
+      bloc.add(const RoundPaused());
+    }
+  }
+
   @override
   PreferredSizeWidget? get appBar => const MainAppbar(trailing: _BalanceReadout());
 
@@ -70,6 +91,8 @@ class _GamePageState extends BasePageState<GamePage> {
   Future<bool> _leaveRound() async {
     final bloc = context.read<RoundBloc>();
     if (bloc.state.phase == RoundPhase.flying) {
+      final wasPaused = bloc.state.paused;
+      bloc.add(const RoundPaused());
       final confirmed = await AppDialogs.showMainDialog(
         context,
         title: AppTexts.leaveFlight,
@@ -78,7 +101,10 @@ class _GamePageState extends BasePageState<GamePage> {
         actionTitle: AppTexts.leave,
         destructive: true,
       );
-      if (confirmed != true) return false;
+      if (confirmed != true) {
+        if (!wasPaused) bloc.add(const RoundResumed());
+        return false;
+      }
     }
     bloc.add(const RoundLeft());
     return true;

@@ -15,6 +15,9 @@ class RecordingStage implements FlightStage {
   void exit() => cues.add('exit');
 
   @override
+  void hold(bool held) => cues.add(held ? 'hold' : 'release');
+
+  @override
   void addListener(VoidCallback listener) {}
 
   @override

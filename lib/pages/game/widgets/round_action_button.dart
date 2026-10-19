@@ -15,6 +15,9 @@ class RoundActionButton extends StatelessWidget {
     final state = context.watch<RoundBloc>().state;
     final balance = context.select((BalanceBloc bloc) => bloc.state.balance);
     final round = context.read<RoundBloc>();
+    if (state.paused) {
+      return ActionButton(title: AppTexts.resume, onPressed: () => round.add(const RoundResumed()));
+    }
     return switch (state.phase) {
       RoundPhase.ready when BalanceRules.needsRefill(balance) => ActionButton(
         title: AppTexts.refill,

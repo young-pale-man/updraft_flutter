@@ -40,6 +40,8 @@ class RoundBloc extends Bloc<RoundEvent, RoundState> {
     on<CountdownCancelled>(_cancelCountdown);
     on<JumpPressed>(_jumpPressed);
     on<RoundLeft>(_leave);
+    on<RoundPaused>(_pause);
+    on<RoundResumed>(_resume);
     on<_CountdownTicked>(_countdownTicked);
     on<_FlightTicked>(_flightTicked);
     on<_ResultTicked>(_resultTicked);
@@ -52,6 +54,9 @@ class RoundBloc extends Bloc<RoundEvent, RoundState> {
   final DateTime Function() _clock;
 
   StreamSubscription<Duration>? _clockSubscription;
+  void Function(Duration elapsed)? _onTick;
+  Duration _clockOffset = Duration.zero;
+  Duration _lastElapsed = Duration.zero;
   int _crash = 100;
 
   int get _balanceNow => _balance.state.balance;
@@ -126,7 +131,7 @@ class RoundBloc extends Bloc<RoundEvent, RoundState> {
   }
 
   void _jumpPressed(JumpPressed event, Emitter<RoundState> emit) {
-    if (state.phase != RoundPhase.flying) return;
+    if (state.phase != RoundPhase.flying || state.paused) return;
     _jump(emit, state.multiplier);
   }
 
@@ -187,19 +192,45 @@ class RoundBloc extends Bloc<RoundEvent, RoundState> {
     emit(_ready());
   }
 
+  void _pause(RoundPaused event, Emitter<RoundState> emit) {
+    if (state.isReady || state.paused) return;
+    _clockOffset = _lastElapsed;
+    _stopClock();
+    emit(state.copyWith(paused: true));
+  }
+
+  void _resume(RoundResumed event, Emitter<RoundState> emit) {
+    if (!state.paused) return;
+    emit(state.copyWith(paused: false));
+    _subscribe();
+  }
+
   RoundState _ready() {
     return state.copyWith(
       phase: RoundPhase.ready,
       entry: BalanceRules.clampEntry(entry: state.entry, balance: _balanceNow),
       multiplier: 100,
       secondsLeft: 0,
+      paused: false,
       result: () => null,
     );
   }
 
   void _listen(void Function(Duration elapsed) onTick) {
+    _onTick = onTick;
+    _clockOffset = Duration.zero;
+    _lastElapsed = Duration.zero;
+    _subscribe();
+  }
+
+  void _subscribe() {
+    final onTick = _onTick;
+    if (onTick == null) return;
     _stopClock();
-    _clockSubscription = _ticks().listen(onTick);
+    _clockSubscription = _ticks().listen((elapsed) {
+      _lastElapsed = _clockOffset + elapsed;
+      onTick(_lastElapsed);
+    });
   }
 
   void _stopClock() {

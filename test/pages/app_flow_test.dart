@@ -106,6 +106,53 @@ void main() {
     expect(find.bySemanticsLabel(AppTexts.play), findsOneWidget);
   });
 
+  testWidgets('the flight holds still while leaving is being decided', (tester) async {
+    final app = AppHarness();
+    await app.launch(tester);
+    await tester.openFromMenu(AppTexts.play);
+    await tester.tapMainButton();
+    await tester.clockAt(app, 3);
+    await tester.clockAt(app, 2);
+
+    await tester.goBack();
+    expect(find.text(AppTexts.leaveFlight), findsOneWidget);
+    await tester.clockAt(app, 20);
+    expect(find.bySemanticsLabel('1.41×'), findsWidgets);
+    expect(app.stage.cues, ['takeOff', 'hold']);
+
+    await tester.tapText(AppTexts.stay);
+    expect(app.stage.cues, ['takeOff', 'hold', 'release']);
+    await tester.clockAt(app, 2);
+    expect(find.bySemanticsLabel('2.00×'), findsWidgets);
+    expect(tester.mainButtonTitle, '${AppTexts.jump} 20.00');
+  });
+
+  testWidgets('a flight pauses when the app goes to the background and waits for resume', (tester) async {
+    final app = AppHarness();
+    await app.launch(tester);
+    await tester.openFromMenu(AppTexts.play);
+    await tester.tapMainButton();
+    await tester.clockAt(app, 3);
+    await tester.clockAt(app, 2);
+
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+    await tester.pump();
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await tester.pump();
+
+    expect(find.text(AppTexts.paused), findsOneWidget);
+    expect(tester.mainButtonTitle, AppTexts.resume);
+    await tester.clockAt(app, 30);
+    expect(find.bySemanticsLabel('1.41×'), findsWidgets);
+
+    await tester.tapMainButton();
+    await tester.clockAt(app, 2);
+    expect(find.text(AppTexts.paused), findsNothing);
+    expect(find.bySemanticsLabel('2.00×'), findsWidgets);
+  });
+
   testWidgets('an empty balance offers a refill instead of a round', (tester) async {
     final app = AppHarness(balance: 40);
     await app.launch(tester);

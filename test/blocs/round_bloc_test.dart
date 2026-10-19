@@ -349,6 +349,76 @@ void main() {
     });
   });
 
+  group('pause', () {
+    test('stops the multiplier while paused and resumes from the same moment', () async {
+      round = Round();
+      await round.takeOff();
+      await round.ticks.seconds(2);
+
+      await round.send(const RoundPaused());
+      expect(round.state.paused, isTrue);
+      await round.ticks.seconds(30);
+      expect(round.state.multiplier, 141);
+      expect(round.state.phase, RoundPhase.flying);
+
+      await round.send(const RoundResumed());
+      expect(round.state.paused, isFalse);
+      await round.ticks.seconds(2);
+      expect(round.state.multiplier, 200);
+    });
+
+    test('holds the countdown too', () async {
+      round = Round();
+      await round.send(const PlayPressed());
+      await round.ticks.seconds(1.5);
+
+      await round.send(const RoundPaused());
+      await round.ticks.seconds(10);
+      expect(round.state.phase, RoundPhase.countdown);
+      expect(round.state.secondsLeft, 2);
+
+      await round.send(const RoundResumed());
+      await round.ticks.seconds(1.4);
+      expect(round.state.secondsLeft, 1);
+      await round.ticks.seconds(1.6);
+      expect(round.state.phase, RoundPhase.flying);
+      expect(round.balance, 49000);
+    });
+
+    test('ignores a jump while paused', () async {
+      round = Round();
+      await round.takeOff();
+      await round.ticks.seconds(2);
+      await round.send(const RoundPaused());
+
+      await round.send(const JumpPressed());
+
+      expect(round.state.phase, RoundPhase.flying);
+      expect(round.balance, 49000);
+    });
+
+    test('leaving while paused records the round at the frozen multiplier', () async {
+      round = Round();
+      await round.takeOff();
+      await round.ticks.seconds(2);
+      await round.send(const RoundPaused());
+
+      await round.send(const RoundLeft());
+
+      expect(round.state.phase, RoundPhase.ready);
+      expect(round.state.paused, isFalse);
+      expect(round.rounds.single, RoundRecord(time: now, entry: 1000, multiplier: 141, outcome: RoundOutcome.left));
+    });
+
+    test('does nothing before a round starts', () async {
+      round = Round();
+
+      await round.send(const RoundPaused());
+
+      expect(round.state.paused, isFalse);
+    });
+  });
+
   group('entry', () {
     test('stays within the limits and the balance', () async {
       round = Round(balance: 1500);

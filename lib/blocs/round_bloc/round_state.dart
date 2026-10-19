@@ -10,6 +10,7 @@ final class RoundState extends Equatable {
     this.target = RoundRules.defaultTarget,
     this.multiplier = 100,
     this.secondsLeft = 0,
+    this.paused = false,
     this.result,
     this.takeOffRevision = 0,
     this.jumpRevision = 0,
@@ -22,6 +23,7 @@ final class RoundState extends Equatable {
   final int target;
   final int multiplier;
   final int secondsLeft;
+  final bool paused;
   final RoundRecord? result;
   final int takeOffRevision;
   final int jumpRevision;
@@ -42,6 +44,7 @@ final class RoundState extends Equatable {
     int? target,
     int? multiplier,
     int? secondsLeft,
+    bool? paused,
     RoundRecord? Function()? result,
     int? takeOffRevision,
     int? jumpRevision,
@@ -54,6 +57,7 @@ final class RoundState extends Equatable {
       target: target ?? this.target,
       multiplier: multiplier ?? this.multiplier,
       secondsLeft: secondsLeft ?? this.secondsLeft,
+      paused: paused ?? this.paused,
       result: result != null ? result() : this.result,
       takeOffRevision: takeOffRevision ?? this.takeOffRevision,
       jumpRevision: jumpRevision ?? this.jumpRevision,
@@ -69,6 +73,7 @@ final class RoundState extends Equatable {
     target,
     multiplier,
     secondsLeft,
+    paused,
     result,
     takeOffRevision,
     jumpRevision,
