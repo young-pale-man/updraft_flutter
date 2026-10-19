@@ -9,6 +9,20 @@ class AppTexts {
   static const String bestJump = 'Best jump';
   static const String noJumpYet = '—';
   static const String howToPlay = 'How to play';
+
+  static const String entry = 'Entry';
+  static const String autoJump = 'Auto jump';
+  static const String lowerEntry = 'Lower the entry';
+  static const String raiseEntry = 'Raise the entry';
+  static const String lowerTarget = 'Lower the target';
+  static const String raiseTarget = 'Raise the target';
+  static const String lastFlights = 'Last flights';
+  static const String ready = 'Ready';
+  static const String takeOffIn = 'Take-off in';
+  static const String flying = 'Flying';
+  static const String jumped = 'Jumped';
+  static const String jumpedAt = 'Jumped at';
+  static const String flewAwayAt = 'Flew away at';
   static const String playMoney = 'Play coins only. Nothing to buy, nothing to win.';
 
   static const String home = 'Home';
@@ -28,7 +42,7 @@ class AppTexts {
   static const String gotIt = 'Got it!';
 
   static const String currentCoefficient = 'Current coefficient';
-  static const String flewAway = 'Flew away!';
+  static const String flewAway = 'Flew away';
   static const String newRoundStartsIn = 'New round starts in:';
   static const String jump = 'Jump';
   static const String refill = 'Refill';

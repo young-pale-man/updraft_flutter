@@ -24,7 +24,7 @@ class AppSizes {
   static const double outline = 3;
   static const double hairline = 2;
   static const double dropShadow = 6;
-  static const double capTravel = 6;
+  static const double capTravel = 10;
   static const double checker = 28;
   static const double actionButton = 116;
   static const double arrowButton = 46;

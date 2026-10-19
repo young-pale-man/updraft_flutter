@@ -37,18 +37,18 @@ void main() {
     await tester.tapMainButton();
     expect(tester.mainButtonTitle, AppTexts.cancel);
     await tester.clockAt(app, 1.2);
-    expect(find.text('2'), findsOneWidget);
+    expect(find.bySemanticsLabel('2'), findsOneWidget);
 
     await tester.clockAt(app, 3);
-    expect(find.text('490.00'), findsOneWidget);
+    expect(find.bySemanticsLabel('490.00'), findsOneWidget);
     expect(app.stage.cues, ['takeOff']);
 
     await tester.clockAt(app, 3);
-    expect(find.text('1.68×'), findsOneWidget);
-    expect(tester.mainButtonTitle, '${AppTexts.jump} · 16.80');
+    expect(find.bySemanticsLabel('1.68×'), findsOneWidget);
+    expect(tester.mainButtonTitle, '${AppTexts.jump} 16.80');
 
     await tester.tapMainButton();
-    expect(find.text('506.80'), findsOneWidget);
+    expect(find.bySemanticsLabel('506.80'), findsOneWidget);
     expect(app.balanceStorage.balance, 50680);
 
     await tester.clockAt(app, 8);
@@ -57,7 +57,7 @@ void main() {
     expect(app.roundsStorage.rounds.single.outcome, RoundOutcome.jumped);
 
     await tester.clockAt(app, 2);
-    expect(tester.mainButtonTitle, AppTexts.play);
+    expect(tester.mainButtonTitle, '${AppTexts.play} 10.00');
   });
 
   testWidgets('a plane that flies away takes the entry', (tester) async {
@@ -69,9 +69,9 @@ void main() {
     await tester.clockAt(app, 3);
     await tester.clockAt(app, 4);
 
-    expect(find.text('1.94×'), findsOneWidget);
+    expect(find.bySemanticsLabel('1.94×'), findsWidgets);
     expect(find.text(AppTexts.flewAway), findsOneWidget);
-    expect(find.text('490.00'), findsOneWidget);
+    expect(find.bySemanticsLabel('490.00'), findsOneWidget);
     expect(app.roundsStorage.rounds.single.change, -1000);
   });
 
@@ -86,7 +86,7 @@ void main() {
     await tester.goBack();
     expect(find.text(AppTexts.leaveFlight), findsOneWidget);
     await tester.tapText(AppTexts.stay);
-    expect(tester.mainButtonTitle, '${AppTexts.jump} · 14.10');
+    expect(tester.mainButtonTitle, '${AppTexts.jump} 14.10');
 
     await tester.goBack();
     await tester.tapText(AppTexts.leave);
@@ -104,8 +104,8 @@ void main() {
     expect(tester.mainButtonTitle, AppTexts.refill);
     await tester.tapMainButton();
 
-    expect(find.text('500.00'), findsOneWidget);
-    expect(tester.mainButtonTitle, AppTexts.play);
+    expect(find.bySemanticsLabel('500.00'), findsOneWidget);
+    expect(tester.mainButtonTitle, '${AppTexts.play} 1.00');
   });
 
   testWidgets('statistics list the rounds that were played', (tester) async {

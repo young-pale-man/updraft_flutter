@@ -4,7 +4,7 @@ import 'package:updraft_flutter/application.dart';
 import 'package:updraft_flutter/data/models/round_record.dart';
 import 'package:updraft_flutter/res/texts.dart';
 import 'package:updraft_flutter/utils/dependency_initializer.dart';
-import 'package:updraft_flutter/widgets/main_button.dart';
+import 'package:updraft_flutter/widgets/machine/action_button.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -62,9 +62,12 @@ class AppHarness {
 }
 
 extension AppGestures on WidgetTester {
-  Finder get mainButton => find.byType(MainButton);
+  Finder get mainButton => find.byType(ActionButton);
 
-  String get mainButtonTitle => widget<MainButton>(mainButton).title ?? '';
+  String get mainButtonTitle {
+    final button = widget<ActionButton>(mainButton);
+    return button.detail == null ? button.title : '${button.title} ${button.detail}';
+  }
 
   Future<void> tapMainButton() async {
     await tap(mainButton);

@@ -7,12 +7,11 @@ class RoundRules {
   static const Duration resultPause = Duration(milliseconds: 1500);
 
   static const int defaultEntry = 1000;
-  static const int entryStep = 10;
+  static const int entryStep = 100;
 
   static const int minTarget = 110;
   static const int maxTarget = CrashCurve.maxHundredths;
   static const int defaultTarget = 200;
-  static const int targetStep = 10;
 
   static int secondsLeft(Duration elapsed) {
     final remaining = countdown - elapsed;
@@ -21,4 +20,16 @@ class RoundRules {
   }
 
   static int clampTarget(int target) => target.clamp(minTarget, maxTarget);
+
+  static int stepTarget(int target, {required bool up}) {
+    final step = _stepAt(up ? target : target - 1);
+    final snapped = up ? (target ~/ step + 1) * step : ((target - 1) ~/ step) * step;
+    return clampTarget(snapped);
+  }
+
+  static int _stepAt(int target) {
+    if (target < 500) return 10;
+    if (target < 2000) return 50;
+    return 100;
+  }
 }

@@ -16,8 +16,8 @@ class AppColors {
 
   static const Color cap = Color(0xFFEAE8E4);
   static const Color capShade = Color(0xFF7A5B66);
-  static const Color capDisabled = Color(0xFFB4BBB6);
-  static const Color capShadeDisabled = Color(0xFF7C847F);
+  static const Color capDisabled = Color(0xFF9DA59F);
+  static const Color capShadeDisabled = Color(0xFF68706B);
 
   static const Color accent = Color(0xFFEAD737);
   static const Color onAccent = ink;
