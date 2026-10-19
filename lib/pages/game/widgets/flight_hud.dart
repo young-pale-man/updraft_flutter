@@ -1,4 +1,5 @@
 import 'package:updraft_flutter/blocs/round_bloc/round_bloc.dart';
+import 'package:updraft_flutter/pages/game/widgets/result_banner.dart';
 import 'package:updraft_flutter/res/colors.dart';
 import 'package:updraft_flutter/res/dimens.dart';
 import 'package:updraft_flutter/res/shadows.dart';
@@ -30,28 +31,38 @@ class FlightHud extends StatelessWidget {
             ],
           ),
         ),
-        _ => Align(
-          alignment: Alignment.topLeft,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _phaseTag(state.phase),
-              const SizedBox(height: AppSpacing.xs),
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                child: OutlinedText(
-                  Coins.formatMultiplier(state.multiplier),
-                  style: AppStyles.figureXL,
-                  fill: _multiplierColor(state.phase),
-                  width: 8,
-                  shadows: AppShadows.text,
-                ),
+        _ => Stack(
+          children: [
+            Align(alignment: Alignment.topLeft, child: _liveMultiplier(state)),
+            if (state.result != null)
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: ResultBanner(key: ValueKey(state.result), result: state.result!),
               ),
-            ],
-          ),
+          ],
         ),
       },
+    );
+  }
+
+  Widget _liveMultiplier(RoundState state) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _phaseTag(state.phase),
+        const SizedBox(height: AppSpacing.xs),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: OutlinedText(
+            Coins.formatMultiplier(state.multiplier),
+            style: AppStyles.figureXL,
+            fill: _multiplierColor(state.phase),
+            width: 8,
+            shadows: AppShadows.text,
+          ),
+        ),
+      ],
     );
   }
 

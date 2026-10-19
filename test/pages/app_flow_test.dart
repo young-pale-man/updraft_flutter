@@ -49,6 +49,8 @@ void main() {
 
     await tester.tapMainButton();
     expect(find.bySemanticsLabel('506.80'), findsOneWidget);
+    expect(find.text('${AppTexts.jumpedAt} 1.68×'), findsOneWidget);
+    expect(find.bySemanticsLabel('+6.80'), findsOneWidget);
     expect(app.balanceStorage.balance, 50680);
 
     await tester.clockAt(app, 8);
@@ -71,6 +73,8 @@ void main() {
 
     expect(find.bySemanticsLabel('1.94×'), findsWidgets);
     expect(find.text(AppTexts.flewAway), findsOneWidget);
+    expect(find.text('${AppTexts.flewAwayAt} 1.94×'), findsOneWidget);
+    expect(find.bySemanticsLabel('−10.00'), findsOneWidget);
     expect(find.bySemanticsLabel('490.00'), findsOneWidget);
     expect(app.roundsStorage.rounds.single.change, -1000);
   });
