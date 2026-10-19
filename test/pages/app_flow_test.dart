@@ -37,8 +37,8 @@ void main() {
     await app.launch(tester);
     await tester.openFromMenu(AppTexts.play);
 
-    await tester.tapMainButton();
-    expect(tester.mainButtonTitle, AppTexts.cancel);
+    await tester.tapActionButton();
+    expect(tester.actionButtonTitle, AppTexts.cancel);
     await tester.clockAt(app, 1.2);
     expect(find.bySemanticsLabel('2'), findsOneWidget);
 
@@ -48,9 +48,9 @@ void main() {
 
     await tester.clockAt(app, 3);
     expect(find.bySemanticsLabel('1.68×'), findsOneWidget);
-    expect(tester.mainButtonTitle, '${AppTexts.jump} 16.80');
+    expect(tester.actionButtonTitle, '${AppTexts.jump} 16.80');
 
-    await tester.tapMainButton();
+    await tester.tapActionButton();
     expect(find.bySemanticsLabel('506.80'), findsOneWidget);
     expect(find.text(AppTexts.jumped), findsOneWidget);
     expect(find.text(AppTexts.flewAway), findsNothing);
@@ -65,7 +65,7 @@ void main() {
     expect(find.text(AppTexts.flewAway), findsNothing);
 
     await tester.clockAt(app, 2);
-    expect(tester.mainButtonTitle, '${AppTexts.play} 10.00');
+    expect(tester.actionButtonTitle, '${AppTexts.play} 10.00');
   });
 
   testWidgets('a plane that flies away takes the entry', (tester) async {
@@ -73,7 +73,7 @@ void main() {
     await app.launch(tester);
     await tester.openFromMenu(AppTexts.play);
 
-    await tester.tapMainButton();
+    await tester.tapActionButton();
     await tester.clockAt(app, 3);
     await tester.clockAt(app, 4);
 
@@ -89,14 +89,14 @@ void main() {
     final app = AppHarness();
     await app.launch(tester);
     await tester.openFromMenu(AppTexts.play);
-    await tester.tapMainButton();
+    await tester.tapActionButton();
     await tester.clockAt(app, 3);
     await tester.clockAt(app, 2);
 
     await tester.goBack();
     expect(find.text(AppTexts.leaveFlight), findsOneWidget);
     await tester.tapText(AppTexts.stay);
-    expect(tester.mainButtonTitle, '${AppTexts.jump} 14.10');
+    expect(tester.actionButtonTitle, '${AppTexts.jump} 14.10');
 
     await tester.goBack();
     await tester.tapText(AppTexts.leave);
@@ -110,7 +110,7 @@ void main() {
     final app = AppHarness();
     await app.launch(tester);
     await tester.openFromMenu(AppTexts.play);
-    await tester.tapMainButton();
+    await tester.tapActionButton();
     await tester.clockAt(app, 3);
     await tester.clockAt(app, 2);
 
@@ -124,14 +124,14 @@ void main() {
     expect(app.stage.cues, ['takeOff', 'hold', 'release']);
     await tester.clockAt(app, 2);
     expect(find.bySemanticsLabel('2.00×'), findsWidgets);
-    expect(tester.mainButtonTitle, '${AppTexts.jump} 20.00');
+    expect(tester.actionButtonTitle, '${AppTexts.jump} 20.00');
   });
 
   testWidgets('a flight pauses when the app goes to the background and waits for resume', (tester) async {
     final app = AppHarness();
     await app.launch(tester);
     await tester.openFromMenu(AppTexts.play);
-    await tester.tapMainButton();
+    await tester.tapActionButton();
     await tester.clockAt(app, 3);
     await tester.clockAt(app, 2);
 
@@ -143,11 +143,11 @@ void main() {
     await tester.pump();
 
     expect(find.text(AppTexts.paused), findsOneWidget);
-    expect(tester.mainButtonTitle, AppTexts.resume);
+    expect(tester.actionButtonTitle, AppTexts.resume);
     await tester.clockAt(app, 30);
     expect(find.bySemanticsLabel('1.41×'), findsWidgets);
 
-    await tester.tapMainButton();
+    await tester.tapActionButton();
     await tester.clockAt(app, 2);
     expect(find.text(AppTexts.paused), findsNothing);
     expect(find.bySemanticsLabel('2.00×'), findsWidgets);
@@ -158,11 +158,11 @@ void main() {
     await app.launch(tester);
     await tester.openFromMenu(AppTexts.play);
 
-    expect(tester.mainButtonTitle, AppTexts.refill);
-    await tester.tapMainButton();
+    expect(tester.actionButtonTitle, AppTexts.refill);
+    await tester.tapActionButton();
 
     expect(find.bySemanticsLabel('500.00'), findsOneWidget);
-    expect(tester.mainButtonTitle, '${AppTexts.play} 1.00');
+    expect(tester.actionButtonTitle, '${AppTexts.play} 1.00');
   });
 
   testWidgets('statistics sum up and list the rounds that were played', (tester) async {
@@ -267,7 +267,7 @@ void main() {
 
     await tester.openFromMenu(AppTexts.play);
     expect(tester.takeException(), isNull);
-    await tester.tapMainButton();
+    await tester.tapActionButton();
     await tester.clockAt(app, 3);
     await tester.clockAt(app, 3);
     expect(tester.takeException(), isNull);

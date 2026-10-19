@@ -62,15 +62,15 @@ class AppHarness {
 }
 
 extension AppGestures on WidgetTester {
-  Finder get mainButton => find.byType(ActionButton);
+  Finder get actionButton => find.byType(ActionButton);
 
-  String get mainButtonTitle {
-    final button = widget<ActionButton>(mainButton);
+  String get actionButtonTitle {
+    final button = widget<ActionButton>(actionButton);
     return button.detail == null ? button.title : '${button.title} ${button.detail}';
   }
 
-  Future<void> tapMainButton() async {
-    await tap(mainButton);
+  Future<void> tapActionButton() async {
+    await tap(actionButton);
     await pump();
     await pump(const Duration(milliseconds: 200));
   }
