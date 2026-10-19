@@ -6,11 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StatisticsChart extends StatelessWidget {
-  const StatisticsChart({
-    super.key,
-    required this.winPercentage,
-    required this.losePercentage,
-  });
+  const StatisticsChart({super.key, required this.winPercentage, required this.losePercentage});
 
   final double winPercentage;
   final double losePercentage;
@@ -28,15 +24,9 @@ class StatisticsChart extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ChartRow(
-              isWin: true,
-              value: winPercentage.ceil(),
-            ),
+            ChartRow(isWin: true, value: winPercentage.ceil()),
             const SizedBox(height: 4),
-            ChartRow(
-              isWin: false,
-              value: losePercentage.floor(),
-            ),
+            ChartRow(isWin: false, value: losePercentage.floor()),
           ],
         ),
       ),

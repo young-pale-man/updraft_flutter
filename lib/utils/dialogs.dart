@@ -13,37 +13,28 @@ class AppDialogs {
     String? cancelIconTitle,
     String? actionButtonTitle,
     bool isActionDestructive = false,
-  }) =>
-      showDialog(
-        context: context,
-        builder: (ctx) => CupertinoAlertDialog(
-          title: Text(
-            title,
-            style: AppStyles.regular.semiBold17.copyWith(color: AppColors.regular.text),
+  }) => showDialog(
+    context: context,
+    builder: (ctx) => CupertinoAlertDialog(
+      title: Text(title, style: AppStyles.regular.semiBold17.copyWith(color: AppColors.regular.text)),
+      content: Text(content, style: AppStyles.regular.regular13.copyWith(color: AppColors.regular.text)),
+      actions: [
+        if (cancelIconTitle != null)
+          CupertinoDialogAction(
+            child: Text(cancelIconTitle, style: AppStyles.regular.regular17.copyWith(color: AppColors.regular.action)),
+            onPressed: () => Navigator.of(context).pop(false),
           ),
-          content: Text(
-            content,
-            style: AppStyles.regular.regular13.copyWith(color: AppColors.regular.text),
+        if (actionButtonTitle != null)
+          CupertinoDialogAction(
+            child: Text(
+              actionButtonTitle,
+              style: AppStyles.regular.semiBold17.copyWith(
+                color: isActionDestructive ? AppColors.regular.destructiveAction : AppColors.regular.action,
+              ),
+            ),
+            onPressed: () => Navigator.of(context).pop(true),
           ),
-          actions: [
-            if (cancelIconTitle != null)
-              CupertinoDialogAction(
-                child: Text(
-                  cancelIconTitle,
-                  style: AppStyles.regular.regular17.copyWith(color: AppColors.regular.action),
-                ),
-                onPressed: () => Navigator.of(context).pop(false),
-              ),
-            if (actionButtonTitle != null)
-              CupertinoDialogAction(
-                child: Text(
-                  actionButtonTitle,
-                  style: AppStyles.regular.semiBold17.copyWith(
-                      color: isActionDestructive ? AppColors.regular.destructiveAction : AppColors.regular.action),
-                ),
-                onPressed: () => Navigator.of(context).pop(true),
-              ),
-          ],
-        ),
-      );
+      ],
+    ),
+  );
 }

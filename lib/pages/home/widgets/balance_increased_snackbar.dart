@@ -4,10 +4,7 @@ import 'package:updraft_flutter/res/styles.dart';
 import 'package:flutter/material.dart';
 
 class BalanceIncreasedSnackbar extends StatelessWidget {
-  const BalanceIncreasedSnackbar({
-    super.key,
-    required this.difference,
-  });
+  const BalanceIncreasedSnackbar({super.key, required this.difference});
 
   final double difference;
 
@@ -18,16 +15,10 @@ class BalanceIncreasedSnackbar extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.system.positive,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          width: 2,
-          color: AppColors.text.primary,
-        ),
+        border: Border.all(width: 2, color: AppColors.text.primary),
         boxShadow: AppShadows.shadowOne,
       ),
-      child: Text(
-        difference.toStringAsFixed(2),
-        style: AppStyles.body.body1.copyWith(color: AppColors.text.primary),
-      ),
+      child: Text(difference.toStringAsFixed(2), style: AppStyles.body.body1.copyWith(color: AppColors.text.primary)),
     );
   }
 }

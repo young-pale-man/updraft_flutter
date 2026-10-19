@@ -16,24 +16,12 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations(
-      [
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ],
-    );
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => injector<BalanceBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => injector<StatisticsBloc>(),
-        ),
-        BlocProvider(
-          lazy: true,
-          create: (context) => GameBloc(),
-        ),
+        BlocProvider(create: (context) => injector<BalanceBloc>()),
+        BlocProvider(create: (context) => injector<StatisticsBloc>()),
+        BlocProvider(lazy: true, create: (context) => GameBloc()),
       ],
       child: MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),

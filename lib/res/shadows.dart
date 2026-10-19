@@ -5,11 +5,6 @@ class AppShadows {
   AppShadows._();
 
   static List<BoxShadow> shadowOne = [
-    BoxShadow(
-      offset: const Offset(0, 2),
-      blurRadius: 2,
-      spreadRadius: 0,
-      color: AppColors.shadow.shadow1,
-    ),
+    BoxShadow(offset: const Offset(0, 2), blurRadius: 2, spreadRadius: 0, color: AppColors.shadow.shadow1),
   ];
 }

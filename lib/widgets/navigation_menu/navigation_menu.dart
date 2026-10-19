@@ -7,10 +7,7 @@ import 'package:updraft_flutter/widgets/navigation_menu/navigation_menu_item.dar
 import 'package:flutter/material.dart';
 
 class NavigationMenu extends StatelessWidget {
-  const NavigationMenu({
-    super.key,
-    required this.currentPage,
-  });
+  const NavigationMenu({super.key, required this.currentPage});
 
   final Type currentPage;
 
@@ -23,19 +20,12 @@ class NavigationMenu extends StatelessWidget {
           position: Tween<Offset>(
             begin: const Offset(0, -1),
             end: Offset.zero,
-          ).animate(
-            CurvedAnimation(
-              parent: ModalRoute.of(context)!.animation!,
-              curve: Curves.easeInOut,
-            ),
-          ),
+          ).animate(CurvedAnimation(parent: ModalRoute.of(context)!.animation!, curve: Curves.easeInOut)),
           child: Container(
             padding: EdgeInsets.fromLTRB(16, MediaQuery.paddingOf(context).top + 12, 16, 16),
             decoration: BoxDecoration(
               color: AppColors.main.background,
-              border: Border(
-                bottom: BorderSide(width: 2, color: AppColors.main.layer3),
-              ),
+              border: Border(bottom: BorderSide(width: 2, color: AppColors.main.layer3)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,16 +36,10 @@ class NavigationMenu extends StatelessWidget {
                   icon: Assets.close,
                 ),
                 const SizedBox(height: 32),
-                ...List.generate(
-                  NavigationMenuItems.values.length,
-                  (index) {
-                    final item = NavigationMenuItems.values[index];
-                    return NavigationMenuTile(
-                      item: item,
-                      isSelected: currentPage == item.page,
-                    );
-                  },
-                ),
+                ...List.generate(NavigationMenuItems.values.length, (index) {
+                  final item = NavigationMenuItems.values[index];
+                  return NavigationMenuTile(item: item, isSelected: currentPage == item.page);
+                }),
               ],
             ),
           ),

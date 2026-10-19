@@ -63,18 +63,16 @@ class _StatisticsPageState extends BasePageState<StatisticsPage> {
                           AppTexts.thereAreNoStatisticsAtThisMoment,
                           style: AppStyles.body.body2.copyWith(color: AppColors.text.secondary),
                           textAlign: TextAlign.center,
-                        )
+                        ),
                       ],
                     )
                   : Expanded(
                       child: ListView.separated(
                         padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom + 16),
                         itemCount: statGrouped.length,
-                        itemBuilder: (context, index) => StatisticsDayGroup(
-                          date: statGrouped[index].key,
-                          dayGroup: statGrouped[index].value,
-                        ),
-                        separatorBuilder: (_, __) => const SizedBox(height: 20),
+                        itemBuilder: (context, index) =>
+                            StatisticsDayGroup(date: statGrouped[index].key, dayGroup: statGrouped[index].value),
+                        separatorBuilder: (_, _) => const SizedBox(height: 20),
                       ),
                     ),
             ],
@@ -84,7 +82,7 @@ class _StatisticsPageState extends BasePageState<StatisticsPage> {
     );
   }
 
-  _changeParameter(int index) => setState(() => _selectedParameter = StatisticsParameter.values[index]);
+  void _changeParameter(int index) => setState(() => _selectedParameter = StatisticsParameter.values[index]);
 
   List<StatisticsItemModel> _filterStatisticsByParameter() {
     if (_selectedParameter == StatisticsParameter.allTime) {
@@ -94,20 +92,18 @@ class _StatisticsPageState extends BasePageState<StatisticsPage> {
     final now = DateTime.now();
     final fromDate = now.subtract(Duration(days: _selectedParameter.daysFromNow ?? 0));
 
-    return _allStatistics.where(
-      (item) {
-        if (item.date == null) return false;
+    return _allStatistics.where((item) {
+      if (item.date == null) return false;
 
-        final itemDate = DateTime(item.date!.year, item.date!.month, item.date!.day);
-        final todayDate = DateTime(now.year, now.month, now.day);
+      final itemDate = DateTime(item.date!.year, item.date!.month, item.date!.day);
+      final todayDate = DateTime(now.year, now.month, now.day);
 
-        if (_selectedParameter == StatisticsParameter.today) {
-          return itemDate == todayDate;
-        } else {
-          return itemDate.isAfter(fromDate) || itemDate == fromDate;
-        }
-      },
-    ).toList();
+      if (_selectedParameter == StatisticsParameter.today) {
+        return itemDate == todayDate;
+      } else {
+        return itemDate.isAfter(fromDate) || itemDate == fromDate;
+      }
+    }).toList();
   }
 
   Map<DateTime, List<StatisticsItemModel>> _groupItemsByDates(List<StatisticsItemModel> statistics) {
@@ -127,8 +123,6 @@ class _StatisticsPageState extends BasePageState<StatisticsPage> {
 
     final sortedKeys = grouped.keys.toList()..sort((a, b) => b.compareTo(a));
 
-    return {
-      for (var key in sortedKeys) key: grouped[key]!,
-    };
+    return {for (var key in sortedKeys) key: grouped[key]!};
   }
 }

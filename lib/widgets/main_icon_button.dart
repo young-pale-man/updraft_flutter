@@ -27,10 +27,7 @@ class MainIconButton extends StatefulWidget {
 }
 
 class _MainIconButtonState extends State<MainIconButton> with SingleTickerProviderStateMixin {
-  final _disabledFilter = ColorFilter.mode(
-    AppColors.shadow.buttonDisabled,
-    BlendMode.srcATop,
-  );
+  final _disabledFilter = ColorFilter.mode(AppColors.shadow.buttonDisabled, BlendMode.srcATop);
 
   late final double _buttonHeight = widget.height;
   late final double _buttonWidth = widget.height * 0.96;
@@ -50,14 +47,11 @@ class _MainIconButtonState extends State<MainIconButton> with SingleTickerProvid
 
   @override
   void initState() {
-    _animate = AnimationController(
-      vsync: this,
-      duration: AppConst.bounceDuration ~/ 2,
-      lowerBound: 0.0,
-      upperBound: 1.0,
-    )..addListener(() {
-        setState(() {});
-      });
+    _animate =
+        AnimationController(vsync: this, duration: AppConst.bounceDuration ~/ 2, lowerBound: 0.0, upperBound: 1.0)
+          ..addListener(() {
+            setState(() {});
+          });
     super.initState();
   }
 
@@ -98,12 +92,7 @@ class _MainIconButtonState extends State<MainIconButton> with SingleTickerProvid
                       colorFilter: disabled ? _disabledFilter : null,
                     ),
                   ),
-                  if (icon != null)
-                    SvgPicture.asset(
-                      icon!,
-                      height: _iconSize,
-                      width: _iconSize,
-                    ),
+                  if (icon != null) SvgPicture.asset(icon!, height: _iconSize, width: _iconSize),
                 ],
               ),
             ),
@@ -113,7 +102,7 @@ class _MainIconButtonState extends State<MainIconButton> with SingleTickerProvid
     );
   }
 
-  void _onTap() async {
+  void _onTap() {
     _animate.forward();
 
     onPressed?.call();
@@ -123,12 +112,12 @@ class _MainIconButtonState extends State<MainIconButton> with SingleTickerProvid
     });
   }
 
-  void _onTapDown(_) async {
+  void _onTapDown(_) {
     onTapDown?.call();
     _animate.forward();
   }
 
-  void _onTapCancel() async {
+  void _onTapCancel() {
     onRelease?.call();
     _animate.reverse();
   }

@@ -7,10 +7,7 @@ import 'package:updraft_flutter/widgets/main_icon_button.dart';
 import 'package:flutter/material.dart';
 
 class SettingsAppbar extends StatelessWidget implements PreferredSizeWidget {
-  const SettingsAppbar({
-    super.key,
-    required this.title,
-  });
+  const SettingsAppbar({super.key, required this.title});
 
   final String title;
 
@@ -21,18 +18,11 @@ class SettingsAppbar extends StatelessWidget implements PreferredSizeWidget {
       color: Colors.transparent,
       child: Row(
         children: [
-          MainIconButton(
-            height: scaledSize(50),
-            onPressed: () => Navigator.of(context).pop(),
-            icon: Assets.arrowLeft,
-          ),
+          MainIconButton(height: scaledSize(50), onPressed: () => Navigator.of(context).pop(), icon: Assets.arrowLeft),
           Expanded(
             child: FittedBox(
               fit: BoxFit.scaleDown,
-              child: Text(
-                title,
-                style: AppStyles.header.headerXS.copyWith(color: AppColors.text.primary),
-              ),
+              child: Text(title, style: AppStyles.header.headerXS.copyWith(color: AppColors.text.primary)),
             ),
           ),
           SizedBox(width: scaledSize(48)),

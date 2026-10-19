@@ -26,20 +26,14 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   bool wasWin = false;
 
-  Future<void> _startGame(
-    StartGameEV event,
-    Emitter<GameState> emit,
-  ) async {
+  Future<void> _startGame(StartGameEV event, Emitter<GameState> emit) async {
     final double deadline = AppConst.minCoef + (Random().nextDouble() * (AppConst.maxCoef - AppConst.minCoef));
 
     balance.add(UpdateBalanceEV(difference: -event.bet));
     emit(InGameST(deadline: deadline));
   }
 
-  Future<void> _cashOut(
-    CashOutEV event,
-    Emitter<GameState> emit,
-  ) async {
+  Future<void> _cashOut(CashOutEV event, Emitter<GameState> emit) async {
     final winAmount = event.bet * event.coef;
     wasWin = true;
 
@@ -50,10 +44,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(CashOutST());
   }
 
-  Future<void> _finishGame(
-    FinishGameEV event,
-    Emitter<GameState> emit,
-  ) async {
+  Future<void> _finishGame(FinishGameEV event, Emitter<GameState> emit) async {
     if (!wasWin) {
       final stat = _getGameStat(event.bet, event.coef);
       statistics.add(UpdateStatisticsEV(statisticsItem: stat));
@@ -63,10 +54,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(GameFinishedST());
   }
 
-  Future<void> _cancelGame(
-    CancelGameEV event,
-    Emitter<GameState> emit,
-  ) async {
+  Future<void> _cancelGame(CancelGameEV event, Emitter<GameState> emit) async {
     if (state is! BetST && state is! CountDownST && state is! CashOutST) {
       balance.add(UpdateBalanceEV(difference: event.bet));
     }
@@ -74,15 +62,11 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     emit(BetST());
   }
 
-  StatisticsItemModel _getGameStat(
-    double bet,
-    double coef,
-  ) =>
-      StatisticsItemModel(
-        bet: bet,
-        coef: coef,
-        date: DateTime.now(),
-        isWin: wasWin,
-        result: wasWin ? (bet * coef) : bet,
-      );
+  StatisticsItemModel _getGameStat(double bet, double coef) => StatisticsItemModel(
+    bet: bet,
+    coef: coef,
+    date: DateTime.now(),
+    isWin: wasWin,
+    result: wasWin ? (bet * coef) : bet,
+  );
 }

@@ -8,10 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 
 class StatisticsItemTile extends StatelessWidget {
-  const StatisticsItemTile({
-    super.key,
-    required this.statisticsItem,
-  });
+  const StatisticsItemTile({super.key, required this.statisticsItem});
 
   final StatisticsItemModel statisticsItem;
 
@@ -23,10 +20,7 @@ class StatisticsItemTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.main.layer1,
         borderRadius: BorderRadius.circular(26),
-        border: Border.all(
-          width: 2,
-          color: AppColors.main.layer2,
-        ),
+        border: Border.all(width: 2, color: AppColors.main.layer2),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -30,10 +30,7 @@ class StatisticsCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          StatisticsParameterPicker(
-            parameter: selectedParameter,
-            changeParameter: changeParameter,
-          ),
+          StatisticsParameterPicker(parameter: selectedParameter, changeParameter: changeParameter),
           const SizedBox(height: 26),
           FittedBox(
             fit: BoxFit.scaleDown,

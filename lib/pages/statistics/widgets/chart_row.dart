@@ -5,11 +5,7 @@ import 'package:updraft_flutter/utils/scaled_size.dart';
 import 'package:flutter/cupertino.dart';
 
 class ChartRow extends StatelessWidget {
-  const ChartRow({
-    super.key,
-    required this.isWin,
-    required this.value,
-  });
+  const ChartRow({super.key, required this.isWin, required this.value});
 
   final bool isWin;
   final int value;
@@ -39,10 +35,7 @@ class ChartRow extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 4),
-          Text(
-            '${value.toString()}%',
-            style: AppStyles.body.body1.copyWith(color: AppColors.text.primary),
-          ),
+          Text('${value.toString()}%', style: AppStyles.body.body1.copyWith(color: AppColors.text.primary)),
         ],
       ),
     );

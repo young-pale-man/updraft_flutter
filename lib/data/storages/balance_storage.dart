@@ -8,10 +8,7 @@ class BalanceStorage {
     if (balance != null) {
       return balance;
     } else {
-      sharedPreferences.setDouble(
-        AppConst.balanceStorageKey,
-        AppConst.defaultBalance,
-      );
+      sharedPreferences.setDouble(AppConst.balanceStorageKey, AppConst.defaultBalance);
       return AppConst.defaultBalance;
     }
   }

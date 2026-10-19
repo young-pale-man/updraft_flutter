@@ -34,9 +34,7 @@ class _HomeAppbarContentState extends State<HomeAppbarContent> {
                   return Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      BalanceBar(
-                        balance: state.balance,
-                      ),
+                      BalanceBar(balance: state.balance),
                       if (_balanceIncreased)
                         Positioned(
                           bottom: scaledSize(35),
@@ -61,5 +59,4 @@ class _HomeAppbarContentState extends State<HomeAppbarContent> {
       setState(() => _balanceIncreased = false);
     }
   }
-
 }

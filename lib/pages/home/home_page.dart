@@ -31,34 +31,25 @@ class _HomePageState extends BasePageState<HomePage> {
 
   bool _autoMode = false;
   bool _buttonActive = true;
+  int _sceneGeneration = 0;
   double _coefDeadline = AppConst.minCoef;
 
-  late StateMachineController? _controller;
-  late SMITrigger? startTrigger;
-  late SMITrigger? loseTrigger;
-
+  TriggerInput? _startTrigger;
+  TriggerInput? _finishTrigger;
   Timer? _startTimer;
   Timer? _gameTimer;
 
-  void onAnimationInit(Artboard artboard) async {
-    _controller = StateMachineController.fromArtboard(
-      artboard,
-      AppConst.animationStateMachine,
-    );
-
-    if (_controller != null) {
-      artboard.addController(_controller!);
-      startTrigger = _controller!.getTriggerInput(AppConst.startAnimationTrigger);
-      loseTrigger = _controller!.getTriggerInput(AppConst.loseAnimationTrigger);
-    }
+  void onAnimationInit(StateMachine stateMachine) {
+    _startTrigger = stateMachine.trigger(AppConst.startAnimationTrigger);
+    _finishTrigger = stateMachine.trigger(AppConst.loseAnimationTrigger);
   }
 
   @override
   PreferredSizeWidget? get appBar => MainAppbar(
-        currentPage: NavigationMenuItems.home,
-        content: const HomeAppbarContent(),
-        beforeMenuOpens: _cancelGame,
-      );
+    currentPage: NavigationMenuItems.home,
+    content: const HomeAppbarContent(),
+    beforeMenuOpens: _cancelGame,
+  );
 
   @override
   Widget pageBuilder(BuildContext context) {
@@ -77,11 +68,9 @@ class _HomePageState extends BasePageState<HomePage> {
               Expanded(
                 child: Center(
                   child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: screenWidth < 580 ? screenWidth : 580,
-                      maxWidth: 900,
-                    ),
+                    constraints: BoxConstraints(maxHeight: screenWidth < 580 ? screenWidth : 580, maxWidth: 900),
                     child: PlaneDisplay(
+                      key: ValueKey(_sceneGeneration),
                       onInit: onAnimationInit,
                       coefDisplay: state is InGameST || state is CashOutST || state is GameFinishedST,
                       currentCoef: _currentCoef,
@@ -109,8 +98,8 @@ class _HomePageState extends BasePageState<HomePage> {
                     title: state is CountDownST
                         ? AppTexts.cancel
                         : state is BetST
-                            ? AppTexts.play
-                            : AppTexts.stop,
+                        ? AppTexts.play
+                        : AppTexts.stop,
                     onPressed: _mainButtonAction,
                     disabled: state is CashOutST || !_buttonActive,
                   ),
@@ -144,10 +133,7 @@ class _HomePageState extends BasePageState<HomePage> {
     } else if (bloc.state is CountDownST) {
       bloc.add(BetEV());
     } else if (bloc.state is InGameST) {
-      bloc.add(CashOutEV(
-        bet: _betAmount.value,
-        coef: _currentCoef.value,
-      ));
+      bloc.add(CashOutEV(bet: _betAmount.value, coef: _currentCoef.value));
     }
   }
 
@@ -161,6 +147,7 @@ class _HomePageState extends BasePageState<HomePage> {
       context.read<GameBloc>().add(BetEV());
     } else if (state is BetST) {
       _buttonActive = true;
+      _sceneGeneration++;
       _startTimer?.cancel();
       _timerValue.value = AppConst.startTimerSeconds;
     }
@@ -169,25 +156,22 @@ class _HomePageState extends BasePageState<HomePage> {
   void _startCountdown() async {
     _startTimer?.cancel();
     _timerValue.value = 3;
-    _startTimer = Timer.periodic(
-      const Duration(seconds: 1),
-      (timer) {
-        if (_timerValue.value > 1) {
-          _timerValue.value -= 1;
-        } else {
-          timer.cancel();
-          context.read<GameBloc>().add(StartGameEV(bet: _betAmount.value));
-        }
-      },
-    );
+    _startTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_timerValue.value > 1) {
+        _timerValue.value -= 1;
+      } else {
+        timer.cancel();
+        context.read<GameBloc>().add(StartGameEV(bet: _betAmount.value));
+      }
+    });
   }
 
   void _runGame(double deadline) async {
     final gameBloc = context.read<GameBloc>();
     _currentCoef.value = AppConst.minCoef;
 
-    if (_controller != null && _controller?.artboard != null) {
-      startTrigger?.value = true;
+    if (_startTrigger != null) {
+      _startTrigger!.fire();
       await Future.delayed(AppConst.startGameDelay);
 
       _autoCashOut();
@@ -198,7 +182,7 @@ class _HomePageState extends BasePageState<HomePage> {
             _currentCoef.value += AppConst.coefIncreasingStep;
             _autoCashOut();
           } else {
-            loseTrigger?.value = true;
+            _finishTrigger?.fire();
             timer.cancel();
             _gameTimer = null;
             if (mounted) {
@@ -207,11 +191,7 @@ class _HomePageState extends BasePageState<HomePage> {
 
             Future.delayed(AppConst.finishGameDelay, () {
               if (mounted) {
-                gameBloc.add(FinishGameEV(
-                  bet: _betAmount.value,
-                  coef: _currentCoef.value,
-                ));
-                onAnimationInit(_controller!.artboard!);
+                gameBloc.add(FinishGameEV(bet: _betAmount.value, coef: _currentCoef.value));
               }
             });
           }
@@ -223,12 +203,7 @@ class _HomePageState extends BasePageState<HomePage> {
   void _autoCashOut() {
     final gameBloc = context.read<GameBloc>();
     if (_autoMode && _autoModeCoef.value <= _currentCoef.value && gameBloc.state is InGameST && mounted) {
-      gameBloc.add(
-        CashOutEV(
-          bet: _betAmount.value,
-          coef: _currentCoef.value,
-        ),
-      );
+      gameBloc.add(CashOutEV(bet: _betAmount.value, coef: _currentCoef.value));
     }
   }
 
@@ -236,10 +211,9 @@ class _HomePageState extends BasePageState<HomePage> {
     _gameTimer?.cancel();
     _gameTimer = null;
 
-    loseTrigger?.value = true;
+    _finishTrigger?.fire();
 
     context.read<GameBloc>().add(CancelGameEV(bet: _betAmount.value));
-    onAnimationInit(_controller!.artboard!);
   }
 
   void _outOfCoins() async {

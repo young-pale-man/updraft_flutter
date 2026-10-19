@@ -4,10 +4,7 @@ import 'package:updraft_flutter/utils/device_info.dart';
 import 'package:flutter/widgets.dart';
 
 class BalanceBar extends StatelessWidget {
-  const BalanceBar({
-    super.key,
-    required this.balance,
-  });
+  const BalanceBar({super.key, required this.balance});
 
   final double balance;
 
@@ -18,10 +15,7 @@ class BalanceBar extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.main.layer1,
         borderRadius: BorderRadius.circular(isTablet ? 50 : 25),
-        border: Border.all(
-          width: 2,
-          color: AppColors.text.primary,
-        ),
+        border: Border.all(width: 2, color: AppColors.text.primary),
       ),
       child: Row(
         children: [

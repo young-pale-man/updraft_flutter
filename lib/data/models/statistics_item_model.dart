@@ -1,14 +1,8 @@
 import 'package:uuid/uuid.dart';
 
 class StatisticsItemModel {
-  StatisticsItemModel({
-    String? id,
-    this.date,
-    this.bet,
-    this.coef,
-    this.result,
-    this.isWin,
-  }) : id = id ?? const Uuid().v4();
+  StatisticsItemModel({String? id, this.date, this.bet, this.coef, this.result, this.isWin})
+    : id = id ?? const Uuid().v4();
 
   String? id;
   DateTime? date;
@@ -17,14 +11,7 @@ class StatisticsItemModel {
   double? result;
   bool? isWin;
 
-  StatisticsItemModel copyWith({
-    String? id,
-    DateTime? date,
-    double? bet,
-    double? coef,
-    double? result,
-    bool? isWin,
-  }) {
+  StatisticsItemModel copyWith({String? id, DateTime? date, double? bet, double? coef, double? result, bool? isWin}) {
     return StatisticsItemModel(
       id: id ?? this.id,
       date: date ?? this.date,
@@ -45,13 +32,6 @@ class StatisticsItemModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'date': date?.toIso8601String(),
-      'bet': bet,
-      'coef': coef,
-      'result': result,
-      'isWin': isWin,
-    };
+    return {'id': id, 'date': date?.toIso8601String(), 'bet': bet, 'coef': coef, 'result': result, 'isWin': isWin};
   }
 }

@@ -7,11 +7,7 @@ import 'package:updraft_flutter/widgets/main_icon_button.dart';
 import 'package:flutter/widgets.dart';
 
 class NavigationMenuTile extends StatelessWidget {
-  const NavigationMenuTile({
-    super.key,
-    required this.item,
-    required this.isSelected,
-  });
+  const NavigationMenuTile({super.key, required this.item, required this.isSelected});
 
   final NavigationMenuItems item;
   final bool isSelected;
@@ -49,11 +45,7 @@ class NavigationMenuTile extends StatelessWidget {
     if (isSelected) {
       Navigator.of(context).pop();
     } else {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        route(item.page),
-        (route) => false,
-      );
+      Navigator.pushNamedAndRemoveUntil(context, route(item.page), (route) => false);
     }
   }
 }

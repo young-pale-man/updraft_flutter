@@ -58,35 +58,14 @@ class _SettingsPageState extends BasePageState<SettingsPage> {
 }
 
 enum Settings {
-  notifications(
-    title: AppTexts.notifications,
-    icon: Assets.notifications,
-  ),
-  privacyPolicy(
-    title: AppTexts.privacyPolicy,
-    icon: Assets.privacyPolicy,
-  ),
-  termsOfUse(
-    title: AppTexts.termsOfUse,
-    icon: Assets.termsOfUse,
-  ),
-  rateUs(
-    title: AppTexts.rateUs,
-    icon: Assets.rateUs,
-  ),
-  shareThisApp(
-    title: AppTexts.shareThisApp,
-    icon: Assets.shareThisApp,
-  ),
-  clearStatistics(
-    title: AppTexts.clearStatistics,
-    icon: Assets.clear,
-  );
+  notifications(title: AppTexts.notifications, icon: Assets.notifications),
+  privacyPolicy(title: AppTexts.privacyPolicy, icon: Assets.privacyPolicy),
+  termsOfUse(title: AppTexts.termsOfUse, icon: Assets.termsOfUse),
+  rateUs(title: AppTexts.rateUs, icon: Assets.rateUs),
+  shareThisApp(title: AppTexts.shareThisApp, icon: Assets.shareThisApp),
+  clearStatistics(title: AppTexts.clearStatistics, icon: Assets.clear);
 
-  const Settings({
-    required this.title,
-    required this.icon,
-  });
+  const Settings({required this.title, required this.icon});
 
   final String title;
   final String icon;
@@ -104,9 +83,9 @@ enum Settings {
           final inAppReview = InAppReview.instance;
           if (await inAppReview.isAvailable()) {
             if (Platform.isIOS) {
-              inAppReview.requestReview();
+              await inAppReview.requestReview();
             } else {
-              inAppReview.openStoreListing();
+              await inAppReview.openStoreListing();
             }
           }
         };

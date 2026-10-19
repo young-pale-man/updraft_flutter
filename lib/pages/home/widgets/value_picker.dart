@@ -35,7 +35,7 @@ class _ValuePickerState extends State<ValuePicker> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: widget.valueListenable,
-      builder: (_, __, ___) => Row(
+      builder: (_, _, _) => Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           MainIconButton(
@@ -91,14 +91,11 @@ class _ValuePickerState extends State<ValuePicker> {
 
     _updateValue(direction);
 
-    _pickerTimer = Timer.periodic(
-      const Duration(milliseconds: 150),
-      (timer) {
-        elapsedTicks++;
-        step = 0.1 + (elapsedTicks * 0.1).clamp(0.1, 0.7);
-        _updateValue(direction, step);
-      },
-    );
+    _pickerTimer = Timer.periodic(const Duration(milliseconds: 150), (timer) {
+      elapsedTicks++;
+      step = 0.1 + (elapsedTicks * 0.1).clamp(0.1, 0.7);
+      _updateValue(direction, step);
+    });
   }
 
   void _updateValue(int direction, [double step = AppConst.valuePickerStep]) {

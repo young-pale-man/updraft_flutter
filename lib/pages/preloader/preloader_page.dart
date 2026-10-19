@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:updraft_flutter/base/base_page_state.dart';
 import 'package:updraft_flutter/blocs/balance_bloc/balance_bloc.dart';
 import 'package:updraft_flutter/pages/home/home_page.dart';
@@ -31,10 +33,7 @@ class _PreloaderPageState extends BasePageState<PreloaderPage> {
       children: [
         Padding(
           padding: EdgeInsets.only(bottom: 160 - MediaQuery.paddingOf(context).bottom),
-          child: SpinKitRing(
-            color: AppColors.accent.primary1,
-            size: scaledSize(49),
-          ),
+          child: SpinKitRing(color: AppColors.accent.primary1, size: scaledSize(49)),
         ),
       ],
     );
@@ -43,7 +42,7 @@ class _PreloaderPageState extends BasePageState<PreloaderPage> {
   void _moveToHomeScreen() async {
     await Future.delayed(const Duration(seconds: 2));
     if (mounted) {
-      Navigator.of(context).pushReplacementNamed(route(HomePage));
+      unawaited(Navigator.of(context).pushReplacementNamed(route(HomePage)));
     }
   }
 }

@@ -8,12 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:stroke_text/stroke_text.dart';
 
 class MainButton extends StatefulWidget {
-  const MainButton({
-    super.key,
-    this.title,
-    this.onPressed,
-    this.disabled = false,
-  });
+  const MainButton({super.key, this.title, this.onPressed, this.disabled = false});
 
   final String? title;
   final VoidCallback? onPressed;
@@ -30,10 +25,7 @@ class _MainButtonState extends State<MainButton> with SingleTickerProviderStateM
   static const double _buttonMovementToWidthCoef = 0.007;
   static const double _topPaddingToWidthCoef = 0.005;
 
-  final _disabledFilter = ColorFilter.mode(
-    AppColors.shadow.buttonDisabled,
-    BlendMode.srcATop,
-  );
+  final _disabledFilter = ColorFilter.mode(AppColors.shadow.buttonDisabled, BlendMode.srcATop);
 
   late AnimationController _animate;
 
@@ -43,14 +35,11 @@ class _MainButtonState extends State<MainButton> with SingleTickerProviderStateM
 
   @override
   void initState() {
-    _animate = AnimationController(
-      vsync: this,
-      duration: AppConst.bounceDuration ~/ 2,
-      lowerBound: 0.0,
-      upperBound: 1.0,
-    )..addListener(() {
-        setState(() {});
-      });
+    _animate =
+        AnimationController(vsync: this, duration: AppConst.bounceDuration ~/ 2, lowerBound: 0.0, upperBound: 1.0)
+          ..addListener(() {
+            setState(() {});
+          });
     super.initState();
   }
 
@@ -116,7 +105,7 @@ class _MainButtonState extends State<MainButton> with SingleTickerProviderStateM
     );
   }
 
-  void _onTap() async {
+  void _onTap() {
     _animate.forward();
     onTap?.call();
     Future.delayed(AppConst.bounceDuration, () {
@@ -124,11 +113,11 @@ class _MainButtonState extends State<MainButton> with SingleTickerProviderStateM
     });
   }
 
-  void _onTapDown(_) async {
+  void _onTapDown(_) {
     _animate.forward();
   }
 
-  void _onTapCancel() async {
+  void _onTapCancel() {
     _animate.reverse();
   }
 

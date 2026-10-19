@@ -6,11 +6,7 @@ import 'package:updraft_flutter/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 
 class BetAmountPicker extends StatelessWidget {
-  const BetAmountPicker({
-    super.key,
-    required this.betAmount,
-    required this.disabled,
-  });
+  const BetAmountPicker({super.key, required this.betAmount, required this.disabled});
 
   final ValueNotifier<double> betAmount;
   final bool disabled;
@@ -22,10 +18,7 @@ class BetAmountPicker extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
-          child: Text(
-            AppTexts.roundEntry,
-            style: AppStyles.body.body1.copyWith(color: AppColors.text.primary),
-          ),
+          child: Text(AppTexts.roundEntry, style: AppStyles.body.body1.copyWith(color: AppColors.text.primary)),
         ),
         const SizedBox(height: 17),
         ValuePicker(

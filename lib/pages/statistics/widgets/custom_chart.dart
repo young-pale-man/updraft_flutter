@@ -3,13 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class CustomChart extends StatelessWidget {
-  const CustomChart({
-    super.key,
-    required this.radius,
-    required this.percentValue,
-    this.chartColor,
-    this.child,
-  });
+  const CustomChart({super.key, required this.radius, required this.percentValue, this.chartColor, this.child});
 
   final double radius;
   final double percentValue;

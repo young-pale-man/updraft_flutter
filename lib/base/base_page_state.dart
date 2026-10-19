@@ -18,9 +18,7 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> {
         body: SafeArea(
           top: topSafeArea,
           bottom: bottomSafeArea,
-          child: Builder(
-            builder: pageBuilder,
-          ),
+          child: Builder(builder: pageBuilder),
         ),
       ),
     );

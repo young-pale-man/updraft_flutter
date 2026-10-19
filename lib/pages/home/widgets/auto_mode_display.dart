@@ -44,8 +44,8 @@ class AutoModeDisplay extends StatelessWidget {
                 child: CupertinoSwitch(
                   value: autoMode,
                   onChanged: disabled ? null : switchAutoMode,
-                  trackColor: AppColors.main.layer4,
-                  activeColor: AppColors.system.positive,
+                  inactiveTrackColor: AppColors.main.layer4,
+                  activeTrackColor: AppColors.system.positive,
                   thumbColor: AppColors.main.background,
                 ),
               ),

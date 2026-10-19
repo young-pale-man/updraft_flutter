@@ -7,11 +7,7 @@ import 'package:updraft_flutter/widgets/main_icon_button.dart';
 import 'package:flutter/cupertino.dart';
 
 class StatisticsParameterPicker extends StatelessWidget {
-  const StatisticsParameterPicker({
-    super.key,
-    required this.parameter,
-    required this.changeParameter,
-  });
+  const StatisticsParameterPicker({super.key, required this.parameter, required this.changeParameter});
 
   final StatisticsParameter parameter;
   final ValueChanged<int> changeParameter;
@@ -29,10 +25,7 @@ class StatisticsParameterPicker extends StatelessWidget {
         Expanded(
           child: FittedBox(
             fit: BoxFit.scaleDown,
-            child: Text(
-              parameter.title,
-              style: AppStyles.header.headerXS.copyWith(color: AppColors.text.primary),
-            ),
+            child: Text(parameter.title, style: AppStyles.header.headerXS.copyWith(color: AppColors.text.primary)),
           ),
         ),
         MainIconButton(

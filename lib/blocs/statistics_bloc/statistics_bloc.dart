@@ -18,19 +18,13 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
 
   void _initialize() => add(InitializeStatisticsEV());
 
-  Future<void> _initializeStatistics(
-    InitializeStatisticsEV event,
-    Emitter<StatisticsState> emit,
-  ) async {
+  Future<void> _initializeStatistics(InitializeStatisticsEV event, Emitter<StatisticsState> emit) async {
     final statisticsItemsList = _statisticsStorage.getStatistics();
 
     emit(state.copyWith(statisticsItemsList: statisticsItemsList));
   }
 
-  Future<void> _updateStatistics(
-    UpdateStatisticsEV event,
-    Emitter<StatisticsState> emit,
-  ) async {
+  Future<void> _updateStatistics(UpdateStatisticsEV event, Emitter<StatisticsState> emit) async {
     List<StatisticsItemModel> statisticsItemsList = state.statisticsItemsList;
 
     statisticsItemsList.add(event.statisticsItem);
@@ -39,10 +33,7 @@ class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
     emit(state.copyWith(statisticsItemsList: statisticsItemsList));
   }
 
-  Future<void> _clearStatistics(
-    ClearStatisticsEV event,
-    Emitter<StatisticsState> emit,
-  ) async {
+  Future<void> _clearStatistics(ClearStatisticsEV event, Emitter<StatisticsState> emit) async {
     _statisticsStorage.clearStatistics();
     emit(state.copyWith(statisticsItemsList: []));
   }

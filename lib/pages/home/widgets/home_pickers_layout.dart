@@ -26,10 +26,7 @@ class HomePickersLayout extends StatelessWidget {
         ? Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              BetAmountPicker(
-                betAmount: betAmount,
-                disabled: disabled,
-              ),
+              BetAmountPicker(betAmount: betAmount, disabled: disabled),
               const SizedBox(height: 12),
               AutoModeDisplay(
                 autoMode: autoMode,
@@ -43,10 +40,7 @@ class HomePickersLayout extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Expanded(
-                child: BetAmountPicker(
-                  betAmount: betAmount,
-                  disabled: disabled,
-                ),
+                child: BetAmountPicker(betAmount: betAmount, disabled: disabled),
               ),
               const SizedBox(width: 12),
               Expanded(

@@ -7,12 +7,7 @@ import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ParameterTile extends StatelessWidget {
-  const ParameterTile({
-    super.key,
-    required this.title,
-    required this.icon,
-    required this.onPressed,
-  });
+  const ParameterTile({super.key, required this.title, required this.icon, required this.onPressed});
 
   final String title;
   final String icon;
@@ -28,26 +23,16 @@ class ParameterTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.main.layer1,
           borderRadius: BorderRadius.circular(39),
-          border: Border.all(
-            width: 2,
-            color: AppColors.main.layer2,
-          ),
+          border: Border.all(width: 2, color: AppColors.main.layer2),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset(
-              icon,
-              height: scaledSize(24),
-              width: scaledSize(24),
-            ),
+            SvgPicture.asset(icon, height: scaledSize(24), width: scaledSize(24)),
             const SizedBox(width: 6),
             FittedBox(
               fit: BoxFit.scaleDown,
-              child: Text(
-                title,
-                style: AppStyles.header.headerXS.copyWith(color: AppColors.text.primary),
-              ),
+              child: Text(title, style: AppStyles.header.headerXS.copyWith(color: AppColors.text.primary)),
             ),
           ],
         ),

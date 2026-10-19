@@ -39,10 +39,7 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
                 },
                 icon: Assets.menu,
               ),
-              if (content != null) ...[
-                const SizedBox(width: 8),
-                Expanded(child: content!),
-              ],
+              if (content != null) ...[const SizedBox(width: 8), Expanded(child: content!)],
             ],
           ),
           if (content == null)
