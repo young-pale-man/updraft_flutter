@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:updraft_flutter/blocs/balance_bloc/balance_bloc.dart';
 import 'package:updraft_flutter/blocs/statistics_bloc/statistics_bloc.dart';
 import 'package:updraft_flutter/data/models/statistics_item_model.dart';
-import 'package:updraft_flutter/utils/constants.dart';
+import 'package:updraft_flutter/utils/crash_curve.dart';
 import 'package:updraft_flutter/utils/dependency_initializer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -27,7 +27,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
   bool wasWin = false;
 
   Future<void> _startGame(StartGameEV event, Emitter<GameState> emit) async {
-    final double deadline = AppConst.minCoef + (Random().nextDouble() * (AppConst.maxCoef - AppConst.minCoef));
+    final deadline = const CrashCurve().draw(Random()) / 100;
 
     balance.add(UpdateBalanceEV(difference: -event.bet));
     emit(InGameST(deadline: deadline));
