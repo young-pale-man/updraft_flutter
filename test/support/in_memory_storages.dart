@@ -1,5 +1,7 @@
+import 'package:updraft_flutter/data/models/refill_record.dart';
 import 'package:updraft_flutter/data/models/round_record.dart';
 import 'package:updraft_flutter/data/storages/balance_storage.dart';
+import 'package:updraft_flutter/data/storages/refills_storage.dart';
 import 'package:updraft_flutter/data/storages/rounds_storage.dart';
 
 class InMemoryBalanceStorage implements BalanceStorage {
@@ -31,4 +33,19 @@ class InMemoryRoundsStorage implements RoundsStorage {
 
   @override
   Future<void> clear() async => rounds = [];
+}
+
+class InMemoryRefillsStorage implements RefillsStorage {
+  InMemoryRefillsStorage([List<RefillRecord> refills = const []]) : refills = List.of(refills);
+
+  List<RefillRecord> refills;
+
+  @override
+  List<RefillRecord> read() => List.of(refills);
+
+  @override
+  Future<void> write(List<RefillRecord> refills) async => this.refills = List.of(refills);
+
+  @override
+  Future<void> clear() async => refills = [];
 }

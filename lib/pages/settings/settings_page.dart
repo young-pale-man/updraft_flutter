@@ -1,4 +1,5 @@
 import 'package:updraft_flutter/base/base_page_state.dart';
+import 'package:updraft_flutter/blocs/balance_bloc/balance_bloc.dart';
 import 'package:updraft_flutter/blocs/statistics_bloc/statistics_bloc.dart';
 import 'package:updraft_flutter/pages/settings/widgets/about_note.dart';
 import 'package:updraft_flutter/res/colors.dart';
@@ -47,7 +48,16 @@ class _SettingsPageState extends BasePageState<SettingsPage> {
               children: [
                 Text(AppTexts.clearStatisticsDescription, style: AppStyles.bodyM.copyWith(color: AppColors.textMuted)),
                 const SizedBox(height: AppSpacing.lg),
-                CapButton(title: AppTexts.clearStatistics, destructive: true, onPressed: _clearStatistics),
+                CapButton(title: AppTexts.clearStatistics, tone: CapTone.destructive, onPressed: _clearStatistics),
+                const SizedBox(height: AppSpacing.xl),
+                Text(AppTexts.refillDescription, style: AppStyles.bodyM.copyWith(color: AppColors.textMuted)),
+                const SizedBox(height: AppSpacing.lg),
+                CapButton(
+                  title: AppTexts.refillBalance,
+                  tone: CapTone.positive,
+                  enabled: context.select((BalanceBloc bloc) => bloc.state.needsRefill),
+                  onPressed: () => context.read<BalanceBloc>().add(const BalanceRefilled()),
+                ),
               ],
             ),
           ),

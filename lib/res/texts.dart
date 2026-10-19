@@ -62,7 +62,13 @@ class AppTexts {
 
   static const String flewAway = 'Flew away';
   static const String jump = 'Jump';
-  static const String refill = 'Refill';
+  static const String refillBalance = 'Refill balance';
+  static const String refillDescription =
+      'Available only when your balance can no longer cover the smallest entry. Adds 100 coins.';
+  static const String balanceRefilled = 'Balance refilled';
+  static const String outOfCoins = 'Out of coins';
+  static const String outOfCoinsContent = 'You lost everything. You can refill your balance in Settings.';
+  static const String later = 'Later';
   static const String leaveFlight = 'Leave the flight?';
   static const String leaveFlightContent = 'The plane is in the air. Leaving now gives up this round\'s entry.';
   static const String leave = 'Leave';
@@ -111,8 +117,8 @@ class AppTexts {
       'returns 97% of the entry on average, so a target is a choice of risk, never of advantage.';
   static const String playCoins = 'Play coins';
   static const String playCoinsNote =
-      'Coins are for play only. There is nothing to buy and nothing to win. When the balance runs out, '
-      'Refill brings it back to 500.';
+      'Coins are for play only. There is nothing to buy and nothing to win. When the balance cannot cover the '
+      'smallest entry, Settings offers a refill of 100 coins.';
   static const String privacy = 'Privacy';
   static const String offlineNote = 'Plays entirely offline. Nothing is collected and nothing leaves this device.';
 

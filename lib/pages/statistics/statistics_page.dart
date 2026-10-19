@@ -34,8 +34,9 @@ class _StatisticsPageState extends BasePageState<StatisticsPage> {
   @override
   Widget pageBuilder(BuildContext context) {
     final now = context.read<AppDependencies>().clock();
-    final rounds = _period.select(context.select((StatisticsBloc bloc) => bloc.state.rounds), now);
-    final days = RoundDays.of(rounds);
+    final rounds = _period.select(context.select((StatisticsBloc bloc) => bloc.state.rounds), now, timeOfRound);
+    final refills = _period.select(context.select((StatisticsBloc bloc) => bloc.state.refills), now, timeOfRefill);
+    final days = RoundDays.of(rounds, refills);
     final bottom = MediaQuery.paddingOf(context).bottom + AppSpacing.lg;
     return CustomScrollView(
       slivers: [

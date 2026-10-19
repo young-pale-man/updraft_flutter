@@ -34,8 +34,17 @@ class _ApplicationState extends State<Application> {
       value: dependencies,
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => BalanceBloc(storage: dependencies.balanceStorage)),
-          BlocProvider(create: (context) => StatisticsBloc(storage: dependencies.roundsStorage)),
+          BlocProvider(
+            create: (context) =>
+                StatisticsBloc(storage: dependencies.roundsStorage, refillsStorage: dependencies.refillsStorage),
+          ),
+          BlocProvider(
+            create: (context) => BalanceBloc(
+              storage: dependencies.balanceStorage,
+              statisticsBloc: context.read<StatisticsBloc>(),
+              clock: dependencies.clock,
+            ),
+          ),
           BlocProvider(
             create: (context) => RoundBloc(
               balanceBloc: context.read<BalanceBloc>(),

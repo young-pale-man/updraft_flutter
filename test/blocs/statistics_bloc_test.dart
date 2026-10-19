@@ -1,4 +1,5 @@
 import 'package:updraft_flutter/blocs/statistics_bloc/statistics_bloc.dart';
+import 'package:updraft_flutter/data/models/refill_record.dart';
 import 'package:updraft_flutter/data/models/round_record.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,9 +19,15 @@ RoundRecord round({int minute = 0, RoundOutcome outcome = RoundOutcome.flewAway,
 void main() {
   group('StatisticsBloc', () {
     late InMemoryRoundsStorage storage;
+    late InMemoryRefillsStorage refills;
+
+    setUp(() => refills = InMemoryRefillsStorage());
 
     test('starts from the stored rounds', () {
-      final bloc = StatisticsBloc(storage: InMemoryRoundsStorage([round(), round(minute: 1)]));
+      final bloc = StatisticsBloc(
+        storage: InMemoryRoundsStorage([round(), round(minute: 1)]),
+        refillsStorage: InMemoryRefillsStorage(),
+      );
 
       expect(bloc.state.rounds, [round(), round(minute: 1)]);
     });
@@ -28,7 +35,7 @@ void main() {
     blocTest<StatisticsBloc, StatisticsState>(
       'emits for every recorded round, even two identical ones',
       setUp: () => storage = InMemoryRoundsStorage(),
-      build: () => StatisticsBloc(storage: storage),
+      build: () => StatisticsBloc(storage: storage, refillsStorage: refills),
       act: (bloc) => bloc
         ..add(RoundRecorded(round()))
         ..add(RoundRecorded(round())),
@@ -42,7 +49,7 @@ void main() {
     blocTest<StatisticsBloc, StatisticsState>(
       'never changes a list it has already emitted',
       setUp: () => storage = InMemoryRoundsStorage([round()]),
-      build: () => StatisticsBloc(storage: storage),
+      build: () => StatisticsBloc(storage: storage, refillsStorage: refills),
       act: (bloc) => bloc.add(RoundRecorded(round(minute: 1))),
       verify: (bloc) {
         expect(() => bloc.state.rounds.add(round()), throwsUnsupportedError);
@@ -50,12 +57,32 @@ void main() {
     );
 
     blocTest<StatisticsBloc, StatisticsState>(
-      'clears the rounds and the storage',
-      setUp: () => storage = InMemoryRoundsStorage([round(), round(minute: 1)]),
-      build: () => StatisticsBloc(storage: storage),
+      'records a refill next to the rounds',
+      setUp: () => storage = InMemoryRoundsStorage([round()]),
+      build: () => StatisticsBloc(storage: storage, refillsStorage: refills),
+      act: (bloc) => bloc.add(RefillRecorded(RefillRecord(time: DateTime(2026, 3, 14, 10), amount: 10000))),
+      expect: () => [
+        StatisticsState(
+          rounds: [round()],
+          refills: [RefillRecord(time: DateTime(2026, 3, 14, 10), amount: 10000)],
+        ),
+      ],
+      verify: (_) => expect(refills.refills, hasLength(1)),
+    );
+
+    blocTest<StatisticsBloc, StatisticsState>(
+      'clears the rounds, the refills and the storage',
+      setUp: () {
+        storage = InMemoryRoundsStorage([round(), round(minute: 1)]);
+        refills = InMemoryRefillsStorage([RefillRecord(time: DateTime(2026, 3, 14, 10), amount: 10000)]);
+      },
+      build: () => StatisticsBloc(storage: storage, refillsStorage: refills),
       act: (bloc) => bloc.add(const StatisticsCleared()),
-      expect: () => [const StatisticsState(rounds: [])],
-      verify: (_) => expect(storage.rounds, isEmpty),
+      expect: () => [const StatisticsState(rounds: [], refills: [])],
+      verify: (_) {
+        expect(storage.rounds, isEmpty);
+        expect(refills.refills, isEmpty);
+      },
     );
 
     test('lists the most recent flights first and skips rounds left mid-flight', () {

@@ -1,3 +1,5 @@
+import 'package:updraft_flutter/blocs/statistics_bloc/statistics_bloc.dart';
+import 'package:updraft_flutter/data/models/refill_record.dart';
 import 'package:updraft_flutter/data/storages/balance_storage.dart';
 import 'package:updraft_flutter/utils/balance_rules.dart';
 import 'package:equatable/equatable.dart';
@@ -7,15 +9,22 @@ part 'balance_event.dart';
 part 'balance_state.dart';
 
 class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
-  BalanceBloc({required BalanceStorage storage})
-    : _storage = storage,
-      super(BalanceState(balance: storage.read() ?? BalanceRules.startingBalance)) {
+  BalanceBloc({
+    required BalanceStorage storage,
+    required StatisticsBloc statisticsBloc,
+    required DateTime Function() clock,
+  }) : _storage = storage,
+       _statistics = statisticsBloc,
+       _clock = clock,
+       super(BalanceState(balance: storage.read() ?? BalanceRules.startingBalance)) {
     on<EntryTaken>(_takeEntry);
     on<PayoutReceived>(_receivePayout);
     on<BalanceRefilled>(_refill);
   }
 
   final BalanceStorage _storage;
+  final StatisticsBloc _statistics;
+  final DateTime Function() _clock;
 
   Future<void> _takeEntry(EntryTaken event, Emitter<BalanceState> emit) async {
     if (!BalanceRules.canEnter(balance: state.balance, entry: event.entry)) return;
@@ -29,7 +38,9 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
 
   Future<void> _refill(BalanceRefilled event, Emitter<BalanceState> emit) async {
     if (!BalanceRules.needsRefill(state.balance)) return;
-    await _save(emit, BalanceRules.refill(state.balance));
+    final refilled = BalanceRules.refill(state.balance);
+    _statistics.add(RefillRecorded(RefillRecord(time: _clock(), amount: refilled - state.balance)));
+    await _save(emit, refilled);
   }
 
   Future<void> _save(Emitter<BalanceState> emit, int balance) async {

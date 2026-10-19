@@ -2,6 +2,7 @@ class BalanceRules {
   const BalanceRules._();
 
   static const int startingBalance = 50000;
+  static const int refillAmount = 10000;
   static const int minEntry = 100;
   static const int maxEntry = 2500;
 
@@ -24,6 +25,6 @@ class BalanceRules {
 
   static int refill(int balance) {
     if (!needsRefill(balance)) throw StateError('balance of $balance still covers an entry');
-    return startingBalance;
+    return balance + refillAmount;
   }
 }

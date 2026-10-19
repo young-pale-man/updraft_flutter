@@ -16,6 +16,15 @@ final class RoundRecorded extends StatisticsEvent {
   List<Object?> get props => [round];
 }
 
+final class RefillRecorded extends StatisticsEvent {
+  const RefillRecorded(this.refill);
+
+  final RefillRecord refill;
+
+  @override
+  List<Object?> get props => [refill];
+}
+
 final class StatisticsCleared extends StatisticsEvent {
   const StatisticsCleared();
 }

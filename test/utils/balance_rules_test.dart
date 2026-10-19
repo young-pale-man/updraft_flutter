@@ -41,9 +41,14 @@ void main() {
       expect(BalanceRules.needsRefill(100), isFalse);
     });
 
-    test('refills to the starting balance', () {
+    test('starts at five hundred coins', () {
       expect(BalanceRules.startingBalance, 50000);
-      expect(BalanceRules.refill(37), 50000);
+    });
+
+    test('refills by a hundred coins on top of what is left', () {
+      expect(BalanceRules.refillAmount, 10000);
+      expect(BalanceRules.refill(37), 10037);
+      expect(BalanceRules.refill(0), 10000);
     });
 
     test('is not refilled while it can still cover an entry', () {

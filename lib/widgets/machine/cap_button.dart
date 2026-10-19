@@ -4,12 +4,23 @@ import 'package:updraft_flutter/res/styles.dart';
 import 'package:updraft_flutter/widgets/machine/pressable.dart';
 import 'package:flutter/widgets.dart';
 
+enum CapTone { plain, positive, destructive }
+
 class CapButton extends StatelessWidget {
-  const CapButton({super.key, required this.title, this.onPressed, this.destructive = false});
+  const CapButton({super.key, required this.title, this.onPressed, this.tone = CapTone.plain, this.enabled = true});
 
   final String title;
   final VoidCallback? onPressed;
-  final bool destructive;
+  final CapTone tone;
+  final bool enabled;
+
+  Color get _ink => !enabled
+      ? AppColors.textDisabled
+      : switch (tone) {
+          CapTone.plain => AppColors.ink,
+          CapTone.positive => AppColors.positiveOnCap,
+          CapTone.destructive => AppColors.negativeOnCap,
+        };
 
   static const double _height = 52;
 
@@ -18,26 +29,24 @@ class CapButton extends StatelessWidget {
     return Pressable(
       label: title,
       onPressed: onPressed,
+      enabled: enabled,
       builder: (context, pressed) => SizedBox(
         height: _height + AppSizes.capTravel,
         child: Stack(
           children: [
-            const Positioned(
+            Positioned(
               left: 0,
               right: 0,
               top: AppSizes.capTravel,
-              child: _Face(color: AppColors.capShade),
+              child: _Face(color: enabled ? AppColors.capShade : AppColors.capShadeDisabled),
             ),
             Positioned(
               left: 0,
               right: 0,
               top: pressed ? AppSizes.capTravel : 0,
               child: _Face(
-                color: AppColors.cap,
-                child: Text(
-                  title,
-                  style: AppStyles.titleS.copyWith(color: destructive ? AppColors.negative : AppColors.ink),
-                ),
+                color: enabled ? AppColors.cap : AppColors.capDisabled,
+                child: Text(title, style: AppStyles.titleS.copyWith(color: _ink)),
               ),
             ),
           ],

@@ -50,7 +50,7 @@ class MainDialog extends StatelessWidget {
                       Expanded(
                         child: CapButton(
                           title: actionTitle,
-                          destructive: destructive,
+                          tone: destructive ? CapTone.destructive : CapTone.plain,
                           onPressed: () => Navigator.of(context).pop(true),
                         ),
                       ),

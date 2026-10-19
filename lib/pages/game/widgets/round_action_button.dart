@@ -19,10 +19,6 @@ class RoundActionButton extends StatelessWidget {
       return ActionButton(title: AppTexts.resume, onPressed: () => round.add(const RoundResumed()));
     }
     return switch (state.phase) {
-      RoundPhase.ready when BalanceRules.needsRefill(balance) => ActionButton(
-        title: AppTexts.refill,
-        onPressed: () => context.read<BalanceBloc>().add(const BalanceRefilled()),
-      ),
       RoundPhase.ready => ActionButton(
         title: AppTexts.play,
         detail: Coins.format(state.entry),

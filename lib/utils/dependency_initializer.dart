@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:updraft_flutter/data/storages/balance_storage.dart';
 import 'package:updraft_flutter/data/storages/local_balance_storage.dart';
+import 'package:updraft_flutter/data/storages/local_refills_storage.dart';
 import 'package:updraft_flutter/data/storages/local_rounds_storage.dart';
+import 'package:updraft_flutter/data/storages/refills_storage.dart';
 import 'package:updraft_flutter/data/storages/rounds_storage.dart';
 import 'package:updraft_flutter/utils/ticks.dart';
 import 'package:updraft_flutter/widgets/flight_scene.dart';
@@ -13,6 +15,7 @@ class AppDependencies {
   const AppDependencies({
     required this.balanceStorage,
     required this.roundsStorage,
+    required this.refillsStorage,
     required this.random,
     required this.ticks,
     required this.clock,
@@ -21,6 +24,7 @@ class AppDependencies {
 
   final BalanceStorage balanceStorage;
   final RoundsStorage roundsStorage;
+  final RefillsStorage refillsStorage;
   final Random random;
   final TickSource ticks;
   final DateTime Function() clock;
@@ -36,6 +40,7 @@ class DependencyInitializer {
     return AppDependencies(
       balanceStorage: LocalBalanceStorage(preferences),
       roundsStorage: LocalRoundsStorage(preferences),
+      refillsStorage: LocalRefillsStorage(preferences),
       random: Random(),
       ticks: frameTicks,
       clock: DateTime.now,

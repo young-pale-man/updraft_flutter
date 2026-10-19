@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:updraft_flutter/data/models/round_record.dart';
+import 'package:updraft_flutter/data/models/refill_record.dart';
 import 'package:updraft_flutter/data/storages/local_balance_storage.dart';
+import 'package:updraft_flutter/data/storages/local_refills_storage.dart';
 import 'package:updraft_flutter/data/storages/local_rounds_storage.dart';
 import 'package:updraft_flutter/utils/constants.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -89,6 +91,37 @@ void main() {
         final storage = LocalRoundsStorage(await preferences({AppConst.roundsKey: saved}));
 
         expect(storage.read(), isEmpty, reason: '$saved');
+      }
+    });
+  });
+
+  group('LocalRefillsStorage', () {
+    final refill = RefillRecord(time: DateTime(2026, 3, 14, 9, 30), amount: 10000);
+
+    test('reads no refills before anything was written', () async {
+      expect(LocalRefillsStorage(await preferences()).read(), isEmpty);
+    });
+
+    test('reads back what it wrote and forgets it when cleared', () async {
+      final storage = LocalRefillsStorage(await preferences());
+
+      await storage.write([refill]);
+      expect(storage.read(), [refill]);
+
+      await storage.clear();
+      expect(storage.read(), isEmpty);
+    });
+
+    test('skips damaged refills and reads a damaged list as none', () async {
+      final mixed = json.encode([
+        refill.toJson(),
+        'x',
+        {'amount': 'all'},
+      ]);
+      expect(LocalRefillsStorage(await preferences({AppConst.refillsKey: mixed})).read(), [refill]);
+
+      for (final saved in <Object>['not json', '{}', 7]) {
+        expect(LocalRefillsStorage(await preferences({AppConst.refillsKey: saved})).read(), isEmpty, reason: '$saved');
       }
     });
   });

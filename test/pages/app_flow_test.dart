@@ -1,3 +1,4 @@
+import 'package:updraft_flutter/data/models/refill_record.dart';
 import 'package:updraft_flutter/data/models/round_record.dart';
 import 'package:updraft_flutter/res/texts.dart';
 import 'package:flutter/widgets.dart';
@@ -153,16 +154,83 @@ void main() {
     expect(find.bySemanticsLabel('2.00×'), findsWidgets);
   });
 
-  testWidgets('an empty balance offers a refill instead of a round', (tester) async {
-    final app = AppHarness(balance: 40);
+  testWidgets('losing the last coins points to settings, where a refill adds a hundred coins once', (tester) async {
+    final app = AppHarness(balance: 1000, draws: [0.5]);
     await app.launch(tester);
     await tester.openFromMenu(AppTexts.play);
 
-    expect(tester.actionButtonTitle, AppTexts.refill);
     await tester.tapActionButton();
+    await tester.clockAt(app, 3);
+    await tester.clockAt(app, 4);
+    expect(find.text(AppTexts.outOfCoins), findsNothing);
+    await tester.clockAt(app, 2);
+    await tester.pumpAndSettle();
+    expect(find.text(AppTexts.outOfCoins), findsOneWidget);
 
-    expect(find.bySemanticsLabel('500.00'), findsOneWidget);
-    expect(tester.actionButtonTitle, '${AppTexts.play} 1.00');
+    await tester.tapText(AppTexts.settings);
+    final refill = find.bySemanticsLabel(AppTexts.refillBalance);
+    expect(
+      tester.getSemantics(refill),
+      matchesSemantics(
+        label: AppTexts.refillBalance,
+        isButton: true,
+        hasEnabledState: true,
+        isEnabled: true,
+        hasTapAction: true,
+      ),
+    );
+
+    await tester.tap(refill);
+    await tester.pumpAndSettle();
+    expect(app.balanceStorage.balance, 10000);
+    expect(
+      tester.getSemantics(refill),
+      matchesSemantics(label: AppTexts.refillBalance, isButton: true, hasEnabledState: true, isEnabled: false),
+    );
+    await tester.tap(refill);
+    await tester.pumpAndSettle();
+    expect(app.balanceStorage.balance, 10000);
+    expect(app.refillsStorage.refills, [RefillRecord(time: AppHarness.now, amount: 10000)]);
+
+    await tester.goBack();
+    await tester.goBack();
+    await tester.openFromMenu(AppTexts.statistics);
+    expect(find.byType(RefillBanner), findsOneWidget);
+    expect(find.text(AppTexts.balanceRefilled), findsOneWidget);
+    expect(find.descendant(of: find.byType(RefillBanner), matching: find.text('+100.00')), findsOneWidget);
+  });
+
+  testWidgets('opening the game without coins says so and leaves play disabled', (tester) async {
+    final app = AppHarness(balance: 40);
+    await app.launch(tester);
+
+    await tester.openFromMenu(AppTexts.play);
+    expect(find.text(AppTexts.outOfCoinsContent), findsOneWidget);
+    await tester.tapText(AppTexts.later);
+
+    expect(find.text(AppTexts.outOfCoins), findsNothing);
+    expect(
+      tester.getSemantics(tester.actionButton),
+      matchesSemantics(label: '${AppTexts.play} 1.00', isButton: true, hasEnabledState: true, isEnabled: false),
+    );
+    expect(app.balanceStorage.balance, 40);
+  });
+
+  testWidgets('the refill stays inactive while the balance covers an entry', (tester) async {
+    final app = AppHarness();
+    await app.launch(tester);
+    await tester.openFromMenu(AppTexts.settings);
+
+    final refill = find.bySemanticsLabel(AppTexts.refillBalance);
+    expect(
+      tester.getSemantics(refill),
+      matchesSemantics(label: AppTexts.refillBalance, isButton: true, hasEnabledState: true, isEnabled: false),
+    );
+    await tester.tap(refill);
+    await tester.pumpAndSettle();
+
+    expect(app.balanceStorage.balance, isNull);
+    expect(app.refillsStorage.refills, isEmpty);
   });
 
   testWidgets('statistics sum up and list the rounds that were played', (tester) async {

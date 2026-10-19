@@ -14,8 +14,8 @@ class Round {
   Round({int balance = 50000, List<double> draws = const [0.75]}) {
     balanceStorage = InMemoryBalanceStorage(balance);
     roundsStorage = InMemoryRoundsStorage();
-    balanceBloc = BalanceBloc(storage: balanceStorage);
-    statisticsBloc = StatisticsBloc(storage: roundsStorage);
+    statisticsBloc = StatisticsBloc(storage: roundsStorage, refillsStorage: InMemoryRefillsStorage());
+    balanceBloc = BalanceBloc(storage: balanceStorage, statisticsBloc: statisticsBloc, clock: () => now);
     bloc = RoundBloc(
       balanceBloc: balanceBloc,
       statisticsBloc: statisticsBloc,

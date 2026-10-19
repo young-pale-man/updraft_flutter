@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:updraft_flutter/base/base_page_state.dart';
 import 'package:updraft_flutter/blocs/balance_bloc/balance_bloc.dart';
 import 'package:updraft_flutter/blocs/round_bloc/round_bloc.dart';
 import 'package:updraft_flutter/pages/game/widgets/control_deck.dart';
 import 'package:updraft_flutter/pages/game/widgets/flight_screen.dart';
 import 'package:updraft_flutter/pages/game/widgets/history_strip.dart';
+import 'package:updraft_flutter/pages/settings/settings_page.dart';
+import 'package:updraft_flutter/utils/route.dart';
 import 'package:updraft_flutter/res/dimens.dart';
 import 'package:updraft_flutter/res/texts.dart';
 import 'package:updraft_flutter/utils/coins.dart';
@@ -28,6 +32,19 @@ class _GamePageState extends BasePageState<GamePage> {
   void initState() {
     super.initState();
     _lifecycle;
+    WidgetsBinding.instance.addPostFrameCallback((_) => _offerRefillIfBroke());
+  }
+
+  Future<void> _offerRefillIfBroke() async {
+    if (!mounted || !context.read<BalanceBloc>().state.needsRefill) return;
+    final openSettings = await AppDialogs.showMainDialog(
+      context,
+      title: AppTexts.outOfCoins,
+      content: AppTexts.outOfCoinsContent,
+      cancelTitle: AppTexts.later,
+      actionTitle: AppTexts.settings,
+    );
+    if (openSettings == true && mounted) unawaited(Navigator.of(context).pushNamed(route(SettingsPage)));
   }
 
   @override
@@ -57,6 +74,10 @@ class _GamePageState extends BasePageState<GamePage> {
       },
       child: MultiBlocListener(
         listeners: [
+          BlocListener<RoundBloc, RoundState>(
+            listenWhen: (previous, current) => previous.isFinished && current.isReady,
+            listener: (context, state) => _offerRefillIfBroke(),
+          ),
           BlocListener<RoundBloc, RoundState>(
             listenWhen: (previous, current) => previous.takeOffRevision != current.takeOffRevision,
             listener: (context, state) => HapticFeedback.lightImpact(),

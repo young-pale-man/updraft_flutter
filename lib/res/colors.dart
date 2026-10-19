@@ -27,6 +27,8 @@ class AppColors {
 
   static const Color positive = Color(0xFF6FE38D);
   static const Color negative = Color(0xFFFF6B5E);
+  static const Color positiveOnCap = Color(0xFF178A3E);
+  static const Color negativeOnCap = Color(0xFFC62828);
 
   static const Color scrim = Color(0xB31B1B1F);
 }

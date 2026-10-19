@@ -1,3 +1,4 @@
+import 'package:updraft_flutter/data/models/refill_record.dart';
 import 'package:updraft_flutter/data/models/round_record.dart';
 import 'package:updraft_flutter/utils/round_periods.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -20,32 +21,48 @@ void main() {
 
   group('period', () {
     test('all time keeps everything', () {
-      expect(RoundPeriod.allTime.select(rounds, now), rounds);
+      expect(RoundPeriod.allTime.select(rounds, now, timeOfRound), rounds);
     });
 
     test('today keeps only this calendar day', () {
-      expect(RoundPeriod.today.select(rounds, now), rounds.sublist(6));
+      expect(RoundPeriod.today.select(rounds, now, timeOfRound), rounds.sublist(6));
     });
 
     test('a week keeps today and the six days before it', () {
-      expect(RoundPeriod.week.select(rounds, now), rounds.sublist(4));
+      expect(RoundPeriod.week.select(rounds, now, timeOfRound), rounds.sublist(4));
     });
 
     test('a month keeps today and the twenty-nine days before it', () {
-      expect(RoundPeriod.month.select(rounds, now), rounds.sublist(2));
+      expect(RoundPeriod.month.select(rounds, now, timeOfRound), rounds.sublist(2));
     });
   });
 
   group('days', () {
     test('groups rounds by calendar day, newest day and newest round first', () {
-      final days = RoundDays.of(rounds.sublist(4));
+      final days = RoundDays.of(rounds.sublist(4), const []);
 
       expect(days.map((day) => day.date), [DateTime(2026, 3, 14), DateTime(2026, 3, 13), DateTime(2026, 3, 8)]);
-      expect(days.first.rounds, [rounds[7], rounds[6]]);
+      expect(days.first.entries, [RoundEntry(rounds[7]), RoundEntry(rounds[6])]);
     });
 
     test('has no days without rounds', () {
-      expect(RoundDays.of(const []), isEmpty);
+      expect(RoundDays.of(const [], const []), isEmpty);
+    });
+
+    test('places a refill among the rounds of its day by time', () {
+      final refill = RefillRecord(time: DateTime(2026, 3, 14, 5), amount: 10000);
+      final days = RoundDays.of(rounds.sublist(5), [refill]);
+
+      expect(days.first.entries, [RoundEntry(rounds[7]), RefillEntry(refill), RoundEntry(rounds[6])]);
+    });
+
+    test('gives a refill on a day without rounds a day of its own', () {
+      final refill = RefillRecord(time: DateTime(2026, 3, 10, 12), amount: 10000);
+
+      final days = RoundDays.of(const [], [refill]);
+
+      expect(days.single.date, DateTime(2026, 3, 10));
+      expect(days.single.entries, [RefillEntry(refill)]);
     });
   });
 

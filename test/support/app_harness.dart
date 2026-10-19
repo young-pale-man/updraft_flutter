@@ -24,12 +24,14 @@ class AppHarness {
   AppHarness({int? balance, List<RoundRecord> rounds = const [], List<double> draws = const [0.75]})
     : balanceStorage = InMemoryBalanceStorage(balance),
       roundsStorage = InMemoryRoundsStorage(rounds),
+      refillsStorage = InMemoryRefillsStorage(),
       _random = FixedRandom(draws);
 
   static final DateTime now = DateTime(2026, 3, 14, 9, 26);
 
   final InMemoryBalanceStorage balanceStorage;
   final InMemoryRoundsStorage roundsStorage;
+  final InMemoryRefillsStorage refillsStorage;
   final FakeTicks ticks = FakeTicks();
   final List<RecordingStage> stages = [];
   final FixedRandom _random;
@@ -45,6 +47,7 @@ class AppHarness {
         dependencies: AppDependencies(
           balanceStorage: balanceStorage,
           roundsStorage: roundsStorage,
+          refillsStorage: refillsStorage,
           random: _random,
           ticks: ticks.call,
           clock: () => now,
