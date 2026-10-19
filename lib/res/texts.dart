@@ -33,11 +33,8 @@ class AppTexts {
   static const String thereAreNoStatisticsAtThisMoment =
       'There are no statistics at this moment. Start playing and check back later...';
 
-  static const String notifications = 'Notifications';
   static const String privacyPolicy = 'Privacy policy';
   static const String termsOfUse = 'Terms of use';
-  static const String rateUs = 'Rate us';
-  static const String shareThisApp = 'Share this app';
   static const String clearStatistics = 'Clear statistics';
 
   static const String clear = 'Clear';

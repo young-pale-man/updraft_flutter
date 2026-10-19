@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'package:app_settings/app_settings.dart';
 import 'package:updraft_flutter/base/base_page_state.dart';
 import 'package:updraft_flutter/blocs/statistics_bloc/statistics_bloc.dart';
 import 'package:updraft_flutter/data/enums/navigation_menu_items.dart';
@@ -14,8 +12,6 @@ import 'package:updraft_flutter/utils/route.dart';
 
 import 'package:updraft_flutter/widgets/main_appbar.dart';
 import 'package:flutter/widgets.dart';
-import 'package:in_app_review/in_app_review.dart';
-import 'package:share_plus/share_plus.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -58,11 +54,8 @@ class _SettingsPageState extends BasePageState<SettingsPage> {
 }
 
 enum Settings {
-  notifications(title: AppTexts.notifications, icon: Assets.notifications),
   privacyPolicy(title: AppTexts.privacyPolicy, icon: Assets.privacyPolicy),
   termsOfUse(title: AppTexts.termsOfUse, icon: Assets.termsOfUse),
-  rateUs(title: AppTexts.rateUs, icon: Assets.rateUs),
-  shareThisApp(title: AppTexts.shareThisApp, icon: Assets.shareThisApp),
   clearStatistics(title: AppTexts.clearStatistics, icon: Assets.clear);
 
   const Settings({required this.title, required this.icon});
@@ -72,32 +65,10 @@ enum Settings {
 
   void Function(BuildContext) get action {
     switch (this) {
-      case Settings.notifications:
-        return (_) async => await AppSettings.openAppSettings(type: AppSettingsType.notification);
       case Settings.privacyPolicy:
         return (context) => Navigator.of(context).pushNamed(route(PrivacyPolicy));
       case Settings.termsOfUse:
         return (context) => Navigator.of(context).pushNamed(route(TermsOfUse));
-      case Settings.rateUs:
-        return (_) async {
-          final inAppReview = InAppReview.instance;
-          if (await inAppReview.isAvailable()) {
-            if (Platform.isIOS) {
-              await inAppReview.requestReview();
-            } else {
-              await inAppReview.openStoreListing();
-            }
-          }
-        };
-      case Settings.shareThisApp:
-        return (context) async {
-          final Size size = MediaQuery.of(context).size;
-          await Share.share(
-            'https://www.youtube.com',
-            subject: 'Welcome to the App',
-            sharePositionOrigin: Rect.fromLTWH(0, 0, size.width, size.height / 2),
-          );
-        };
       case Settings.clearStatistics:
         return (context) async {
           final clearConfirmed = await AppDialogs.showMainDialog(
