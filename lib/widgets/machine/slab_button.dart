@@ -2,6 +2,7 @@ import 'package:updraft_flutter/res/colors.dart';
 import 'package:updraft_flutter/res/dimens.dart';
 import 'package:updraft_flutter/res/shadows.dart';
 import 'package:updraft_flutter/res/styles.dart';
+import 'package:updraft_flutter/res/texts.dart';
 import 'package:updraft_flutter/widgets/machine/outlined_text.dart';
 import 'package:updraft_flutter/widgets/machine/pressable.dart';
 import 'package:flutter/widgets.dart';
@@ -23,7 +24,7 @@ class SlabButton extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (selected) const _Chevron('>'),
+            if (selected) const _Chevron(AppTexts.selectedOpen),
             DecoratedBox(
               decoration: BoxDecoration(
                 color: selected ? AppColors.ink : null,
@@ -46,7 +47,7 @@ class SlabButton extends StatelessWidget {
                       ),
               ),
             ),
-            if (selected) const _Chevron('<'),
+            if (selected) const _Chevron(AppTexts.selectedClose),
           ],
         ),
       ),

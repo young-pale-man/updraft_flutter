@@ -36,4 +36,12 @@ void main() {
       expect(Coins.formatMultiplier(10000), '100.00×');
     });
   });
+
+  test('writes a share as a percent', () {
+    expect(Coins.formatPercent(0.6), '60%');
+    expect(Coins.formatPercent(1), '100%');
+    expect(Coins.formatPercent(0.485, decimals: 1), '48.5%');
+    expect(Coins.formatPercent(0.97000000001, decimals: 1), '97.0%');
+    expect(Coins.formatPercent(0), '0%');
+  });
 }

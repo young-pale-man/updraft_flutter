@@ -20,7 +20,6 @@ class AppColors {
   static const Color capShadeDisabled = Color(0xFF68706B);
 
   static const Color accent = Color(0xFFEAD737);
-  static const Color onAccent = ink;
 
   static const Color figure = Color(0xFFF5F4F1);
   static const Color textMuted = Color(0xFF9CA5B7);

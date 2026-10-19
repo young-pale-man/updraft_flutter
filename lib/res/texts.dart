@@ -3,6 +3,9 @@ class AppTexts {
 
   static const String appName = 'Updraft';
   static const String tagline = 'Know when to jump';
+  static const String selectedOpen = '>';
+  static const String selectedClose = '<';
+  static const String separator = ' · ';
 
   static const String back = 'Back';
   static const String balance = 'Balance';
@@ -48,25 +51,14 @@ class AppTexts {
   static const String flewAwayAt = 'Flew away at';
   static const String playMoney = 'Play coins only. Nothing to buy, nothing to win.';
 
-  static const String home = 'Home';
   static const String statistics = 'Statistics';
   static const String settings = 'Settings';
 
-  static const String page = 'page';
-
   static const String cancel = 'Cancel';
-  static const String outOfCoins = 'Out of coins?';
-  static const String youDontHaveEnoughCoins = 'You don\'t have enough coins on your balance for this entry.';
 
-  static const String roundEntry = 'Round entry';
-  static const String autoMode = 'Auto mode';
   static const String play = 'Play';
 
-  static const String gotIt = 'Got it!';
-
-  static const String currentCoefficient = 'Current coefficient';
   static const String flewAway = 'Flew away';
-  static const String newRoundStartsIn = 'New round starts in:';
   static const String jump = 'Jump';
   static const String refill = 'Refill';
   static const String leaveFlight = 'Leave the flight?';
@@ -74,7 +66,6 @@ class AppTexts {
   static const String leave = 'Leave';
   static const String stay = 'Stay';
 
-  static const String allTime = 'All time';
   static const String today = 'Today';
   static const String yesterday = 'Yesterday';
   static const List<String> months = [
@@ -99,14 +90,6 @@ class AppTexts {
   static const String jumpRate = 'Jumped';
   static const String net = 'Net';
   static const String noFlightsYet = 'No flights here yet. Play a round and come back.';
-  static const String lastWeek = 'Last week';
-  static const String lastMonth = 'Last month';
-
-  static const String wins = 'Wins';
-  static const String loses = 'Loses';
-
-  static const String thereAreNoStatisticsAtThisMoment =
-      'There are no statistics at this moment. Start playing and check back later...';
 
   static const String clearStatistics = 'Clear statistics';
   static const String clearStatisticsDescription =

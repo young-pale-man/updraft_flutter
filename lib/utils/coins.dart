@@ -16,4 +16,6 @@ class Coins {
   }
 
   static String formatMultiplier(int hundredths) => '${format(hundredths)}×';
+
+  static String formatPercent(double fraction, {int decimals = 0}) => '${(fraction * 100).toStringAsFixed(decimals)}%';
 }

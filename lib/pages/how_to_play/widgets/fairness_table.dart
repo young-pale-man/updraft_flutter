@@ -11,8 +11,6 @@ class FairnessTable extends StatelessWidget {
 
   final List<int> targets;
 
-  static String percent(double fraction) => '${(fraction * 1000).round() / 10}%';
-
   @override
   Widget build(BuildContext context) {
     final header = AppStyles.tag.copyWith(color: AppColors.accent);
@@ -36,12 +34,12 @@ class FairnessTable extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: AppSpacing.sm),
-                child: Text(percent(CrashCurve.chanceToReach(target)), style: figure),
+                child: Text(Coins.formatPercent(CrashCurve.chanceToReach(target), decimals: 1), style: figure),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: AppSpacing.sm),
                 child: Text(
-                  percent(CrashCurve.chanceToReach(target) * target / 100),
+                  Coins.formatPercent(CrashCurve.chanceToReach(target) * target / 100, decimals: 1),
                   style: figure.copyWith(color: AppColors.positive),
                   textAlign: TextAlign.end,
                 ),

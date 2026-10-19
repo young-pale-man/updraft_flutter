@@ -26,7 +26,7 @@ class SummaryPanel extends StatelessWidget {
                 child: _Figure(label: AppTexts.rounds, value: '${summary.rounds}'),
               ),
               Expanded(
-                child: _Figure(label: AppTexts.jumpRate, value: '${summary.jumpRate}%'),
+                child: _Figure(label: AppTexts.jumpRate, value: Coins.formatPercent(summary.jumpRate / 100)),
               ),
             ],
           ),

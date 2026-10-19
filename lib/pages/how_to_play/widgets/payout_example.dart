@@ -19,9 +19,11 @@ class PayoutExample extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
       child: Row(
         children: [
-          Text('${AppTexts.jumpingExample} ', style: muted),
+          Text(AppTexts.jumpingExample, style: muted),
+          const SizedBox(width: AppSpacing.xs),
           Text(Coins.format(entry), style: figure),
-          Text(' · ${AppTexts.jumpingAt} ', style: muted),
+          Text('${AppTexts.separator}${AppTexts.jumpingAt}', style: muted),
+          const SizedBox(width: AppSpacing.xs),
           Text(Coins.formatMultiplier(multiplier), style: figure),
           const Spacer(),
           Text(

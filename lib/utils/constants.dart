@@ -1,6 +1,5 @@
 class AppConst {
   AppConst._();
-  static const bounceDuration = Duration(milliseconds: 110);
 
   static const balanceKey = 'balance';
   static const roundsKey = 'rounds';
