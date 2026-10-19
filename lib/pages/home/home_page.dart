@@ -216,12 +216,10 @@ class _HomePageState extends BasePageState<HomePage> {
     context.read<GameBloc>().add(CancelGameEV(bet: _betAmount.value));
   }
 
-  void _outOfCoins() async {
-    await AppDialogs.showMainDialog(
-      context,
-      title: AppTexts.outOfCoins,
-      content: AppTexts.youDontHaveEnoughCoins,
-      cancelIconTitle: AppTexts.cancel,
-    );
-  }
+  void _outOfCoins() => AppDialogs.showMainDialog(
+    context,
+    title: AppTexts.outOfCoins,
+    content: AppTexts.youDontHaveEnoughCoins,
+    cancelIconTitle: AppTexts.gotIt,
+  );
 }
