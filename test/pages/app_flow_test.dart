@@ -172,6 +172,31 @@ void main() {
     expect(find.byType(DayPanel), findsNothing);
   });
 
+  testWidgets('clearing statistics asks first and empties the history but keeps the balance', (tester) async {
+    final app = AppHarness(
+      balance: 61200,
+      rounds: [
+        RoundRecord(time: AppHarness.now, entry: 2000, multiplier: 342, outcome: RoundOutcome.jumped, crash: 510),
+      ],
+    );
+    await app.launch(tester);
+    await tester.openFromMenu(AppTexts.settings);
+
+    await tester.tap(find.bySemanticsLabel(AppTexts.clearStatistics));
+    await tester.pumpAndSettle();
+    await tester.tapText(AppTexts.cancel);
+    expect(app.roundsStorage.rounds, hasLength(1));
+
+    await tester.tap(find.bySemanticsLabel(AppTexts.clearStatistics));
+    await tester.pumpAndSettle();
+    await tester.tapText(AppTexts.clear);
+    expect(app.roundsStorage.rounds, isEmpty);
+
+    await tester.goBack();
+    expect(find.text(AppTexts.noJumpYet), findsWidgets);
+    expect(find.bySemanticsLabel('612.00'), findsOneWidget);
+  });
+
   testWidgets('fits a small phone without overflowing', (tester) async {
     final app = AppHarness();
     await app.launch(tester, size: const Size(320, 568));

@@ -85,11 +85,28 @@ class AppTexts {
   static const String thereAreNoStatisticsAtThisMoment =
       'There are no statistics at this moment. Start playing and check back later...';
 
-  static const String privacyPolicy = 'Privacy policy';
-  static const String termsOfUse = 'Terms of use';
   static const String clearStatistics = 'Clear statistics';
+  static const String clearStatisticsDescription =
+      'Erases every flight in your statistics, your best jump and the last flights strip. Your balance stays.';
+  static const String clearStatisticsWarning = 'Every recorded flight will be erased. This cannot be undone.';
+  static const String data = 'Data';
+  static const String about = 'About';
+  static const String version = 'Version 1.0.0';
+  static const String aboutSummary = 'A one-button flight game about knowing when to jump.';
+  static const String theGame = 'The game';
+  static const String theGameNote =
+      'Choose an entry and take off. The multiplier climbs while the plane flies. Jump before it flies away '
+      'to win the entry times the multiplier; wait too long and the entry is gone.';
+  static const String fairSkies = 'Fair skies';
+  static const String fairSkiesNote =
+      'Every flight ends at a point drawn from the same curve. Whatever target you choose, jumping there '
+      'returns 97% of the entry on average, so a target is a choice of risk, never of advantage.';
+  static const String playCoins = 'Play coins';
+  static const String playCoinsNote =
+      'Coins are for play only. There is nothing to buy and nothing to win. When the balance runs out, '
+      'Refill brings it back to 500.';
+  static const String privacy = 'Privacy';
+  static const String offlineNote = 'Plays entirely offline. Nothing is collected and nothing leaves this device.';
 
   static const String clear = 'Clear';
-  static const String areYouSureTheStatisticsData =
-      'Are you sure? The statistics data will be cleared. Please, confirm your action.';
 }

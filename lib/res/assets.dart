@@ -15,8 +15,4 @@ class Assets {
   static const String reset = 'assets/icons/reset.svg';
 
   static const String plane = 'assets/animations/plane.riv';
-
-  static const String privacyPolicy = 'assets/icons/privacy_policy.svg';
-  static const String termsOfUse = 'assets/icons/terms_of_use.svg';
-  static const String clear = 'assets/icons/clear.svg';
 }
