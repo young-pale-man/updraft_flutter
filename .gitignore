@@ -27,3 +27,5 @@ web/
 
 app.*.symbols
 app.*.map.json
+
+pubspec.lock
