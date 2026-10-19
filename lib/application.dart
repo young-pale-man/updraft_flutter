@@ -29,31 +29,34 @@ class _ApplicationState extends State<Application> {
   @override
   Widget build(BuildContext context) {
     final dependencies = widget.dependencies;
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => BalanceBloc(storage: dependencies.balanceStorage)),
-        BlocProvider(create: (context) => StatisticsBloc(storage: dependencies.roundsStorage)),
-        BlocProvider(
-          create: (context) => RoundBloc(
-            balanceBloc: context.read<BalanceBloc>(),
-            statisticsBloc: context.read<StatisticsBloc>(),
-            random: dependencies.random,
-            ticks: dependencies.ticks,
-            clock: dependencies.clock,
+    return RepositoryProvider.value(
+      value: dependencies,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => BalanceBloc(storage: dependencies.balanceStorage)),
+          BlocProvider(create: (context) => StatisticsBloc(storage: dependencies.roundsStorage)),
+          BlocProvider(
+            create: (context) => RoundBloc(
+              balanceBloc: context.read<BalanceBloc>(),
+              statisticsBloc: context.read<StatisticsBloc>(),
+              random: dependencies.random,
+              ticks: dependencies.ticks,
+              clock: dependencies.clock,
+            ),
           ),
-        ),
-      ],
-      child: MediaQuery(
-        data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
-        child: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.dark,
-          child: MaterialApp(
-            title: 'updraft',
-            debugShowCheckedModeBanner: false,
-            initialRoute: route(PreloaderPage),
-            routes: generateRoutes(),
-            theme: mainAppTheme,
-            darkTheme: mainAppTheme,
+        ],
+        child: MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
+          child: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle.dark,
+            child: MaterialApp(
+              title: 'updraft',
+              debugShowCheckedModeBanner: false,
+              initialRoute: route(PreloaderPage),
+              routes: generateRoutes(),
+              theme: mainAppTheme,
+              darkTheme: mainAppTheme,
+            ),
           ),
         ),
       ),

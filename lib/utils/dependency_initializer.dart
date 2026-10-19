@@ -5,6 +5,8 @@ import 'package:updraft_flutter/data/storages/local_balance_storage.dart';
 import 'package:updraft_flutter/data/storages/local_rounds_storage.dart';
 import 'package:updraft_flutter/data/storages/rounds_storage.dart';
 import 'package:updraft_flutter/utils/ticks.dart';
+import 'package:updraft_flutter/widgets/flight_scene.dart';
+import 'package:updraft_flutter/widgets/rive_flight_stage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppDependencies {
@@ -14,6 +16,7 @@ class AppDependencies {
     required this.random,
     required this.ticks,
     required this.clock,
+    required this.flightStage,
   });
 
   final BalanceStorage balanceStorage;
@@ -21,6 +24,7 @@ class AppDependencies {
   final Random random;
   final TickSource ticks;
   final DateTime Function() clock;
+  final FlightStage Function() flightStage;
 }
 
 class DependencyInitializer {
@@ -35,6 +39,7 @@ class DependencyInitializer {
       random: Random(),
       ticks: frameTicks,
       clock: DateTime.now,
+      flightStage: RiveFlightStage.new,
     );
   }
 }

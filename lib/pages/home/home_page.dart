@@ -10,14 +10,14 @@ import 'package:updraft_flutter/pages/home/widgets/timer_display.dart';
 import 'package:updraft_flutter/res/texts.dart';
 import 'package:updraft_flutter/utils/balance_rules.dart';
 import 'package:updraft_flutter/utils/coins.dart';
-import 'package:updraft_flutter/utils/constants.dart';
+import 'package:updraft_flutter/utils/dependency_initializer.dart';
 import 'package:updraft_flutter/utils/dialogs.dart';
 import 'package:updraft_flutter/widgets/main_appbar.dart';
+import 'package:updraft_flutter/widgets/flight_scene.dart';
 import 'package:updraft_flutter/widgets/main_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rive/rive.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,15 +27,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends BasePageState<HomePage> {
-  TriggerInput? _finishTrigger;
-
-  void _onSceneLoaded(StateMachine stateMachine) {
-    _finishTrigger = stateMachine.trigger(AppConst.finishAnimationTrigger);
-    if (context.read<RoundBloc>().state.isAirborne) {
-      stateMachine.trigger(AppConst.startAnimationTrigger)?.fire();
-    }
-  }
-
   @override
   PreferredSizeWidget? get appBar =>
       MainAppbar(currentPage: NavigationMenuItems.home, content: const HomeAppbarContent(), canOpenMenu: _leaveRound);
@@ -55,10 +46,7 @@ class _HomePageState extends BasePageState<HomePage> {
         ),
         BlocListener<RoundBloc, RoundState>(
           listenWhen: (previous, current) => previous.crashRevision != current.crashRevision,
-          listener: (context, state) {
-            _finishTrigger?.fire();
-            HapticFeedback.heavyImpact();
-          },
+          listener: (context, state) => HapticFeedback.heavyImpact(),
         ),
       ],
       child: Padding(
@@ -72,8 +60,11 @@ class _HomePageState extends BasePageState<HomePage> {
                 child: ConstrainedBox(
                   constraints: BoxConstraints(maxHeight: screenWidth < 580 ? screenWidth : 580, maxWidth: 900),
                   child: PlaneDisplay(
-                    key: ValueKey(context.select((RoundBloc bloc) => bloc.state.takeOffRevision)),
-                    onInit: _onSceneLoaded,
+                    scene: FlightScene(
+                      takeOffRevision: context.select((RoundBloc bloc) => bloc.state.takeOffRevision),
+                      crashRevision: context.select((RoundBloc bloc) => bloc.state.crashRevision),
+                      stage: context.read<AppDependencies>().flightStage,
+                    ),
                     overlay: const _FlightOverlay(),
                   ),
                 ),
