@@ -13,8 +13,10 @@ class FakeTicks {
 
   int get subscriptions => _sources.length;
 
+  void push(Duration elapsed) => _sources.last.add(elapsed);
+
   Future<void> tick(Duration elapsed) async {
-    _sources.last.add(elapsed);
+    push(elapsed);
     await settle();
   }
 
