@@ -1,5 +1,5 @@
 name: updraft_flutter
-description: "Updraft game"
+description: "A one-button flight game about knowing when to jump."
 publish_to: 'none'
 
 version: 1.0.0+1
