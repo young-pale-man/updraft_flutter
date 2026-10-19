@@ -2,6 +2,7 @@ import 'package:updraft_flutter/blocs/balance_bloc/balance_bloc.dart';
 import 'package:updraft_flutter/blocs/round_bloc/round_bloc.dart';
 import 'package:updraft_flutter/blocs/statistics_bloc/statistics_bloc.dart';
 import 'package:updraft_flutter/pages/preloader/preloader_page.dart';
+import 'package:updraft_flutter/res/texts.dart';
 import 'package:updraft_flutter/res/theme.dart';
 import 'package:updraft_flutter/utils/dependency_initializer.dart';
 import 'package:updraft_flutter/utils/generate_routes.dart';
@@ -50,7 +51,7 @@ class _ApplicationState extends State<Application> {
           child: AnnotatedRegion<SystemUiOverlayStyle>(
             value: SystemUiOverlayStyle.dark,
             child: MaterialApp(
-              title: 'updraft',
+              title: AppTexts.appName,
               debugShowCheckedModeBanner: false,
               initialRoute: route(PreloaderPage),
               routes: generateRoutes(),

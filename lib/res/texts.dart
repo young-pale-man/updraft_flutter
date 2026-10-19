@@ -1,6 +1,8 @@
 class AppTexts {
   AppTexts._();
 
+  static const String appName = 'Updraft';
+
   static const String home = 'Home';
   static const String statistics = 'Statistics';
   static const String settings = 'Settings';
