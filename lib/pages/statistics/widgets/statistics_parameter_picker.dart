@@ -2,7 +2,6 @@ import 'package:updraft_flutter/data/enums/statistics_parameter.dart';
 import 'package:updraft_flutter/res/assets.dart';
 import 'package:updraft_flutter/res/colors.dart';
 import 'package:updraft_flutter/res/styles.dart';
-import 'package:updraft_flutter/utils/scaled_size.dart';
 import 'package:updraft_flutter/widgets/main_icon_button.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -17,7 +16,7 @@ class StatisticsParameterPicker extends StatelessWidget {
     return Row(
       children: [
         MainIconButton(
-          height: scaledSize(46),
+          height: 46,
           disabled: parameter.index == 0,
           onPressed: () => _changeParameter(-1),
           icon: Assets.arrowLeft,
@@ -29,7 +28,7 @@ class StatisticsParameterPicker extends StatelessWidget {
           ),
         ),
         MainIconButton(
-          height: scaledSize(46),
+          height: 46,
           disabled: parameter.index == StatisticsParameter.values.last.index,
           onPressed: () => _changeParameter(1),
           icon: Assets.arrowRight,

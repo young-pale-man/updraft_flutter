@@ -1,12 +1,12 @@
 import 'package:updraft_flutter/res/colors.dart';
 import 'package:updraft_flutter/res/styles.dart';
-import 'package:updraft_flutter/utils/device_info.dart';
+import 'package:updraft_flutter/utils/coins.dart';
 import 'package:flutter/widgets.dart';
 
 class BalanceBar extends StatelessWidget {
   const BalanceBar({super.key, required this.balance});
 
-  final double balance;
+  final int balance;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class BalanceBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 14),
       decoration: BoxDecoration(
         color: AppColors.main.layer1,
-        borderRadius: BorderRadius.circular(isTablet ? 50 : 25),
+        borderRadius: BorderRadius.circular(25),
         border: Border.all(width: 2, color: AppColors.text.primary),
       ),
       child: Row(
@@ -25,7 +25,7 @@ class BalanceBar extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  balance.toStringAsFixed(2),
+                  Coins.format(balance),
                   style: AppStyles.header.headerS.copyWith(color: AppColors.text.primary),
                 ),
               ),

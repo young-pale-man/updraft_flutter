@@ -1,7 +1,6 @@
 import 'package:updraft_flutter/res/colors.dart';
 import 'package:updraft_flutter/res/styles.dart';
 import 'package:updraft_flutter/res/texts.dart';
-import 'package:updraft_flutter/utils/scaled_size.dart';
 import 'package:flutter/cupertino.dart';
 
 class ChartRow extends StatelessWidget {
@@ -13,12 +12,12 @@ class ChartRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: scaledSize(96),
+      width: 96,
       child: Row(
         children: [
           Container(
-            height: scaledSize(14),
-            width: scaledSize(14),
+            height: 14,
+            width: 14,
             decoration: BoxDecoration(
               color: isWin ? AppColors.system.positive : AppColors.system.negative,
               shape: BoxShape.circle,

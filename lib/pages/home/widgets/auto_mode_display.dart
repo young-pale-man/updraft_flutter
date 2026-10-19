@@ -4,7 +4,6 @@ import 'package:updraft_flutter/res/colors.dart';
 import 'package:updraft_flutter/res/styles.dart';
 import 'package:updraft_flutter/res/texts.dart';
 import 'package:updraft_flutter/utils/constants.dart';
-import 'package:updraft_flutter/utils/scaled_size.dart';
 import 'package:updraft_flutter/widgets/main_icon_button.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -38,7 +37,7 @@ class AutoModeDisplay extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: scaledSize(35),
+              height: 35,
               child: FittedBox(
                 fit: BoxFit.fitHeight,
                 child: CupertinoSwitch(
@@ -66,7 +65,7 @@ class AutoModeDisplay extends StatelessWidget {
             ),
             const SizedBox(width: 12),
             MainIconButton(
-              height: scaledSize(50),
+              height: 50,
               icon: Assets.reset,
               onPressed: _resetAutoModeCoef,
               disabled: disabled || !autoMode,

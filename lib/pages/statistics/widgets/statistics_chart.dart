@@ -1,7 +1,6 @@
 import 'package:updraft_flutter/pages/statistics/widgets/chart_row.dart';
 import 'package:updraft_flutter/pages/statistics/widgets/custom_chart.dart';
 import 'package:updraft_flutter/res/colors.dart';
-import 'package:updraft_flutter/utils/scaled_size.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,11 +13,11 @@ class StatisticsChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomChart(
-      radius: scaledSize(96),
+      radius: 96,
       percentValue: winPercentage,
       chartColor: AppColors.system.positive,
       child: CustomChart(
-        radius: scaledSize(80),
+        radius: 80,
         percentValue: losePercentage,
         chartColor: AppColors.system.negative,
         child: Column(

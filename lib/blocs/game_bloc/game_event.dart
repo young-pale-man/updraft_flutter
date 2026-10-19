@@ -12,27 +12,26 @@ class BetEV extends GameEvent {}
 class StartCountDownEV extends GameEvent {}
 
 class StartGameEV extends GameEvent {
-  const StartGameEV({required this.bet});
+  const StartGameEV({required this.entry});
 
-  final double bet;
+  final int entry;
 }
 
 class CashOutEV extends GameEvent {
-  const CashOutEV({required this.bet, required this.coef});
+  const CashOutEV({required this.entry, required this.multiplier});
 
-  final double bet;
-  final double coef;
+  final int entry;
+  final int multiplier;
 }
 
 class FinishGameEV extends GameEvent {
-  const FinishGameEV({required this.bet, required this.coef});
+  const FinishGameEV({required this.entry});
 
-  final double bet;
-  final double coef;
+  final int entry;
 }
 
 class CancelGameEV extends GameEvent {
-  const CancelGameEV({required this.bet});
+  const CancelGameEV({required this.entry});
 
-  final double bet;
+  final int entry;
 }

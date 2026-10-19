@@ -1,40 +1,29 @@
-import 'package:updraft_flutter/data/models/statistics_item_model.dart';
-import 'package:updraft_flutter/providers/provider_injector.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:updraft_flutter/data/models/round_record.dart';
+import 'package:updraft_flutter/data/storages/rounds_storage.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'statistics_event.dart';
 part 'statistics_state.dart';
 
 class StatisticsBloc extends Bloc<StatisticsEvent, StatisticsState> {
-  StatisticsBloc() : super(StatisticsState.initial()) {
-    on<InitializeStatisticsEV>(_initializeStatistics);
-    on<UpdateStatisticsEV>(_updateStatistics);
-    on<ClearStatisticsEV>(_clearStatistics);
-    _initialize();
+  StatisticsBloc({required RoundsStorage storage})
+    : _storage = storage,
+      super(StatisticsState(rounds: List.unmodifiable(storage.read()))) {
+    on<RoundRecorded>(_record);
+    on<StatisticsCleared>(_clear);
   }
 
-  final _statisticsStorage = ProviderInjector.instance.statisticsProvider;
+  final RoundsStorage _storage;
 
-  void _initialize() => add(InitializeStatisticsEV());
-
-  Future<void> _initializeStatistics(InitializeStatisticsEV event, Emitter<StatisticsState> emit) async {
-    final statisticsItemsList = _statisticsStorage.getStatistics();
-
-    emit(state.copyWith(statisticsItemsList: statisticsItemsList));
+  Future<void> _record(RoundRecorded event, Emitter<StatisticsState> emit) async {
+    final rounds = List<RoundRecord>.unmodifiable([...state.rounds, event.round]);
+    emit(StatisticsState(rounds: rounds));
+    await _storage.write(rounds);
   }
 
-  Future<void> _updateStatistics(UpdateStatisticsEV event, Emitter<StatisticsState> emit) async {
-    List<StatisticsItemModel> statisticsItemsList = state.statisticsItemsList;
-
-    statisticsItemsList.add(event.statisticsItem);
-
-    _statisticsStorage.saveStatistics(statisticsItemsList);
-    emit(state.copyWith(statisticsItemsList: statisticsItemsList));
-  }
-
-  Future<void> _clearStatistics(ClearStatisticsEV event, Emitter<StatisticsState> emit) async {
-    _statisticsStorage.clearStatistics();
-    emit(state.copyWith(statisticsItemsList: []));
+  Future<void> _clear(StatisticsCleared event, Emitter<StatisticsState> emit) async {
+    emit(const StatisticsState(rounds: []));
+    await _storage.clear();
   }
 }

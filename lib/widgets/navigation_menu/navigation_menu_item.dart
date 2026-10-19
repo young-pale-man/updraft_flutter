@@ -2,7 +2,6 @@ import 'package:updraft_flutter/data/enums/navigation_menu_items.dart';
 import 'package:updraft_flutter/res/colors.dart';
 import 'package:updraft_flutter/res/styles.dart';
 import 'package:updraft_flutter/utils/route.dart';
-import 'package:updraft_flutter/utils/scaled_size.dart';
 import 'package:updraft_flutter/widgets/main_icon_button.dart';
 import 'package:flutter/widgets.dart';
 
@@ -16,12 +15,7 @@ class NavigationMenuTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        MainIconButton(
-          height: scaledSize(50),
-          icon: item.icon,
-          disabled: !isSelected,
-          onPressed: () => _selectPage(context),
-        ),
+        MainIconButton(height: 50, icon: item.icon, disabled: !isSelected, onPressed: () => _selectPage(context)),
         const SizedBox(width: 10),
         Expanded(
           child: Align(

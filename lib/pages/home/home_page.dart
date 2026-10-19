@@ -8,7 +8,6 @@ import 'package:updraft_flutter/pages/home/widgets/home_pickers_layout.dart';
 import 'package:updraft_flutter/pages/home/widgets/plane_display.dart';
 import 'package:updraft_flutter/res/texts.dart';
 import 'package:updraft_flutter/utils/constants.dart';
-import 'package:updraft_flutter/utils/dependency_initializer.dart';
 import 'package:updraft_flutter/utils/dialogs.dart';
 import 'package:updraft_flutter/widgets/main_appbar.dart';
 import 'package:updraft_flutter/widgets/main_button.dart';
@@ -38,6 +37,10 @@ class _HomePageState extends BasePageState<HomePage> {
   TriggerInput? _finishTrigger;
   Timer? _startTimer;
   Timer? _gameTimer;
+
+  int get _entry => (_betAmount.value * 100).round();
+
+  int get _multiplier => (_currentCoef.value * 100).round();
 
   void onAnimationInit(StateMachine stateMachine) {
     _startTrigger = stateMachine.trigger(AppConst.startAnimationTrigger);
@@ -125,7 +128,7 @@ class _HomePageState extends BasePageState<HomePage> {
   void _mainButtonAction() {
     final bloc = context.read<GameBloc>();
     if (bloc.state is BetST) {
-      if (injector<BalanceBloc>().state.balance < _betAmount.value) {
+      if (context.read<BalanceBloc>().state.balance < _entry) {
         _outOfCoins();
       } else {
         bloc.add(StartCountDownEV());
@@ -133,7 +136,7 @@ class _HomePageState extends BasePageState<HomePage> {
     } else if (bloc.state is CountDownST) {
       bloc.add(BetEV());
     } else if (bloc.state is InGameST) {
-      bloc.add(CashOutEV(bet: _betAmount.value, coef: _currentCoef.value));
+      bloc.add(CashOutEV(entry: _entry, multiplier: _multiplier));
     }
   }
 
@@ -161,7 +164,7 @@ class _HomePageState extends BasePageState<HomePage> {
         _timerValue.value -= 1;
       } else {
         timer.cancel();
-        context.read<GameBloc>().add(StartGameEV(bet: _betAmount.value));
+        context.read<GameBloc>().add(StartGameEV(entry: _entry));
       }
     });
   }
@@ -191,7 +194,7 @@ class _HomePageState extends BasePageState<HomePage> {
 
             Future.delayed(AppConst.finishGameDelay, () {
               if (mounted) {
-                gameBloc.add(FinishGameEV(bet: _betAmount.value, coef: _currentCoef.value));
+                gameBloc.add(FinishGameEV(entry: _entry));
               }
             });
           }
@@ -203,7 +206,7 @@ class _HomePageState extends BasePageState<HomePage> {
   void _autoCashOut() {
     final gameBloc = context.read<GameBloc>();
     if (_autoMode && _autoModeCoef.value <= _currentCoef.value && gameBloc.state is InGameST && mounted) {
-      gameBloc.add(CashOutEV(bet: _betAmount.value, coef: _currentCoef.value));
+      gameBloc.add(CashOutEV(entry: _entry, multiplier: _multiplier));
     }
   }
 
@@ -213,7 +216,7 @@ class _HomePageState extends BasePageState<HomePage> {
 
     _finishTrigger?.fire();
 
-    context.read<GameBloc>().add(CancelGameEV(bet: _betAmount.value));
+    context.read<GameBloc>().add(CancelGameEV(entry: _entry));
   }
 
   void _outOfCoins() => AppDialogs.showMainDialog(

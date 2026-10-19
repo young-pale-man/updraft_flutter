@@ -2,7 +2,7 @@ import 'package:updraft_flutter/base/base_page_state.dart';
 import 'package:updraft_flutter/blocs/statistics_bloc/statistics_bloc.dart';
 import 'package:updraft_flutter/data/enums/navigation_menu_items.dart';
 import 'package:updraft_flutter/data/enums/statistics_parameter.dart';
-import 'package:updraft_flutter/data/models/statistics_item_model.dart';
+import 'package:updraft_flutter/data/models/round_record.dart';
 import 'package:updraft_flutter/pages/statistics/widgets/statistics_card.dart';
 import 'package:updraft_flutter/pages/statistics/widgets/statistics_day_group.dart';
 import 'package:updraft_flutter/res/colors.dart';
@@ -22,14 +22,6 @@ class StatisticsPage extends StatefulWidget {
 class _StatisticsPageState extends BasePageState<StatisticsPage> {
   StatisticsParameter _selectedParameter = StatisticsParameter.allTime;
 
-  late final List<StatisticsItemModel> _allStatistics;
-
-  @override
-  void initState() {
-    super.initState();
-    _allStatistics = context.read<StatisticsBloc>().state.statisticsItemsList;
-  }
-
   @override
   bool get bottomSafeArea => false;
 
@@ -38,7 +30,8 @@ class _StatisticsPageState extends BasePageState<StatisticsPage> {
 
   @override
   Widget pageBuilder(BuildContext context) {
-    final statBySelectedParameter = _filterStatisticsByParameter();
+    final rounds = context.select((StatisticsBloc bloc) => bloc.state.rounds);
+    final statBySelectedParameter = _filterStatisticsByParameter(rounds);
     final statGrouped = _groupItemsByDates(statBySelectedParameter).entries.toList();
 
     return Center(
@@ -84,45 +77,31 @@ class _StatisticsPageState extends BasePageState<StatisticsPage> {
 
   void _changeParameter(int index) => setState(() => _selectedParameter = StatisticsParameter.values[index]);
 
-  List<StatisticsItemModel> _filterStatisticsByParameter() {
+  List<RoundRecord> _filterStatisticsByParameter(List<RoundRecord> rounds) {
     if (_selectedParameter == StatisticsParameter.allTime) {
-      return _allStatistics;
+      return rounds;
     }
 
     final now = DateTime.now();
     final fromDate = now.subtract(Duration(days: _selectedParameter.daysFromNow ?? 0));
+    final todayDate = DateTime(now.year, now.month, now.day);
 
-    return _allStatistics.where((item) {
-      if (item.date == null) return false;
-
-      final itemDate = DateTime(item.date!.year, item.date!.month, item.date!.day);
-      final todayDate = DateTime(now.year, now.month, now.day);
-
+    return rounds.where((item) {
+      final itemDate = DateTime(item.time.year, item.time.month, item.time.day);
       if (_selectedParameter == StatisticsParameter.today) {
         return itemDate == todayDate;
-      } else {
-        return itemDate.isAfter(fromDate) || itemDate == fromDate;
       }
+      return itemDate.isAfter(fromDate) || itemDate == fromDate;
     }).toList();
   }
 
-  Map<DateTime, List<StatisticsItemModel>> _groupItemsByDates(List<StatisticsItemModel> statistics) {
-    final Map<DateTime, List<StatisticsItemModel>> grouped = {};
-
-    for (var item in statistics) {
-      if (item.date != null) {
-        final dateWithoutTime = DateTime(item.date!.year, item.date!.month, item.date!.day);
-
-        if (!grouped.containsKey(dateWithoutTime)) {
-          grouped[dateWithoutTime] = [];
-        }
-
-        grouped[dateWithoutTime]!.insert(0, item);
-      }
+  Map<DateTime, List<RoundRecord>> _groupItemsByDates(List<RoundRecord> statistics) {
+    final grouped = <DateTime, List<RoundRecord>>{};
+    for (final item in statistics) {
+      final dateWithoutTime = DateTime(item.time.year, item.time.month, item.time.day);
+      grouped.putIfAbsent(dateWithoutTime, () => []).insert(0, item);
     }
-
     final sortedKeys = grouped.keys.toList()..sort((a, b) => b.compareTo(a));
-
-    return {for (var key in sortedKeys) key: grouped[key]!};
+    return {for (final key in sortedKeys) key: grouped[key]!};
   }
 }

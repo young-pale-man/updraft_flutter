@@ -1,18 +1,36 @@
-import 'package:updraft_flutter/blocs/balance_bloc/balance_bloc.dart';
-import 'package:updraft_flutter/blocs/statistics_bloc/statistics_bloc.dart';
-import 'package:get_it/get_it.dart';
+import 'dart:math';
+
+import 'package:updraft_flutter/data/storages/balance_storage.dart';
+import 'package:updraft_flutter/data/storages/local_balance_storage.dart';
+import 'package:updraft_flutter/data/storages/local_rounds_storage.dart';
+import 'package:updraft_flutter/data/storages/rounds_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final injector = GetIt.instance;
-late final SharedPreferences sharedPreferences;
+class AppDependencies {
+  const AppDependencies({
+    required this.balanceStorage,
+    required this.roundsStorage,
+    required this.random,
+    required this.clock,
+  });
+
+  final BalanceStorage balanceStorage;
+  final RoundsStorage roundsStorage;
+  final Random random;
+  final DateTime Function() clock;
+}
 
 class DependencyInitializer {
   DependencyInitializer._();
 
-  static Future<void> initDependencies() async {
-    sharedPreferences = await SharedPreferences.getInstance();
+  static Future<AppDependencies> initDependencies() async {
+    final preferences = await SharedPreferences.getInstance();
 
-    injector.registerSingleton(BalanceBloc());
-    injector.registerSingleton(StatisticsBloc());
+    return AppDependencies(
+      balanceStorage: LocalBalanceStorage(preferences),
+      roundsStorage: LocalRoundsStorage(preferences),
+      random: Random(),
+      clock: DateTime.now,
+    );
   }
 }

@@ -7,15 +7,15 @@ sealed class StatisticsEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitializeStatisticsEV extends StatisticsEvent {}
+final class RoundRecorded extends StatisticsEvent {
+  const RoundRecorded(this.round);
 
-class UpdateStatisticsEV extends StatisticsEvent {
-  const UpdateStatisticsEV({required this.statisticsItem});
-
-  final StatisticsItemModel statisticsItem;
+  final RoundRecord round;
 
   @override
-  List<Object> get props => [statisticsItem];
+  List<Object?> get props => [round];
 }
 
-class ClearStatisticsEV extends StatisticsEvent {}
+final class StatisticsCleared extends StatisticsEvent {
+  const StatisticsCleared();
+}

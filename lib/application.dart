@@ -4,24 +4,43 @@ import 'package:updraft_flutter/blocs/statistics_bloc/statistics_bloc.dart';
 import 'package:updraft_flutter/pages/preloader/preloader_page.dart';
 import 'package:updraft_flutter/res/theme.dart';
 import 'package:updraft_flutter/utils/dependency_initializer.dart';
-import 'package:updraft_flutter/utils/device_info.dart';
 import 'package:updraft_flutter/utils/generate_routes.dart';
 import 'package:updraft_flutter/utils/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Application extends StatelessWidget {
-  const Application({super.key});
+class Application extends StatefulWidget {
+  const Application({super.key, required this.dependencies});
+
+  final AppDependencies dependencies;
+
+  @override
+  State<Application> createState() => _ApplicationState();
+}
+
+class _ApplicationState extends State<Application> {
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  }
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    final dependencies = widget.dependencies;
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => injector<BalanceBloc>()),
-        BlocProvider(create: (context) => injector<StatisticsBloc>()),
-        BlocProvider(lazy: true, create: (context) => GameBloc()),
+        BlocProvider(create: (context) => BalanceBloc(storage: dependencies.balanceStorage)),
+        BlocProvider(create: (context) => StatisticsBloc(storage: dependencies.roundsStorage)),
+        BlocProvider(
+          create: (context) => GameBloc(
+            balanceBloc: context.read<BalanceBloc>(),
+            statisticsBloc: context.read<StatisticsBloc>(),
+            random: dependencies.random,
+            clock: dependencies.clock,
+          ),
+        ),
       ],
       child: MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
@@ -34,10 +53,6 @@ class Application extends StatelessWidget {
             routes: generateRoutes(),
             theme: mainAppTheme,
             darkTheme: mainAppTheme,
-            builder: (context, child) {
-              DeviceInfo.initializeDeviceInfo(context);
-              return child ?? const SizedBox.shrink();
-            },
           ),
         ),
       ),

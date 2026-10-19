@@ -6,12 +6,12 @@ import 'package:updraft_flutter/pages/settings/widgets/privacy_policy.dart';
 import 'package:updraft_flutter/pages/settings/widgets/terms_of_use.dart';
 import 'package:updraft_flutter/res/assets.dart';
 import 'package:updraft_flutter/res/texts.dart';
-import 'package:updraft_flutter/utils/dependency_initializer.dart';
 import 'package:updraft_flutter/utils/dialogs.dart';
 import 'package:updraft_flutter/utils/route.dart';
 
 import 'package:updraft_flutter/widgets/main_appbar.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -80,8 +80,8 @@ enum Settings {
             isActionDestructive: true,
           );
 
-          if (clearConfirmed == true) {
-            injector<StatisticsBloc>().add(ClearStatisticsEV());
+          if (clearConfirmed == true && context.mounted) {
+            context.read<StatisticsBloc>().add(const StatisticsCleared());
           }
         };
     }

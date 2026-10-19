@@ -2,17 +2,26 @@ import 'dart:math';
 
 import 'package:updraft_flutter/blocs/balance_bloc/balance_bloc.dart';
 import 'package:updraft_flutter/blocs/statistics_bloc/statistics_bloc.dart';
-import 'package:updraft_flutter/data/models/statistics_item_model.dart';
+import 'package:updraft_flutter/data/models/round_record.dart';
+import 'package:updraft_flutter/utils/coins.dart';
 import 'package:updraft_flutter/utils/crash_curve.dart';
-import 'package:updraft_flutter/utils/dependency_initializer.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'game_event.dart';
 part 'game_state.dart';
 
 class GameBloc extends Bloc<GameEvent, GameState> {
-  GameBloc() : super(BetST()) {
+  GameBloc({
+    required BalanceBloc balanceBloc,
+    required StatisticsBloc statisticsBloc,
+    required Random random,
+    required DateTime Function() clock,
+  }) : _balance = balanceBloc,
+       _statistics = statisticsBloc,
+       _random = random,
+       _clock = clock,
+       super(BetST()) {
     on<BetEV>((event, emit) => emit(BetST()));
     on<StartCountDownEV>((event, emit) => emit(CountDownST()));
     on<StartGameEV>(_startGame);
@@ -21,52 +30,58 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     on<CancelGameEV>(_cancelGame);
   }
 
-  final balance = injector<BalanceBloc>();
-  final statistics = injector<StatisticsBloc>();
+  final BalanceBloc _balance;
+  final StatisticsBloc _statistics;
+  final Random _random;
+  final DateTime Function() _clock;
+  int _crash = 100;
+  bool _wasWin = false;
 
-  bool wasWin = false;
-
-  Future<void> _startGame(StartGameEV event, Emitter<GameState> emit) async {
-    final deadline = const CrashCurve().draw(Random()) / 100;
-
-    balance.add(UpdateBalanceEV(difference: -event.bet));
-    emit(InGameST(deadline: deadline));
+  void _startGame(StartGameEV event, Emitter<GameState> emit) {
+    _crash = const CrashCurve().draw(_random);
+    _balance.add(EntryTaken(event.entry));
+    emit(InGameST(deadline: _crash / 100));
   }
 
-  Future<void> _cashOut(CashOutEV event, Emitter<GameState> emit) async {
-    final winAmount = event.bet * event.coef;
-    wasWin = true;
-
-    final stat = _getGameStat(event.bet, event.coef);
-
-    balance.add(UpdateBalanceEV(difference: winAmount));
-    statistics.add(UpdateStatisticsEV(statisticsItem: stat));
+  void _cashOut(CashOutEV event, Emitter<GameState> emit) {
+    _wasWin = true;
+    _balance.add(PayoutReceived(Coins.payout(event.entry, event.multiplier)));
+    _statistics.add(
+      RoundRecorded(
+        RoundRecord(
+          time: _clock(),
+          entry: event.entry,
+          multiplier: event.multiplier,
+          outcome: RoundOutcome.jumped,
+          crash: _crash,
+        ),
+      ),
+    );
     emit(CashOutST());
   }
 
-  Future<void> _finishGame(FinishGameEV event, Emitter<GameState> emit) async {
-    if (!wasWin) {
-      final stat = _getGameStat(event.bet, event.coef);
-      statistics.add(UpdateStatisticsEV(statisticsItem: stat));
+  void _finishGame(FinishGameEV event, Emitter<GameState> emit) {
+    if (!_wasWin) {
+      _statistics.add(
+        RoundRecorded(
+          RoundRecord(
+            time: _clock(),
+            entry: event.entry,
+            multiplier: _crash,
+            outcome: RoundOutcome.flewAway,
+            crash: _crash,
+          ),
+        ),
+      );
     }
-
-    wasWin = false;
+    _wasWin = false;
     emit(GameFinishedST());
   }
 
-  Future<void> _cancelGame(CancelGameEV event, Emitter<GameState> emit) async {
+  void _cancelGame(CancelGameEV event, Emitter<GameState> emit) {
     if (state is! BetST && state is! CountDownST && state is! CashOutST) {
-      balance.add(UpdateBalanceEV(difference: event.bet));
+      _balance.add(PayoutReceived(event.entry));
     }
-
     emit(BetST());
   }
-
-  StatisticsItemModel _getGameStat(double bet, double coef) => StatisticsItemModel(
-    bet: bet,
-    coef: coef,
-    date: DateTime.now(),
-    isWin: wasWin,
-    result: wasWin ? (bet * coef) : bet,
-  );
 }

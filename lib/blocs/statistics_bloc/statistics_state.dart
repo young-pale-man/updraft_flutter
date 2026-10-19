@@ -1,18 +1,15 @@
 part of 'statistics_bloc.dart';
 
 final class StatisticsState extends Equatable {
-  const StatisticsState({this.statisticsItemsList = const []});
+  const StatisticsState({required this.rounds});
 
-  final List<StatisticsItemModel> statisticsItemsList;
+  static const int historyLength = 15;
 
-  StatisticsState copyWith({List<StatisticsItemModel>? statisticsItemsList}) {
-    return StatisticsState(statisticsItemsList: statisticsItemsList ?? this.statisticsItemsList);
-  }
+  final List<RoundRecord> rounds;
 
-  factory StatisticsState.initial() {
-    return const StatisticsState();
-  }
+  List<RoundRecord> get recentFlights =>
+      rounds.reversed.where((round) => round.crash != null).take(historyLength).toList(growable: false);
 
   @override
-  List<Object?> get props => [statisticsItemsList];
+  List<Object?> get props => [rounds];
 }

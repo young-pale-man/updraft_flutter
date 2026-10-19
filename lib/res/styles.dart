@@ -1,10 +1,9 @@
-import 'package:updraft_flutter/utils/device_info.dart';
 import 'package:flutter/material.dart';
 
 sealed class AppStyles {
-  static HeaderStyle get header => isTablet ? const TabletHeaderStyle._() : const PhoneHeaderStyle._();
-  static BodyStyle get body => isTablet ? const TabletBodyStyle._() : const PhoneBodyStyle._();
-  static CaptionStyle get caption => isTablet ? const TabletCaptionStyle._() : const PhoneCaptionStyle._();
+  static HeaderStyle get header => const PhoneHeaderStyle._();
+  static BodyStyle get body => const PhoneBodyStyle._();
+  static CaptionStyle get caption => const PhoneCaptionStyle._();
   static RegularStyle get regular => const RegularStyle._();
 }
 
@@ -112,99 +111,6 @@ class PhoneCaptionStyle implements CaptionStyle {
   @override
   TextStyle get caption2 => const TextStyle(
     fontSize: 10,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w700,
-    height: 1.5,
-  );
-}
-
-class TabletHeaderStyle implements HeaderStyle {
-  const TabletHeaderStyle._();
-
-  @override
-  TextStyle get headerSpecial => const TextStyle(
-    fontSize: 115,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w800,
-    height: 1.5,
-  );
-
-  @override
-  TextStyle get headerL => const TextStyle(
-    fontSize: 52,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w700,
-    height: 1.5,
-  );
-
-  @override
-  TextStyle get headerM => const TextStyle(
-    fontSize: 38,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w700,
-    height: 1.5,
-  );
-
-  @override
-  TextStyle get headerS => const TextStyle(
-    fontSize: 32,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w700,
-    height: 1.5,
-  );
-
-  @override
-  TextStyle get headerXS => const TextStyle(
-    fontSize: 28,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w700,
-    height: 1.5,
-  );
-}
-
-class TabletBodyStyle implements BodyStyle {
-  const TabletBodyStyle._();
-
-  @override
-  TextStyle get body1 => const TextStyle(
-    fontSize: 26,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w700,
-    height: 1.38,
-  );
-
-  @override
-  TextStyle get body2 => const TextStyle(
-    fontSize: 26,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w400,
-    height: 1.38,
-  );
-}
-
-class TabletCaptionStyle implements CaptionStyle {
-  const TabletCaptionStyle._();
-
-  @override
-  TextStyle get caption1 => const TextStyle(
-    fontSize: 22,
-    fontFamily: 'Kanit',
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w500,
-    height: 1.5,
-  );
-
-  @override
-  TextStyle get caption2 => const TextStyle(
-    fontSize: 16,
     fontFamily: 'Kanit',
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,

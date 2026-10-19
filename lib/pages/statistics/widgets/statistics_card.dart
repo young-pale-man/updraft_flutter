@@ -1,5 +1,5 @@
 import 'package:updraft_flutter/data/enums/statistics_parameter.dart';
-import 'package:updraft_flutter/data/models/statistics_item_model.dart';
+import 'package:updraft_flutter/data/models/round_record.dart';
 import 'package:updraft_flutter/pages/statistics/widgets/statistics_chart.dart';
 import 'package:updraft_flutter/pages/statistics/widgets/statistics_parameter_picker.dart';
 import 'package:updraft_flutter/res/colors.dart';
@@ -15,7 +15,7 @@ class StatisticsCard extends StatelessWidget {
 
   final StatisticsParameter selectedParameter;
   final ValueChanged<int> changeParameter;
-  final List<StatisticsItemModel> statistics;
+  final List<RoundRecord> statistics;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class StatisticsCard extends StatelessWidget {
   double calculateWinPercentage() {
     if (statistics.isEmpty) return 0.0;
 
-    int winCount = statistics.where((item) => item.isWin == true).length;
+    int winCount = statistics.where((item) => item.jumped).length;
     double winPercentage = (winCount / statistics.length) * 100;
 
     return winPercentage;

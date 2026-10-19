@@ -1,19 +1,12 @@
 part of 'balance_bloc.dart';
 
 final class BalanceState extends Equatable {
-  const BalanceState({this.balance = 0, this.addedDifference = 0});
+  const BalanceState({required this.balance});
 
-  final double balance;
-  final double addedDifference;
+  final int balance;
 
-  BalanceState copyWith({double? balance, double? addedDifference}) {
-    return BalanceState(balance: balance ?? this.balance, addedDifference: addedDifference ?? this.addedDifference);
-  }
-
-  factory BalanceState.initial() {
-    return const BalanceState();
-  }
+  bool get needsRefill => BalanceRules.needsRefill(balance);
 
   @override
-  List<Object?> get props => [balance, addedDifference];
+  List<Object?> get props => [balance];
 }

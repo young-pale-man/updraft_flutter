@@ -6,7 +6,7 @@ import 'package:rive/rive.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await RiveNative.init();
-  await DependencyInitializer.initDependencies();
+  final dependencies = await DependencyInitializer.initDependencies();
 
-  runApp(const Application());
+  runApp(Application(dependencies: dependencies));
 }

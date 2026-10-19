@@ -3,8 +3,6 @@ import 'package:updraft_flutter/res/assets.dart';
 import 'package:updraft_flutter/res/colors.dart';
 import 'package:updraft_flutter/res/styles.dart';
 import 'package:updraft_flutter/utils/constants.dart';
-import 'package:updraft_flutter/utils/device_info.dart';
-import 'package:updraft_flutter/utils/scaled_size.dart';
 import 'package:updraft_flutter/widgets/main_icon_button.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +37,7 @@ class _ValuePickerState extends State<ValuePicker> {
         mainAxisSize: MainAxisSize.min,
         children: [
           MainIconButton(
-            height: scaledSize(50),
+            height: 50,
             icon: Assets.minus,
             disabled: widget.valueListenable.value == widget.minValue || widget.disabled,
             onTapDown: widget.disabled ? () {} : () => _adjustValue(-1),
@@ -51,7 +49,7 @@ class _ValuePickerState extends State<ValuePicker> {
               padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 14),
               decoration: BoxDecoration(
                 color: widget.disabled ? Colors.transparent : AppColors.main.layer1,
-                borderRadius: BorderRadius.circular(isTablet ? 50 : 25),
+                borderRadius: BorderRadius.circular(25),
                 border: Border.all(
                   width: 2,
                   color: widget.disabled ? AppColors.tertiary.tertiary1 : AppColors.text.primary,
@@ -72,7 +70,7 @@ class _ValuePickerState extends State<ValuePicker> {
           ),
           const SizedBox(width: 6),
           MainIconButton(
-            height: scaledSize(50),
+            height: 50,
             icon: Assets.plus,
             disabled: widget.valueListenable.value == widget.maxValue || widget.disabled,
             onTapDown: widget.disabled ? () {} : () => _adjustValue(1),

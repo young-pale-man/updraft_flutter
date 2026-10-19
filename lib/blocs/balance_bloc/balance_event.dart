@@ -7,13 +7,24 @@ sealed class BalanceEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitializeBalanceEV extends BalanceEvent {}
+final class EntryTaken extends BalanceEvent {
+  const EntryTaken(this.entry);
 
-class UpdateBalanceEV extends BalanceEvent {
-  const UpdateBalanceEV({required this.difference});
-
-  final double difference;
+  final int entry;
 
   @override
-  List<Object> get props => [difference];
+  List<Object?> get props => [entry];
+}
+
+final class PayoutReceived extends BalanceEvent {
+  const PayoutReceived(this.payout);
+
+  final int payout;
+
+  @override
+  List<Object?> get props => [payout];
+}
+
+final class BalanceRefilled extends BalanceEvent {
+  const BalanceRefilled();
 }

@@ -1,4 +1,4 @@
-import 'package:updraft_flutter/data/models/statistics_item_model.dart';
+import 'package:updraft_flutter/data/models/round_record.dart';
 import 'package:updraft_flutter/pages/statistics/widgets/statistics_item_tile.dart';
 import 'package:updraft_flutter/res/colors.dart';
 import 'package:updraft_flutter/res/styles.dart';
@@ -9,7 +9,7 @@ class StatisticsDayGroup extends StatelessWidget {
   const StatisticsDayGroup({super.key, required this.date, required this.dayGroup});
 
   final DateTime date;
-  final List<StatisticsItemModel> dayGroup;
+  final List<RoundRecord> dayGroup;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +22,7 @@ class StatisticsDayGroup extends StatelessWidget {
           shrinkWrap: true,
           padding: EdgeInsets.zero,
           physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) =>
-              StatisticsItemTile(key: ValueKey(dayGroup[index].id), statisticsItem: dayGroup[index]),
+          itemBuilder: (context, index) => StatisticsItemTile(statisticsItem: dayGroup[index]),
           separatorBuilder: (_, _) => const SizedBox(height: 6),
         ),
       ],
