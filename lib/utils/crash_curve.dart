@@ -6,6 +6,8 @@ class CrashCurve {
   static const int returnPercent = 97;
   static const int maxHundredths = 10000;
 
+  static double chanceToReach(int hundredths) => hundredths <= 100 ? 1 : returnPercent / hundredths;
+
   int draw(Random random) {
     final hundredths = (returnPercent / (1 - random.nextDouble())).floor();
     return hundredths.clamp(100, maxHundredths);

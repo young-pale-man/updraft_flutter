@@ -63,6 +63,18 @@ void main() {
       }
     });
 
+    test('states the chance to reach a target that the draws actually show', () {
+      for (final target in targets) {
+        final sampled = crashes.where((crash) => crash >= target).length / rounds;
+        final stated = CrashCurve.chanceToReach(target);
+        final error = 4 * sqrt(stated * (1 - stated) / rounds);
+
+        expect(sampled, closeTo(stated, error), reason: 'target $target');
+      }
+      expect(CrashCurve.chanceToReach(100), 1);
+      expect(CrashCurve.chanceToReach(200), closeTo(0.485, 1e-12));
+    });
+
     test('returns 97% of the entry at every target, within one point', () {
       for (final target in targets) {
         final returned = crashes.where((crash) => crash >= target).length * target / 100 / rounds;

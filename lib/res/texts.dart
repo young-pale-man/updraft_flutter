@@ -9,6 +9,29 @@ class AppTexts {
   static const String bestJump = 'Best jump';
   static const String noJumpYet = '—';
   static const String howToPlay = 'How to play';
+  static const String theRound = 'The round';
+  static const String theRoundNote =
+      'Pick an entry with the arrows and press Play. After a three-second countdown the plane takes off and the '
+      'multiplier starts at 1.00×, climbing faster the longer it flies.';
+  static const String jumping = 'Jumping';
+  static const String jumpingNote =
+      'Press Jump while the plane is in the air to take the entry times the multiplier. The button always shows '
+      'what you would take right now.';
+  static const String jumpingExample = 'Entry';
+  static const String jumpingAt = 'jump at';
+  static const String autoJumpNote =
+      'Switch on Auto jump and set a target. The machine jumps for you the moment the multiplier reaches it, '
+      'as long as the plane gets that far.';
+  static const String fairSkiesRule =
+      'A flight reaches a multiplier m with a chance of 97% ÷ m. A higher target pays more and happens less '
+      'often, and the two always balance out at 97% of the entry.';
+  static const String target = 'Target';
+  static const String chance = 'Chance';
+  static const String returns = 'Returns';
+  static const String leaving = 'Leaving';
+  static const String leavingNote =
+      'Going back during the countdown costs nothing. Going back while the plane is flying gives up the entry, '
+      'and the round counts as lost.';
 
   static const String entry = 'Entry';
   static const String autoJump = 'Auto jump';

@@ -197,6 +197,19 @@ void main() {
     expect(find.bySemanticsLabel('612.00'), findsOneWidget);
   });
 
+  testWidgets('how to play shows examples worked out by the game itself', (tester) async {
+    final app = AppHarness();
+    await app.launch(tester);
+
+    await tester.openFromMenu(AppTexts.howToPlay);
+
+    expect(find.text('15.00'), findsOneWidget);
+    expect(find.text('34.20'), findsOneWidget);
+    expect(find.text('48.5%'), findsOneWidget);
+    await tester.dragUntilVisible(find.text('9.7%'), find.byType(ListView), const Offset(0, -200));
+    expect(find.text('97.0%'), findsNWidgets(4));
+  });
+
   testWidgets('fits a small phone without overflowing', (tester) async {
     final app = AppHarness();
     await app.launch(tester, size: const Size(320, 568));
