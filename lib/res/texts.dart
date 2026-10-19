@@ -2,6 +2,7 @@ class AppTexts {
   AppTexts._();
 
   static const String appName = 'Updraft';
+  static const String tagline = 'Know when to jump';
 
   static const String home = 'Home';
   static const String statistics = 'Statistics';

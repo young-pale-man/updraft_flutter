@@ -5,7 +5,7 @@ sealed class AppStyles {
   static const String _text = 'Rubik';
   static const List<FontFeature> _tabular = [FontFeature.tabularFigures()];
 
-  static const TextStyle logo = TextStyle(fontFamily: _display, fontSize: 46, height: 1.05, letterSpacing: 1);
+  static const TextStyle logo = TextStyle(fontFamily: _display, fontSize: 60, height: 1.05, letterSpacing: 1);
 
   static const TextStyle titleL = TextStyle(fontFamily: _display, fontSize: 28, height: 1.1, letterSpacing: 0.5);
 
