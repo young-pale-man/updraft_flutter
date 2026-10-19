@@ -1,4 +1,4 @@
-import 'package:updraft_flutter/res/colors.dart';
+import 'package:updraft_flutter/widgets/machine/machine_shell.dart';
 import 'package:flutter/material.dart';
 
 abstract class BasePageState<T extends StatefulWidget> extends State<T> {
@@ -10,9 +10,9 @@ abstract class BasePageState<T extends StatefulWidget> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.shell,
+    return MachineShell(
       child: Scaffold(
+        backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: false,
         appBar: appBar,
         body: SafeArea(
